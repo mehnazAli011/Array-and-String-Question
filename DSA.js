@@ -23,7 +23,7 @@
 // - ans = [nums[0],nums[1],nums[2],nums[3],nums[0],nums[1],nums[2],nums[3]]
 // - ans = [1,3,2,1,1,3,2,1]
 
-// 1st Apprcoh!
+
 function getConcatenations(nums) {
   let result = [];
   n = nums.length;
@@ -395,3 +395,201 @@ console.log(plusOne([1, 2, 3]));
 console.log(plusOne([4, 3, 2, 2]));
 console.log(plusOne([9]));
 // =================================================================================
+//Q 11.
+//Remove Element
+// Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The order of the elements may be changed. Then return the number of elements in nums which are not equal to val.
+
+// Consider the number of elements in nums which are not equal to val be k, to get accepted, you need to do the following things:
+
+// Change the array nums such that the first k elements of nums contain the elements which are not equal to val. The remaining elements of nums are not important as well as the size of nums.
+// Return k.
+// Custom Judge:
+
+// The judge will test your solution with the following code:
+
+// int[] nums = [...]; // Input array
+// int val = ...; // Value to remove
+// int[] expectedNums = [...]; // The expected answer with correct length.
+//                             // It is sorted with no values equaling val.
+
+// int k = removeElement(nums, val); // Calls your implementation
+
+// assert k == expectedNums.length;
+// sort(nums, 0, k); // Sort the first k elements of nums
+// for (int i = 0; i < actualLength; i++) {
+//     assert nums[i] == expectedNums[i];
+// }
+// If all assertions pass, then your solution will be accepted.
+
+// Example 1:
+
+// Input: nums = [3,2,2,3], val = 3
+// Output: 2, nums = [2,2,_,_]
+// Explanation: Your function should return k = 2, with the first two elements of nums being 2.
+// It does not matter what you leave beyond the returned k (hence they are underscores).
+// Example 2:
+
+// Input: nums = [0,1,2,2,3,0,4,2], val = 2
+// Output: 5, nums = [0,1,4,0,3,_,_,_]
+// Explanation: Your function should return k = 5, with the first five elements of nums containing 0, 0, 1, 3, and 4.
+// Note that the five elements can be returned in any order.
+// It does not matter what you leave beyond the returned k (hence they are underscores).
+
+function removeDup(nums, val) {
+  let current = 0;
+  for (let i = 0; i < nums.length; i++) {
+    // if check is not equal
+    if (nums[i] !== val) {
+      // then update the array
+      nums[current] = nums[i];
+      // updateed Array = [3,3]
+      // updateed Array = [0,1,3,0,4]
+      current++;
+    }
+  }
+  return current;
+}
+console.log(removeDup([3, 2, 2, 3], 3));
+console.log(removeDup([0, 1, 2, 2, 3, 0, 4, 2], 2));
+// =================================================================================
+// Q 12
+// Find the Index of the First Occurrence in a String
+// Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+// Example 1:
+
+// Input: haystack = "sadbutsad", needle = "sad"
+// Output: 0
+// Explanation: "sad" occurs at index 0 and 6.
+// The first occurrence is at index 0, so we return 0.
+// Example 2:
+
+// Input: haystack = "leetcode", needle = "leeto"
+// Output: -1
+// Explanation: "leeto" did not occur in "leetcode", so we return -1.
+
+function findTheIndex(haystack, needle) {
+  for (let i = 0; i < haystack.length; i++) {
+    if (haystack[i] === needle[0]) {
+      if (needle === haystack.substr(i, needle.length)) return i;
+    }
+  }
+  return -1;
+}
+console.log(findTheIndex("sadbutsad", "sad"));
+console.log(findTheIndex("leetcode", "leeto"));
+
+// ===============================================================================
+
+
+
+//Q 13 Rotate the Array K time
+// Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
+
+// Example 1:
+
+// Input: nums = [1,2,3,4,5,6,7], k = 3
+// Output: [5,6,7,1,2,3,4]
+// Explanation:
+// rotate 1 steps to the right: [7,1,2,3,4,5,6]
+// rotate 2 steps to the right: [6,7,1,2,3,4,5]
+// rotate 3 steps to the right: [5,6,7,1,2,3,4]
+// Example 2:
+
+// Input: nums = [-1,-100,3,99], k = 2
+// Output: [3,99,-1,-100]
+// Explanation:
+// rotate 1 steps to the right: [99,-1,-100,3]
+// rotate 2 steps to the right: [3,99,-1,-100]
+
+// function rotateArr(nums, k) {
+//   return nums.slice(-k).concat(nums.slice(0, nums.length - k));
+// }
+// console.log(rotateArr([1, 2, 3, 4, 5, 6, 7], 3));
+// console.log(rotateArr([-1, -100, 3, 99], 2));
+
+// ================================================================================
+// Q `14Palindorm Number
+// Given an integer x, return true if x is a
+// palindrome
+// , and false otherwise.
+
+// Example 1:
+
+// Input: x = 121
+// Output: true
+// Explanation: 121 reads as 121 from left to right and from right to left.
+// Example 2:
+
+// Input: x = -121
+// Output: false
+// Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.
+// Example 3:
+
+// Input: x = 10
+// Output: false
+// Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
+
+function check(x) {
+  let y = x.toString();
+  return y === y.split("").reverse().join("");
+}
+console.log(check(121));
+console.log(check(-121));
+console.log(check(10));
+
+// // Q 15 Reverse String
+// Write a function that reverses a string. The input string is given as an array of characters s.
+
+// You must do this by modifying the input array in-place with O(1) extra memory.
+
+// Example 1:
+
+// Input: s = ["h","e","l","l","o"]
+// Output: ["o","l","l","e","h"]
+// Example 2:
+
+// Input: s = ["H","a","n","n","a","h"]
+// Output: ["h","a","n","n","a","H"]
+function reverseString(s) {
+  let left = 0;
+  let right = s.length - 1;
+  while (left < right) {
+    temp = s[right];
+    s[right] = s[left];
+    s[left] = temp;
+    left++;
+    right--;
+  }
+  return s;
+}
+console.log(reverseString(["h", "e", "l", "l", "o"]));
+console.log(reverseString(["H", "a", "n", "n", "a", "h"]));
+
+// // Q 16
+// Find All Disapper number in Array
+// Given an array nums of n integers where nums[i] is in the range [1, n], return an array of all the integers in the range [1, n] that do not appear in nums.
+
+// Example 1:
+
+// Input: nums = [4,3,2,7,8,2,3,1]
+// Output: [5,6]
+// Example 2:
+
+// Input: nums = [1,1]
+// Output: [2]
+
+function disappearedElm(nums) {
+  let result = [];
+  const map = new Set(nums);
+  for (let i = 1; i <= nums.length; i++) {
+    if (!map.has(i)) {
+      result.push(i);
+    }
+  }
+  return result;
+}
+console.log(disappearedElm([4, 3, 2, 7, 8, 2, 3, 1]));
+console.log(disappearedElm([1, 1]));
+
+//=================================================================================
