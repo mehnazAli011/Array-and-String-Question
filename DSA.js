@@ -1024,22 +1024,23 @@
 
 //Brute Approach
 
-// function getSingleOne(nums) {
-//   for (let i = 0; i < nums.length; i++) {
-//     let count = 0;
-//     for (let j = 0; j < nums.length; j++) {
-//       if (nums[i] === nums[j]) {
-//         count++;
-//       }
-//     }
-//     if (count === 1) {
-//       return nums[i];
-//     }
-//   }
-// }
-// console.log(getSingleOne([2, 2, 1]));
-// console.log(getSingleOne([4, 1, 2, 1, 2]));
-// console.log(getSingleOne([1]));
+function getSingleOne(nums) {
+  for (let i = 0; i < nums.length; i++) {
+    let count = 0;
+    for (let j = 0; j < nums.length; j++) {
+      if (nums[i] === nums[j]) {
+        count++;
+      }
+    }
+    if (count === 1) {
+      return nums[i];
+    }
+  }
+}
+console.log(getSingleOne([2, 2, 1]));
+console.log(getSingleOne([4, 1, 2, 1, 2]));
+console.log(getSingleOne([1]));
+
 
 //optimal Approach
 // function getSingleOne(nums) {
@@ -1054,6 +1055,7 @@
 // console.log(getSingleOne([1]));
 
 // ==============================================================================
+//Q 24
 // Given an array nums of size n, return the majority element.
 
 // The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
@@ -1068,7 +1070,199 @@
 // Output: 2
 
 //Brute Approach
+// function majorityElm(nums) {
+//   for (let i = 0; i < nums.length; i++) {
+//     let count = 0;
+//     for (let j = 0; j < nums.length; j++) {
+//       if (nums[i] === nums[j]) {
+//         count++;
+//       }
+//     }
+//     if (count > nums.length / 2) {
+//       return nums[i];
+//     }
+//   }
+// }
+// console.log(majorityElm([3, 2, 3]));
+// console.log(majorityElm([2, 2, 1, 1, 1, 2, 2]));
+
+// =============================================================================
+//Q 25
+// Best Time to buy before  and Sell Stock
+// You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+// You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+// Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+// Example 1:
+
+// Input: prices = [7,1,5,3,6,4]
+// Output: 5
+// Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+// Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+// Example 2:
+
+// Input: prices = [7,6,4,3,1]
+// Output: 0
+// Explanation: In this case, no transactions are done and the max profit = 0.
+
+// function maxProfit(nums) {
+//   let min = 0;
+//   let profit = 0;
+//   for (let i = 1; i < nums.length; i++) {
+//     let cost = nums[i] - min;
+//     profit = Math.max(profit,cost);
+//     min =nums[i];
+//   }
+//   return profit;
+// }
+// console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+// console.log(maxProfit([7, 6, 4, 3, 1]));
+
+// =============================================================================
+//Q 26Rearrange  Array the Element By Sign
+// You are given a 0-indexed integer array nums of even length consisting of an equal number of positive and negative integers.
+
+// You should return the array of nums such that the the array follows the given conditions:
+
+// Every consecutive pair of integers have opposite signs.
+// For all integers with the same sign, the order in which they were present in nums is preserved.
+// The rearranged array begins with a positive integer.
+// Return the modified array after rearranging the elements to satisfy the aforementioned conditions.
+
+// Example 1:
+
+// Input: nums = [3,1,-2,-5,2,-4]
+// Output: [3,-2,1,-5,2,-4]
+// Explanation:
+// The positive integers in nums are [3,1,2]. The negative integers are [-2,-5,-4].
+// The only possible way to rearrange them such that they satisfy all conditions is [3,-2,1,-5,2,-4].
+// Other ways such as [1,-2,2,-5,3,-4], [3,1,2,-2,-5,-4], [-2,3,-5,1,-4,2] are incorrect because they do not satisfy one or more conditions.
+// Example 2:
+
+// Input: nums = [-1,1]
+// Output: [1,-1]
+// Explanation:
+// 1 is the only positive integer and -1 the only negative integer in nums.
+// So nums is rearranged to [1,-1].
+
+//Brute Approach
+// function rearrangeArr(nums) {
+//   let pos = [];
+//   let neg = [];
+//   for (let i = 0; i < nums.length; i++) {
+//     if (nums[i] < 0) {
+//       neg.push(nums[i]);
+//     } else {
+//       pos.push(nums[i]);
+//     }
+//   }
+//   for (let i = 0; i < nums.length / 2; i++) {
+//     nums[i * 2] = pos[i];
+//     nums[i * 2 + 1] = neg[i];
+//   }
+//   return nums;
+// }
+// console.log(rearrangeArr([3, 1, -2, -5, 2, -4]));
+// console.log(rearrangeArr([-1, 1]));
+
+// //Optimal Approach
+// function rearrangeArr(nums) {
+//   let result = [];
+//   let posIndex = 0;
+//   let negIndex = 1;
+//   for (let i = 0; i < nums.length; i++) {
+//     if (nums[i] < 0) {
+//       result[negIndex]=nums[i]
+//       negIndex+=2;
+//     } else {
+//       result[posIndex]=nums[i]
+//       posIndex+=2
+//     }
+//   }
+//   return result
+
+// }
+// console.log(rearrangeArr([3, 1, -2, -5, 2, -4]));
+// console.log(rearrangeArr([-1, 1]));
+
+//=========================================================================
+// Q 27
+// Better Approach
+// function longestConsecutive(nums) {
+//   let max = 0;
+//   let set = new Set(nums);
+//   for (let num of set) {
+//     if (set.has(num - 1)) {
+//       continue;
+//     }
+//     let currNums = num;
+//     let currMax = 1;
+//     while (set.has(currNums + 1)) {
+//       currNums++;
+//       currMax++;
+//     }
+//     max = Math.max(max, currMax);
+//   }
+//   return max;
+// }
+// console.log(longestConsecutive([100, 4, 200, 1, 3, 2]));
+// console.log(longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+// ==============================================================================
+
+// Q 28 Subarray Sum Equals of k
+
+// Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+
+// A subarray is a contiguous non-empty sequence of elements within an array.
+
+// Example 1:
+
+// Input: nums = [1,1,1], k = 2
+// Output: 2
+// Example 2:
+
+// Input: nums = [1,2,3], k = 3
+// Output: 2
+
+//Better Approach
+// function subarraySum(nums, k) {
+//   let count = 0;
+//   for (let i = 0; i < nums.length; i++) {
+//     let sum = 0;
+//     for (let j = i; j < nums.length; j++) {
+//       sum += nums[j];
+
+//       if (sum === k) {
+//         count++;
+//       }
+//     }
+//   }
+//   return count;
+// }
+// console.log(subarraySum([1, 1, 1], 2));
+// console.log(subarraySum([1, 2, 3], 3));
+
+// ==============================================================================
+// Q 29
+// Majaroity Element ||
+// Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
+// Example 1:
+
+// Input: nums = [3,2,3]
+// Output: [3]
+// Example 2:
+
+// Input: nums = [1]
+// Output: [1]
+// Example 3:
+
+// Input: nums = [1,2]
+// Output: [1,2]
 function majorityElm(nums) {
+  let result = [];
   for (let i = 0; i < nums.length; i++) {
     let count = 0;
     for (let j = 0; j < nums.length; j++) {
@@ -1076,11 +1270,89 @@ function majorityElm(nums) {
         count++;
       }
     }
-    if (count > nums.length / 2) {
-      return nums[i];
+    if (count > nums.length / 3) {
+      result.push(nums[i]);
     }
   }
+  return [...new Set(result)];
 }
 console.log(majorityElm([3, 2, 3]));
-console.log(majorityElm([2, 2, 1, 1, 1, 2, 2]));
+console.log(majorityElm([1]));
+console.log(majorityElm([1, 2]));
+// ============================================================================
+// 3 sum
+// Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+// Notice that the solution set must not contain duplicate triplets.
+
+// Example 1:
+
+// Input: nums = [-1,0,1,2,-1,-4]
+// Output: [[-1,-1,2],[-1,0,1]]
+// Explanation:
+// nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+// nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+// nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+// The distinct triplets are [-1,0,1] and [-1,-1,2].
+// Notice that the order of the output and the order of the triplets does not matter.
+// Example 2:
+
+// Input: nums = [0,1,1]
+// Output: []
+// Explanation: The only possible triplet does not sum up to 0.
+// Example 3:
+
+// Input: nums = [0,0,0]
+// Output: [[0,0,0]]
+// Explanation: The only possible triplet sums up to 0.
+
+// function ThreeSum(nums) {
+//   nums.sort((a, b) => a - b);
+//   let result = [];
+//   for (let i = 0; i < nums.length; i++) {
+//     for (let j = i + 1; j < nums.length; j++) {
+//       for (let k = j + 1; k < nums.length; k++) {
+//         if (nums[i] + nums[j] + nums[k] === 0) {
+//           result.push([nums[i], nums[j], nums[k]]);
+//         }
+//       }
+//     }
+//   }
+//   return result;
+// }
+// console.log(ThreeSum([-1, 0, 1, 2, -1, -4]));
+// console.log(ThreeSum([0, 1, 1]));
+// console.log(ThreeSum([0, 0, 0]));
+// ===============================================================================
+// Q 31
+// Given an input string s, reverse the order of the words.
+
+// A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+
+// Return a string of the words in reverse order concatenated by a single space.
+
+// Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+
+// Example 1:
+
+// Input: s = "the sky is blue"
+// Output: "blue is sky the"
+// Example 2:
+
+// Input: s = "  hello world  "
+// Output: "world hello"
+// Explanation: Your reversed string should not contain leading or trailing spaces.
+// Example 3:
+
+// Input: s = "a good   example"
+// Output: "example good a"
+// Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
+
+function reverseTheString(s) {
+  return s.split(" ").reverse().filter(elm=>elm!="").join(" ")
+}
+console.log(reverseTheString("the sky is blue"));
+console.log(reverseTheString("  hello world  "));
+console.log(reverseTheString("a good   example"));
+console.log(reverseTheString("  Bob    Loves  Alice   "));
 // =============================================================================
