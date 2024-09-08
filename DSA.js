@@ -1041,7 +1041,6 @@ console.log(getSingleOne([2, 2, 1]));
 console.log(getSingleOne([4, 1, 2, 1, 2]));
 console.log(getSingleOne([1]));
 
-
 //optimal Approach
 // function getSingleOne(nums) {
 //   let XOR = 0;
@@ -1349,10 +1348,206 @@ console.log(majorityElm([1, 2]));
 // Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
 
 function reverseTheString(s) {
-  return s.split(" ").reverse().filter(elm=>elm!="").join(" ")
+  return s
+    .split(" ")
+    .reverse()
+    .filter((elm) => elm != "")
+    .join(" ");
 }
 console.log(reverseTheString("the sky is blue"));
 console.log(reverseTheString("  hello world  "));
 console.log(reverseTheString("a good   example"));
 console.log(reverseTheString("  Bob    Loves  Alice   "));
 // =============================================================================
+
+// Q 32 Pow(x,n)
+// Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+
+// Example 1:
+
+// Input: x = 2.00000, n = 10
+// Output: 1024.00000
+// Example 2:
+
+// Input: x = 2.10000, n = 3
+// Output: 9.26100
+// Example 3:
+
+// Input: x = 2.00000, n = -2
+// Output: 0.25000
+// Explanation: 2-2 = 1/22 = 1/4 = 0.25
+
+//Better Approach
+// function myPow(x, n) {
+//   let ans = 1;
+//   let pow = Math.abs(n);
+//   for (let i = 1; i <= pow; i++) {
+//     ans = ans * x;
+//   }
+//   if (n < 0) {
+//     ans = 1 / ans;
+//   }
+//   return ans;
+// }
+// console.log(myPow(2.0, 10));
+// console.log(myPow(2.1, 3));
+// console.log(myPow(2.0, -2));
+// function myPow(x, n) {
+//   if (n < 0) {
+//     x = 1 / x;
+//     n = -n;
+//   }
+//   let res = 1;
+//   let current_Product = x;
+//   while (n > 0) {
+//     if (n % 2 === 1) {
+//       res = res * current_Product;
+//     }
+//     current_Product = current_Product * current_Product;
+//     n = Math.floor(n / 2);
+//   }
+//   return res;
+// }
+// console.log(myPow(2.0, 10));
+// console.log(myPow(2.1, 3));
+// console.log(myPow(2.0, -2));
+// console.log(myPow(2, 4));
+
+// ==============================================================================
+// Q 33
+
+//brute Approach
+function check(s) {
+  let str = s.replace(/[\W|_]/g, "").toLowerCase();
+  let left = 0;
+  let right = str.length - 1;
+  while (left < right) {
+    if (str[left] !== str[right]) {
+      return false;
+    }
+    left++;
+    right--;
+  }
+  return true;
+}
+console.log(check("A man, a plan, a canal: Panama"));
+console.log(check("race a car"));
+console.log(check(" "));
+console.log(check("0p"));
+console.log(check("ab_a"));
+//Better Approach
+function check(s) {
+  let modifiyS = s.replace(/[\W|_]/g, "").toLowerCase();
+  return modifiyS == modifiyS.split("").reverse().join("");
+}
+console.log(check("A man, a plan, a canal: Panama"));
+console.log(check("race a car"));
+console.log(check(" "));
+console.log(check("0p"));
+console.log(check("ab_a"));
+
+// ================================================================================
+// // Q 34  Fibonacci Number
+// The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from 0 and 1. That is,
+
+// F(0) = 0, F(1) = 1
+// F(n) = F(n - 1) + F(n - 2), for n > 1.
+// Given n, calculate F(n).
+
+// Example 1:
+
+// Input: n = 2
+// Output: 1
+// Explanation: F(2) = F(1) + F(0) = 1 + 0 = 1.
+// Example 2:
+
+// Input: n = 3
+// Output: 2
+// Explanation: F(3) = F(2) + F(1) = 1 + 1 = 2.
+// Example 3:
+
+// Input: n = 4
+// Output: 3
+// Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.
+
+function fib(n) {
+  if (n <= 1) {
+    return n;
+  }
+  return fib(n - 1) + fib(n - 2);
+}
+console.log(fib(1));
+console.log(fib(3));
+console.log(fib(4));
+// // ============================================================================
+// Q 35. N-th Tribonacci Number
+// Easy
+// Topics
+// Companies
+// Hint
+// The Tribonacci sequence Tn is defined as follows:
+
+// T0 = 0, T1 = 1, T2 = 1, and Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+
+// Given n, return the value of Tn.
+
+// Example 1:
+
+// Input: n = 4
+// Output: 4
+// Explanation:
+// T_3 = 0 + 1 + 1 = 2
+// T_4 = 1 + 1 + 2 = 4
+// Example 2:
+
+// Input: n = 25
+// Output: 1389537
+
+function tribonacciNum(n) {
+  let arr = [0, 1, 1];
+  if (n <= 2) {
+    return arr[n];
+  }
+  for (let i = 3; i <= n; i++) {
+    let temp = arr[0] + arr[1] + arr[2];
+    arr[0] = arr[1];
+    arr[1] = arr[2];
+    arr[2] = temp;
+  }
+  return arr[2];
+}
+console.log(tribonacciNum(4));
+console.log(tribonacciNum(25));
+// ===============================================================================
+// Q 36 Climbing stairs
+// You are climbing a staircase. It takes n steps to reach the top.
+
+// Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+// Example 1:
+
+// Input: n = 2
+// Output: 2
+// Explanation: There are two ways to climb to the top.
+// 1. 1 step + 1 step
+// 2. 2 steps
+// Example 2:
+
+// Input: n = 3
+// Output: 3
+// Explanation: There are three ways to climb to the top.
+// 1. 1 step + 1 step + 1 step
+// 2. 1 step + 2 steps
+// 3. 2 steps + 1 step
+
+function climbStairs(n) {
+  let arr = [];
+  arr[1] = 1;
+  arr[2] = 2;
+  for (let i = 3; i <= n; i++) {
+    arr[i] = arr[i - 1] + arr[i - 2];
+  }
+  return arr[n];
+}
+console.log(climbStairs(2));
+console.log(climbStairs(3));
