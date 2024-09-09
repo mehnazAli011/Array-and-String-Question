@@ -286,11 +286,22 @@
 // console.log(twoSum([1, 3], 6));
 
 // // optimal Approah
-// function twoSum(nums, target) {}
+function twoSum(nums, target) {
+  nums.sort((a, b) => a - b);
+  let left = 0;
+  let right = nums.length - 1;
+  while (left < right) {
+    let sum = nums[left] + nums[right];
+    if (sum === target) {
+      return [left, right];
+    } else if (sum < target) left++;
+    else right--;
+  }
+}
 
-// console.log(twoSum([2, 7, 11, 15], 9));
-// console.log(twoSum([3, 2, 4], 6));
-// console.log(twoSum([3, 3], 6));
+console.log(twoSum([2, 7, 11, 15], 9));
+console.log(twoSum([3, 2, 4], 6));
+console.log(twoSum([3, 3], 6));
 // // =================================================================================
 // // Q7.Contains Duplicate
 // // Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
@@ -1106,18 +1117,19 @@ console.log(getSingleOne([1]));
 // Output: 0
 // Explanation: In this case, no transactions are done and the max profit = 0.
 
-// function maxProfit(nums) {
-//   let min = 0;
-//   let profit = 0;
-//   for (let i = 1; i < nums.length; i++) {
-//     let cost = nums[i] - min;
-//     profit = Math.max(profit,cost);
-//     min =nums[i];
-//   }
-//   return profit;
-// }
-// console.log(maxProfit([7, 1, 5, 3, 6, 4]));
-// console.log(maxProfit([7, 6, 4, 3, 1]));
+//Brute Approach
+function maxProfit(prices) {
+  let min = prices[0];
+  let profit = 0;
+  for (let i = 1; i < prices.length; i++) {
+    let cost = prices[i] - min;
+    profit = Math.max(profit, cost);
+    min = Math.min(min, prices[i]);
+  }
+  return profit;
+}
+console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+console.log(maxProfit([7, 6, 4, 3, 1]));
 
 // =============================================================================
 //Q 26Rearrange  Array the Element By Sign
@@ -1551,3 +1563,176 @@ function climbStairs(n) {
 }
 console.log(climbStairs(2));
 console.log(climbStairs(3));
+// =====================================================================================
+// // Q 37 Median of two sorted Array
+// Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+
+// The overall run time complexity should be O(log (m+n)).
+
+// Example 1:
+
+// Input: nums1 = [1,3], nums2 = [2]
+// Output: 2.00000
+// Explanation: merged array = [1,2,3] and median is 2.
+// Example 2:
+
+// Input: nums1 = [1,2], nums2 = [3,4]
+// Output: 2.50000
+// Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
+// Brute Approach
+function findMedinElmOfTwoArr(nums1, nums2) {
+  let arr = nums1.concat(nums2).sort((a, b) => a - b);
+  let n = arr.length;
+  if (n % 2 !== 0) {
+    return arr[Math.floor(n / 2)];
+  } else {
+    return (arr[n / 2] + arr[n / 2 - 1]) / 2;
+  }
+}
+console.log(findMedinElmOfTwoArr([1, 3], [2]));
+console.log(findMedinElmOfTwoArr([1, 2], [3, 4]));
+
+// ====================================================================================
+// 38 maximum subarray sum
+// Given an integer array nums, find the
+// subarray
+//  with the largest sum, and return its sum.
+
+// Example 1:
+
+// Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+// Output: 6
+// Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+// Example 2:
+
+// Input: nums = [1]
+// Output: 1
+// Explanation: The subarray [1] has the largest sum 1.
+// Example 3:
+
+// Input: nums = [5,4,-1,7,8]
+// Output: 23
+// Explanation: The subarray [5,4,-1,7,8] has the largest sum 23.
+
+// //Better Approach
+function maxSubArrSum(nums) {
+  let max = nums[0];
+  let sum = 0;
+  nums.forEach((elm) => {
+    sum += elm;
+    max = Math.max(max, sum);
+    if (sum < 0) sum = 0;
+  });
+  return max;
+}
+console.log(maxSubArrSum([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+console.log(maxSubArrSum([1]));
+console.log(maxSubArrSum([5, 4, -1, 7, 8]));
+// ====================================================================================
+// Q 39 Buy and sell Stock ||
+// You are given an integer array prices where prices[i] is the price of a given stock on the ith day.
+
+// On each day, you may decide to buy and/or sell the stock. You can only hold at most one share of the stock at any time. However, you can buy it then immediately sell it on the same day.
+
+// Find and return the maximum profit you can achieve.
+
+// Example 1:
+
+// Input: prices = [7,1,5,3,6,4]
+// Output: 7
+// Explanation: Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 5-1 = 4.
+// Then buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 6-3 = 3.
+// Total profit is 4 + 3 = 7.
+// Example 2:
+
+// Input: prices = [1,2,3,4,5]
+// Output: 4
+// Explanation: Buy on day 1 (price = 1) and sell on day 5 (price = 5), profit = 5-1 = 4.
+// Total profit is 4.
+// Example 3:
+
+// Input: prices = [7,6,4,3,1]
+// Output: 0
+// Explanation: There is no way to make a positive profit, so we never buy the stock to achieve the maximum profit of 0.
+
+//Brute Approach
+function maxProfit(prices) {
+  let profit = 0;
+  for (let i = 1; i < prices.length; i++) {
+    if (prices[i] > prices[i - 1]) {
+      profit += prices[i] - prices[i - 1];
+    }
+  }
+  return profit;
+}
+console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+console.log(maxProfit([1, 2, 3, 4, 5]));
+console.log(maxProfit([7, 6, 4, 3, 2, 1]));
+// =======================================================================================
+// // Q 40 Remove Duplicate form sorted Array ||
+// Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
+
+// Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+
+// Return k after placing the final result in the first k slots of nums.
+
+// Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
+
+// Custom Judge:
+
+// The judge will test your solution with the following code:
+
+// int[] nums = [...]; // Input array
+// int[] expectedNums = [...]; // The expected answer with correct length
+
+// int k = removeDuplicates(nums); // Calls your implementation
+
+// assert k == expectedNums.length;
+// for (int i = 0; i < k; i++) {
+//     assert nums[i] == expectedNums[i];
+// }
+// If all assertions pass, then your solution will be accepted.
+
+function remoevDupSec(nums) {
+  if (nums.length <= 2) return nums.length;
+  let perv1 = nums[0];
+  let perv2 = nums[1];
+  let pivot = 2;
+  for (let i = 2; i < nums.length; i++) {
+    let curr = nums[i];
+    if (curr != perv1 || curr != perv2) {
+      nums[pivot] = curr;
+      pivot += 1;
+    }
+    perv1 = perv2;
+    perv2 = curr;
+  }
+  return pivot;
+}
+console.log(remoevDupSec([1, 1, 1, 2, 2, 3]));
+console.log(remoevDupSec([0, 0, 1, 1, 1, 1, 2, 3, 3]));
+// ====================================================================================
+// Q 41 Largest Number
+// Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
+
+// Since the result may be very large, so you need to return a string instead of an integer.
+
+// Example 1:
+
+// Input: nums = [10,2]
+// Output: "210"
+// Example 2:
+
+// Input: nums = [3,30,34,5,9]
+// Output: "9534330"
+
+function lasgestNumber(nums) {
+  return nums
+    .join("")
+    .split("")
+    .sort((a, b) => b - a)
+    .join("");
+}
+console.log(lasgestNumber([10, 2]));
+console.log(lasgestNumber([3, 30, 34, 5, 9]));
+// =================================================================================
