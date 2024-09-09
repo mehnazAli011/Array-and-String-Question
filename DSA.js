@@ -1596,7 +1596,7 @@ console.log(findMedinElmOfTwoArr([1, 2], [3, 4]));
 // 38 maximum subarray sum
 // Given an integer array nums, find the
 // subarray
-//  with the largest sum, and return its sum.
+//  with the largest sum, and return its sum
 
 // Example 1:
 
