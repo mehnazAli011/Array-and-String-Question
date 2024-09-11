@@ -1727,12 +1727,371 @@ console.log(remoevDupSec([0, 0, 1, 1, 1, 1, 2, 3, 3]));
 // Output: "9534330"
 
 function lasgestNumber(nums) {
+  if (nums.every((elm) => elm === 0)) return "0";
   return nums
-    .join("")
-    .split("")
-    .sort((a, b) => b - a)
+    .map((elm) => elm.toString())
+    .sort((a, b) => {
+      if (a + b > b + a) return -1;
+      return 1;
+    })
     .join("");
 }
 console.log(lasgestNumber([10, 2]));
 console.log(lasgestNumber([3, 30, 34, 5, 9]));
+console.log(lasgestNumber([0, 0, 0]));
 // =================================================================================
+// Q 42 Happy Number
+// Write an algorithm to determine if a number n is happy.
+
+// A happy number is a number defined by the following process:
+
+// Starting with any positive integer, replace the number by the sum of the squares of its digits.
+// Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.
+// Those numbers for which this process ends in 1 are happy.
+// Return true if n is a happy number, and false if not.
+
+// Example 1:
+
+// Input: n = 19
+// Output: true
+// Explanation:
+// 12 + 92 = 82
+// 82 + 22 = 68
+// 62 + 82 = 100
+// 12 + 02 + 02 = 1
+// Example 2:
+
+// Input: n = 2
+Output: false;
+function isHappyNumber(n) {
+  let set = new Set();
+  while (n !== 1) {
+    let sum = 0;
+    while (n > 0) {
+      sum += (n % 10) * (n % 10);
+
+      n = Math.floor(n / 10);
+      console.log(n);
+    }
+    if (set.has(sum)) {
+      return false;
+    } else {
+      set.add(sum);
+      n = sum;
+    }
+  }
+  return true;
+}
+console.log(isHappyNumber(19));
+console.log(isHappyNumber(2));
+// ========================================================================================
+//43 Add Digits
+// Given an integer num, repeatedly add all its digits until the result has only one digit, and return it.
+
+// Example 1:
+
+// Input: num = 38
+// Output: 2
+// Explanation: The process is
+// 38 --> 3 + 8 --> 11
+// 11 --> 1 + 1 --> 2
+// Since 2 has only one digit, return it.
+// Example 2:
+
+// Input: num = 0
+// Output: 0
+//Brute Approach
+function addDigits(num) {
+  let sum = 0;
+  while (num >= 10) {
+    sum += num % 10;
+    num = Math.floor(num / 10);
+    if (num < 10) {
+      num += sum;
+      sum = 0;
+    }
+  }
+  return num;
+}
+console.log(addDigits(38));
+console.log(addDigits(0));
+
+function addDigits(num) {
+  if (num < 10) return num;
+  if (num % 9 === 0) return 9;
+  return num % 9;
+}
+console.log(addDigits(38));
+console.log(addDigits(0));
+
+// ==================================================================================
+// Q 44 count the digits That Divide a Number
+
+// Given an integer num, return the number of digits in num that divide num.
+
+// An integer val divides nums if nums % val == 0.
+
+// Example 1:
+
+// Input: num = 7
+// Output: 1
+// Explanation: 7 divides itself, hence the answer is 1.
+// Example 2:
+
+// Input: num = 121
+// Output: 2
+// Explanation: 121 is divisible by 1, but not 2. Since 1 occurs twice as a digit, we return 2.
+// Example 3:
+
+// Input: num = 1248
+// Output: 4
+// Explanation: 1248 is divisible by all of its digits, hence the answer is 4.
+
+function countDigits(num) {
+  let original = Math.abs(num);
+  let sum = 0;
+  let temp = original;
+  while (num !== 0) {
+    let digits = num % 10;
+    if (temp % digits === 0 && digits != 0) {
+      sum++;
+    }
+    num = Math.floor(num / 10);
+  }
+  return sum;
+}
+console.log(countDigits(7));
+console.log(countDigits(121));
+console.log(countDigits(1248));
+// =======================================================================================
+
+// 45 uggly Number
+// An ugly number is a positive integer whose prime factors are limited to 2, 3, and 5.
+
+// Given an integer n, return true if n is an ugly number.
+
+// Example 1:
+
+// Input: n = 6
+// Output: true
+// Explanation: 6 = 2 × 3
+// Example 2:
+
+// Input: n = 1
+// Output: true
+// Explanation: 1 has no prime factors, therefore all of its prime factors are limited to 2, 3, and 5.
+// Example 3:
+
+// Input: n = 14
+// Output: false
+// Explanation: 14 is not ugly since it includes the prime factor 7.
+
+//Brute Approach
+function isUggly(n) {
+  if (n === 0) return false;
+  while (n !== 1) {
+    if (n % 2 == 0) {
+      n = n / 2;
+      continue;
+    }
+    if (n % 3 == 0) {
+      n = n / 3;
+      continue;
+    }
+    if (n % 5 == 0) {
+      n = n / 3;
+      continue;
+    }
+    return false;
+  }
+  return true;
+}
+console.log(isUggly(6));
+console.log(isUggly(1));
+console.log(isUggly(14));
+
+//Better Appraoch
+function isUggly(n) {
+  if (n === 0) return false;
+  while (n % 5 === 0) {
+    n = n / 5;
+  }
+  while (n % 2 === 0) {
+    n = n / 2;
+  }
+  while (n % 3 === 0) {
+    n = n / 3;
+  }
+  return n == 1;
+}
+console.log(isUggly(6));
+console.log(isUggly(1));
+console.log(isUggly(14));
+
+// ======================================================================================
+// Q 46 Palindorm number
+// Given an integer x, return true if x is a
+// palindrome
+// , and false otherwise.
+
+// Example 1:
+
+// Input: x = 121
+// Output: true
+// Explanation: 121 reads as 121 from left to right and from right to left.
+// Example 2:
+
+// Input: x = -121
+// Output: false
+// Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.
+// Example 3:
+
+// Input: x = 10
+// Output: false
+// Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
+function isPalindrom(x) {
+  let dup = x;
+  let reverse = 0;
+  while (x > 0) {
+    let lastDigits = x % 10;
+    x = Math.floor(x / 10);
+    reverse = reverse * 10 + lastDigits;
+  }
+  return reverse === dup;
+}
+console.log(isPalindrom(121));
+console.log(isPalindrom(-121));
+console.log(isPalindrom(10));
+// =======================================================================================
+// 47 Search insert position
+// Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+
+// You must write an algorithm with O(log n) runtime complexity.
+
+// Example 1:
+
+// Input: nums = [1,3,5,6], target = 5
+// Output: 2
+// Example 2:
+
+// Input: nums = [1,3,5,6], target = 2
+// Output: 1
+// Example 3:
+
+// Input: nums = [1,3,5,6], target = 7
+// Output: 4
+
+function sreachInsert(nums, target) {
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === target || nums[i] > target) {
+      return i;
+    }
+  }
+  return nums.length;
+}
+console.log(sreachInsert([1, 3, 5, 6], 5));
+console.log(sreachInsert([1, 3, 5, 6], 2));
+console.log(sreachInsert([1, 3, 5, 6], 7));
+console.log(sreachInsert([1, 3, 5, 6], 7));
+console.log(sreachInsert([1, 6], 7));
+
+// Better
+function sreachInsert(nums, target) {
+  let left = 0;
+  let right = nums.length;
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (nums[mid] === target) return mid;
+    else if (nums[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return left;
+}
+console.log(sreachInsert([1, 3, 5, 6], 5));
+console.log(sreachInsert([1, 3, 5, 6], 2));
+console.log(sreachInsert([1, 3, 5, 6], 7));
+console.log(sreachInsert([1, 3, 5, 6], 7));
+console.log(sreachInsert([1], 0));
+// ==============================================================================
+// Q 48 Find the closest number to Zero
+// Given an integer array nums of size n, return the number with the value closest to 0 in nums. If there are multiple answers, return the number with the largest value.
+
+// Example 1:
+
+// Input: nums = [-4,-2,1,4,8]
+// Output: 1
+// Explanation:
+// The distance from -4 to 0 is |-4| = 4.
+// The distance from -2 to 0 is |-2| = 2.
+// The distance from 1 to 0 is |1| = 1.
+// The distance from 4 to 0 is |4| = 4.
+// The distance from 8 to 0 is |8| = 8.
+// Thus, the closest number to 0 in the array is 1.
+// Example 2:
+
+// Input: nums = [2,-1,1]
+// Output: 1
+// Explanation: 1 and -1 are both the closest numbers to 0, so 1 being larger is returned.
+
+function findClosetNumber(nums) {
+  if (nums.length === 0) return null;
+  let closest = nums[0];
+  for (let i = 1; i < nums.length; i++) {
+    if (
+      Math.abs(nums[i]) < Math.abs(closest) ||
+      (Math.abs(nums[i]) === Math.abs(closest) && nums[i] > closest)
+    ) {
+      closest = nums[i];
+    }
+  }
+  return closest;
+}
+console.log(findClosetNumber([-4, -2, 1, 4, 8]));
+console.log(findClosetNumber([2, -1, 1]));
+// =======================================================================================
+// Q 49 contains duplicate ||
+
+// Given an integer array nums and an integer k, return true if there are two distinct indices i and j in the array such that nums[i] == nums[j] and abs(i - j) <= k.
+
+// Example 1:
+
+// Input: nums = [1,2,3,1], k = 3
+// Output: true
+// Example 2:
+
+// Input: nums = [1,0,1,1], k = 1
+// Output: true
+// Example 3:
+
+// Input: nums = [1,2,3,1,2,3], k = 2
+// Output: false
+
+//Brute Approach
+function isCountainDup(nums, k) {
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[i] === nums[j] && Math.abs(i - j) <= k) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+console.log(isCountainDup([1, 2, 3, 1], 3));
+console.log(isCountainDup([1, 0, 1, 1], 1));
+console.log(isCountainDup([1, 2, 3, 1, 2, 3], 2));
+
+//Better Approach
+function isCountainDup(nums, k) {
+  const map = new Map();
+  for (let index in nums) {
+    if (!map.has(nums[index])) map.set(nums[index], index);
+    else if (Math.abs(map.get(nums[index]) - index) <= k) return true;
+    map.set(nums[index], index);
+  }
+  return false;
+}
+console.log(isCountainDup([1, 2, 3, 1], 3));
+console.log(isCountainDup([1, 0, 1, 1], 1));
+console.log(isCountainDup([1, 2, 3, 1, 2, 3], 2));
+// ======================================================================================
