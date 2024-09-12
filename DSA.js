@@ -2095,3 +2095,212 @@ console.log(isCountainDup([1, 2, 3, 1], 3));
 console.log(isCountainDup([1, 0, 1, 1], 1));
 console.log(isCountainDup([1, 2, 3, 1, 2, 3], 2));
 // ======================================================================================
+// Q 50 intersection of Two  Array
+
+// Given two integer arrays nums1 and nums2, return an array of their
+// intersection
+// . Each element in the result must be unique and you may return the result in any order.
+
+// Example 1:
+
+// Input: nums1 = [1,2,2,1], nums2 = [2,2]
+// Output: [2]
+// Example 2:
+
+// Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+// Output: [9,4]
+// Explanation: [4,9] is also accepted.
+//Brute Approach
+function intersection(nums1, nums2) {
+  let set1 = new Set(nums1);
+  let set2 = new Set(nums2);
+  let intersection = [...set1].filter((elm) => set2.has(elm));
+  return intersection;
+}
+console.log(intersection([1, 2, 2, 1], [2, 2]));
+console.log(intersection([4, 9, 5], [9, 4, 9, 8, 4]));
+
+// Better Approach
+function intersection(nums1, nums2) {
+  return Array.from(new Set(nums1).intersection(new Set(nums2)));
+}
+console.log(intersection([1, 2, 2, 1], [2, 2]));
+console.log(intersection([4, 9, 5], [9, 4, 9, 8, 4]));
+
+//Optimal
+function intersection(nums1, nums2) {
+  let res = [];
+  let uniqueArr1 = [...new Set(nums1)].sort((a, b) => a - b);
+  let uniqueArr2 = [...new Set(nums2)].sort((a, b) => a - b);
+
+  for (let i = 0; i < uniqueArr1.length; i++) {
+    let temp = uniqueArr1[i];
+    for (let i = 0; i < uniqueArr2.length; i++) {
+      if (temp === uniqueArr2[i]) {
+        res.push(temp);
+      }
+    }
+  }
+  return res;
+}
+console.log(intersection([1, 2, 2, 1], [2, 2]));
+console.log(intersection([4, 9, 5], [9, 4, 9, 8, 4]));
+// =====================================================================================
+// Q51 Intersection of two Array ||
+// Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must appear as many times as it shows in both arrays and you may return the result in any order.
+
+// Example 1:
+
+// Input: nums1 = [1,2,2,1], nums2 = [2,2]
+// Output: [2,2]
+// Example 2:
+
+// Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+// Output: [4,9]
+// Explanation: [9,4] is also accepted.
+function interect(nums1, nums2) {
+  let countMap = new Map();
+  //count each elm occurrnce in nums1
+  for (let num of nums1) {
+    countMap.set(num, (countMap.get(num) || 0) + 1);
+  }
+  let res = [];
+  for (let num of nums2) {
+    if (countMap.has(num) && countMap.get(num) > 0) {
+      res.push(num);
+      countMap.set(num, countMap.get(num) - 1);
+    }
+  }
+  return res;
+}
+console.log(interect([1, 2, 2, 1], [2, 2]));
+console.log(interect([4, 9, 5], [9, 4, 9, 8, 4]));
+// ======================================================================================
+// Q 52  Intercestion of multiple Arrays
+// Given a 2D integer array nums where nums[i] is a non-empty array of distinct positive integers, return the list of integers that are present in each array of nums sorted in ascending order.
+
+// Example 1:
+
+// Input: nums = [[3,1,2,4,5],[1,2,3,4],[3,4,5,6]]
+// Output: [3,4]
+// Explanation:
+// The only integers present in each of nums[0] = [3,1,2,4,5], nums[1] = [1,2,3,4], and nums[2] = [3,4,5,6] are 3 and 4, so we return [3,4].
+// Example 2:
+
+// Input: nums = [[1,2,3],[4,5,6]]
+// Output: []
+// Explanation:
+// There does not exist any integer present both in nums[0] and nums[1], so we return an empty list [].
+
+function intersectionOfMutipleArr(nums) {
+  let flatArr = nums.flat(Infinity);
+  const map = new Map();
+  for (let nums of flatArr) {
+    map.set(nums, (map.get(nums) || 0) + 1);
+  }
+  let res = [];
+  for (let [num, count] of map.entries()) {
+    if (count === nums.length) {
+      res.push(num);
+    }
+  }
+  return res.sort((a, b) => a - b);
+}
+console.log(
+  intersectionOfMutipleArr([
+    [3, 1, 2, 4, 5],
+    [1, 2, 3, 4],
+    [3, 4, 5, 6],
+  ])
+);
+console.log(
+  intersectionOfMutipleArr([
+    [1, 2, 3],
+    [4, 5, 6],
+  ])
+);
+
+// =======================================================================================
+// Q 53 find the distance of two Arrays
+// Given two 0-indexed integer arrays nums1 and nums2, return a list answer of size 2 where:
+
+// answer[0] is a list of all distinct integers in nums1 which are not present in nums2.
+// answer[1] is a list of all distinct integers in nums2 which are not present in nums1.
+// Note that the integers in the lists may be returned in any order.
+
+// Example 1:
+
+// Input: nums1 = [1,2,3], nums2 = [2,4,6]
+// Output: [[1,3],[4,6]]
+// Explanation:
+// For nums1, nums1[1] = 2 is present at index 0 of nums2, whereas nums1[0] = 1 and nums1[2] = 3 are not present in nums2. Therefore, answer[0] = [1,3].
+// For nums2, nums2[0] = 2 is present at index 1 of nums1, whereas nums2[1] = 4 and nums2[2] = 6 are not present in nums2. Therefore, answer[1] = [4,6].
+// Example 2:
+
+// Input: nums1 = [1,2,3,3], nums2 = [1,1,2,2]
+// Output: [[3],[]]
+// Explanation:
+// For nums1, nums1[2] and nums1[3] are not present in nums2. Since nums1[2] == nums1[3], their value is only included once and answer[0] = [3].
+// Every integer in nums2 is present in nums1. Therefore, answer[1] = [].
+
+//Brute Approach
+function diiference(nums1, nums2) {
+  let ans = [];
+  let x = new Set();
+  let y = new Set();
+  for (let i = 0; i < nums1.length; i++) {
+    if (!nums2.includes(nums1[i])) {
+      x.add(nums1[i]);
+    }
+  }
+  ans.push(Array.from(x));
+
+  for (let i = 0; i < nums2.length; i++) {
+    if (!nums1.includes(nums2[i])) {
+      y.add(nums2[i]);
+    }
+  }
+  ans.push(Array.from(y));
+  return ans;
+}
+console.log(diiference([1, 2, 3], [2, 4, 6]));
+console.log(diiference([1, 2, 3, 3], [1, 1, 2, 2]));
+
+//Better Approach
+function diiference(nums1, nums2) {
+  let ans = [];
+  let x = Array.from(new Set(nums1.filter((elm) => !nums2.includes(elm))));
+  let y = Array.from(new Set(nums2.filter((elm) => !nums1.includes(elm))));
+  ans[0] = x;
+  ans[1] = y;
+  return ans;
+}
+console.log(diiference([1, 2, 3], [2, 4, 6]));
+console.log(diiference([1, 2, 3, 3], [1, 1, 2, 2]));
+// ========================================================================================
+// Q 54 minimum common value
+// Given two integer arrays nums1 and nums2, sorted in non-decreasing order, return the minimum integer common to both arrays. If there is no common integer amongst nums1 and nums2, return -1.
+
+// Note that an integer is said to be common to nums1 and nums2 if both arrays have at least one occurrence of that integer.
+
+// Example 1:
+
+// Input: nums1 = [1,2,3], nums2 = [2,4]
+// Output: 2
+// Explanation: The smallest element common to both arrays is 2, so we return 2.
+// Example 2:
+
+// Input: nums1 = [1,2,3,6], nums2 = [2,3,4,5]
+// Output: 2
+// Explanation: There are two common elements in the array 2 and 3 out of which 2 is the smallest, so 2 is returned.
+
+
+//Better Approach
+function minimumCommonValue(nums1, nums2) {
+  let set1 = new Set(nums1);
+  let commonElm = nums2.filter((elm) => set1.has(elm));
+  return commonElm.length > 0 ? Math.min(...commonElm) : -1;
+}
+console.log(minimumCommonValue([1, 2, 3], [2, 4]));
+console.log(minimumCommonValue([1, 2, 3, 6], [2, 3, 4, 5]));
+// =====================================================================================
