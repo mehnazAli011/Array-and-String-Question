@@ -2294,7 +2294,6 @@ console.log(diiference([1, 2, 3, 3], [1, 1, 2, 2]));
 // Output: 2
 // Explanation: There are two common elements in the array 2 and 3 out of which 2 is the smallest, so 2 is returned.
 
-
 //Better Approach
 function minimumCommonValue(nums1, nums2) {
   let set1 = new Set(nums1);
@@ -2304,3 +2303,256 @@ function minimumCommonValue(nums1, nums2) {
 console.log(minimumCommonValue([1, 2, 3], [2, 4]));
 console.log(minimumCommonValue([1, 2, 3, 6], [2, 3, 4, 5]));
 // =====================================================================================
+
+// 56 Thrid maximum number
+
+// Given an integer array nums, return the third distinct maximum number in this array. If the third maximum does not exist, return the maximum number.
+
+// Example 1:
+
+// Input: nums = [3,2,1]
+// Output: 1
+// Explanation:
+// The first distinct maximum is 3.
+// The second distinct maximum is 2.
+// The third distinct maximum is 1.
+// Example 2:
+
+// Input: nums = [1,2]
+// Output: 2
+// Explanation:
+// The first distinct maximum is 2.
+// The second distinct maximum is 1.
+// The third distinct maximum does not exist, so the maximum (2) is returned instead.
+// Example 3:
+
+// Input: nums = [2,2,3,1]
+// Output: 1
+// Explanation:
+// The first distinct maximum is 3.
+// The second distinct maximum is 2 (both 2's are counted together since they have the same value).
+// The third distinct maximum is 1.
+
+//Brute Approach Tc-o(n3)
+function thirdMaxNum(nums) {
+  //sort the in decending order
+  for (let i = 0; i < nums.length; i++) {
+    let temp = nums[0];
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[i] < nums[j]) {
+        temp = nums[j];
+        nums[j] = nums[i];
+        nums[i] = temp;
+      }
+    }
+  }
+  //remove duplicate
+  let firstElm = nums[0];
+  let res = [firstElm];
+  for (let i = 1; i < nums.length; i++) {
+    if (firstElm !== nums[i]) {
+      firstElm = nums[i];
+      res.push(nums[i]);
+    }
+  }
+  index = res.indexOf(Math.max(...res)) + 2;
+  return res.length > 2 ? res[index] : res[0];
+}
+console.log(thirdMaxNum([3, 2, 1]));
+console.log(thirdMaxNum([1, 2]));
+console.log(thirdMaxNum([2, 2, 3, 1]));
+console.log(thirdMaxNum([2, 2, 3, 1]));
+console.log(thirdMaxNum([5, 5, 5, 5, 1, 2, 3])); // 2 (distinct numbers: 5, 3, 2, 1)
+
+//Better Approach
+function thirdMaxNum(nums) {
+  let res = [...new Set(nums.sort((a, b) => b - a))];
+  return res.length > 2 ? res[2] : res[0];
+}
+console.log(thirdMaxNum([3, 2, 1]));
+console.log(thirdMaxNum([1, 2]));
+console.log(thirdMaxNum([2, 2, 3, 1]));
+console.log(thirdMaxNum([2, 2, 3, 1])); // 1
+console.log(thirdMaxNum([1, 1, 1])); // 1 (only one distinct number)
+console.log(thirdMaxNum([-1, -2, -3, -4])); // -3 (distinct numbers: -1, -2, -3, -4)
+// =======================================================================================
+// Q 57 Neither minimum nor maximum
+// Given an integer array nums containing distinct positive integers, find and return any number from the array that is neither the minimum nor the maximum value in the array, or -1 if there is no such number.
+
+// Return the selected integer.
+
+// Example 1:
+
+// Input: nums = [3,2,1,4]
+// Output: 2
+// Explanation: In this example, the minimum value is 1 and the maximum value is 4. Therefore, either 2 or 3 can be valid answers.
+// Example 2:
+
+// Input: nums = [1,2]
+// Output: -1
+// Explanation: Since there is no number in nums that is neither the maximum nor the minimum, we cannot select a number that satisfies the given condition. Therefore, there is no answer.
+// Example 3:
+
+// Input: nums = [2,1,3]
+// Output: 2
+// Explanation: Since 2 is neither the maximum nor the minimum value in nums, it is the only valid answer.
+
+//Brute Approach
+function findNonMinOrMax(nums) {
+  nums.sort((a, b) => a - b);
+  if (nums.length <= 2) return -1;
+  let min = Math.min(...nums);
+  let max = Math.max(...nums);
+  for (let num of nums) {
+    if (num !== min && num !== max) {
+      return num;
+    }
+  }
+  return -1;
+}
+console.log(findNonMinOrMax([3, 2, 1, 4]));
+console.log(findNonMinOrMax([1, 2]));
+console.log(findNonMinOrMax([2, 1, 3]));
+console.log(findNonMinOrMax([2]));
+
+//Better Appraoch
+function findNonMinOrMax(nums) {
+  nums.sort((a, b) => a - b);
+  let arr = nums.slice(1, nums.length - 1);
+  return arr.length === 0 ? -1 : Math.min(...arr);
+}
+console.log(findNonMinOrMax([3, 2, 1, 4]));
+console.log(findNonMinOrMax([1, 2]));
+console.log(findNonMinOrMax([2, 1, 3]));
+console.log(findNonMinOrMax([2]));
+
+function findNonMinOrMax(nums) {
+  nums.sort((a, b) => a - b);
+  return nums.length <= 2
+    ? -1
+    : nums.find(
+        (elm) => Math.min(...nums) !== elm && Math.max(...nums) !== elm
+      );
+}
+console.log(findNonMinOrMax([3, 2, 1, 4]));
+console.log(findNonMinOrMax([1, 2]));
+console.log(findNonMinOrMax([2, 1, 3]));
+console.log(findNonMinOrMax([2]));
+// =====================================================================================
+// Q 58 Valid parenthes
+// Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+// An input string is valid if:
+
+// Open brackets must be closed by the same type of brackets.
+// Open brackets must be closed in the correct order.
+// Every close bracket has a corresponding open bracket of the same type.
+
+// Example 1:
+
+// Input: s = "()"
+
+// Output: true
+
+// Example 2:
+
+// Input: s = "()[]{}"
+
+// Output: true
+
+// Example 3:
+
+// Input: s = "(]"
+
+// Output: false
+
+// Example 4:
+
+// Input: s = "([])"
+
+// Output: true
+
+function isValidParenthes(s) {
+  let stack = [];
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(") {
+      stack.push(")");
+    } else if (s[i] === "{") {
+      stack.push("}");
+    } else if (s[i] === "[") {
+      stack.push("]");
+    } else if (s[i] !== stack.pop()) {
+      return false;
+    }
+  }
+  return stack.length === 0;
+}
+console.log(isValidParenthes("()"));
+console.log(isValidParenthes("()[]{}"));
+console.log(isValidParenthes("(]"));
+console.log(isValidParenthes("([])"));
+
+// =======================================================================================
+// Q 59 power of two
+// Given an integer n, return true if it is a power of two. Otherwise, return false.
+
+// An integer n is a power of two, if there exists an integer x such that n == 2x.
+
+// Example 1:
+
+// Input: n = 1
+// Output: true
+// Explanation: 20 = 1
+// Example 2:
+
+// Input: n = 16
+// Output: true
+// Explanation: 24 = 16
+// Example 3:
+
+// Input: n = 3
+// Output: false
+
+function isPowerOfTwo(n) {
+  let i = 1;
+  while (i < n) {
+    i *= 2;
+  }
+  return i === n;
+}
+console.log(isPowerOfTwo(1));
+console.log(isPowerOfTwo(16));
+console.log(isPowerOfTwo(3));
+// ========================================================================================
+// Q 60 Power of three
+// Given an integer n, return true if it is a power of three. Otherwise, return false.
+
+// An integer n is a power of three, if there exists an integer x such that n == 3x.
+
+// Example 1:
+
+// Input: n = 27
+// Output: true
+// Explanation: 27 = 33
+// Example 2:
+
+// Input: n = 0
+// Output: false
+// Explanation: There is no x where 3x = 0.
+// Example 3:
+
+// Input: n = -1
+// Output: false
+// Explanation: There is no x where 3x = (-1).
+
+function powerOfThree(n) {
+  let i = 1;
+  while (i < n) {
+    i *= 3;
+  }
+  return i === n;
+}
+console.log(powerOfThree(27));
+console.log(powerOfThree(0));
+console.log(powerOfThree(-1));
+// ====================================================================================
