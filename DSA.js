@@ -2556,3 +2556,145 @@ console.log(powerOfThree(27));
 console.log(powerOfThree(0));
 console.log(powerOfThree(-1));
 // ====================================================================================
+// // Q 61 First unique Char
+// Given a string s, find the first non-repeating character in it and return its index. If it does not exist, return -1.
+
+// Example 1:
+
+// Input: s = "leetcode"
+
+// Output: 0
+
+// Explanation:
+
+// The character 'l' at index 0 is the first character that does not occur at any other index.
+
+// Example 2:
+
+// Input: s = "loveleetcode"
+
+// Output: 2
+
+// Example 3:
+
+// Input: s = "aabb"
+
+// Output: -1
+
+//Brute Approach
+function firstUniqueChar(s) {
+  for (let i = 0; i < s.length; i++) {
+    let count = 0;
+    for (let j = 0; j < s.length; j++) {
+      if (s[i] === s[j]) {
+        count++;
+      }
+    }
+    if (count === 1) {
+      return i;
+    }
+  }
+  return -1;
+}
+console.log(firstUniqueChar("leetcode"));
+console.log(firstUniqueChar("loveleetcode"));
+console.log(firstUniqueChar("aabb"));
+
+//Optimal Approach
+function firstUniqueChar(s) {
+  let countOccurr = {};
+  for (let char of s) {
+    if (countOccurr[char]) {
+      countOccurr[char]++;
+    } else {
+      countOccurr[char] = 1;
+    }
+  }
+  for (let i = 0; i < s.length; i++) {
+    let char = s[i];
+    if (countOccurr[char] === 1) {
+      return i;
+    }
+  }
+  return -1;
+}
+console.log(firstUniqueChar("leetcode"));
+console.log(firstUniqueChar("loveleetcode"));
+console.log(firstUniqueChar("aabb"));
+// ======================================================================================
+// Q 62 First letter appear twice
+// Given a string s consisting of lowercase English letters, return the first letter to appear twice.
+
+// Note:
+
+// A letter a appears twice before another letter b if the second occurrence of a is before the second occurrence of b.
+// s will contain at least one letter that appears twice.
+
+// Example 1:
+
+// Input: s = "abccbaacz"
+// Output: "c"
+// Explanation:
+// The letter 'a' appears on the indexes 0, 5 and 6.
+// The letter 'b' appears on the indexes 1 and 4.
+// The letter 'c' appears on the indexes 2, 3 and 7.
+// The letter 'z' appears on the index 8.
+// The letter 'c' is the first letter to appear twice, because out of all the letters the index of its second occurrence is the smallest.
+// Example 2:
+
+// Input: s = "abcdd"
+// Output: "d"
+// Explanation:wice is 'd' so we return
+// The only letter that appears t 'd'.
+function repeatedChar(s) {
+  let set = new Set();
+
+  for (let char of s) {
+    if (set.has(char)) {
+      return char;
+    }
+    set.add(char);
+  }
+}
+
+console.log(repeatedChar("abccbaacz"));
+console.log(repeatedChar("abcdd"));
+// ========================================================================================
+// Q 63 valid prefect squares
+// Given a positive integer num, return true if num is a perfect square or false otherwise.
+
+// A perfect square is an integer that is the square of an integer. In other words, it is the product of some integer with itself.
+
+// You must not use any built-in library function, such as sqrt.
+
+// Example 1:
+
+// Input: num = 16
+// Output: true
+// Explanation: We return true because 4 * 4 = 16 and 4 is an integer.
+// Example 2:
+
+// Input: num = 14
+// Output: false
+// Explanation: We return false because 3.742 * 3.742 = 14 and 3.742 is not an integer.
+
+//Brute
+function isPrefectSqures(num) {
+  for (let i = 1; i <= num; i++) {
+    if ((i * i === num)) {
+      return true;
+    } else if ((i * i > num)) {
+      return false;
+    }
+  }
+}
+console.log(isPrefectSqures(16));
+console.log(isPrefectSqures(14));
+
+//Better
+function isPrefectSqures(num) {
+ return Number.isInteger(Math.sqrt(num))
+}
+console.log(isPrefectSqures(16));
+console.log(isPrefectSqures(14));
+// ======================================================================================
