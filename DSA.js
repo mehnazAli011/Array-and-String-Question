@@ -2909,3 +2909,259 @@ console.log(countElements([-3, 3, 3, 90]));
 console.log(countElements([-71, -71, 93, -71, 40]));
 console.log(countElements([-71, -71, 93, -71]));
 // ====================================================================================
+// 69 Maximum count of positive and negaitve.
+// Given an array nums sorted in non-decreasing order, return the maximum between the number of positive integers and the number of negative integers.
+
+// In other words, if the number of positive integers in nums is pos and the number of negative integers is neg, then return the maximum of pos and neg.
+// Note that 0 is neither positive nor negative.
+
+// Example 1:
+
+// Input: nums = [-2,-1,-1,1,2,3]
+// Output: 3
+// Explanation: There are 3 positive integers and 3 negative integers. The maximum count among them is 3.
+// Example 2:
+
+// Input: nums = [-3,-2,-1,0,0,1,2]
+// Output: 3
+// Explanation: There are 2 positive integers and 3 negative integers. The maximum count among them is 3.
+// Example 3:
+
+// Input: nums = [5,20,66,1314]
+// Output: 4
+// Explanation: There are 4 positive integers and 0 negative integers. The maximum count among them is 4.
+
+//Brute Appraoch
+function maximunCount(nums) {
+  let pos = 0;
+  let neg = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] > 0) {
+      pos++;
+    } else if (nums[i] < 0) {
+      neg++;
+    }
+  }
+  if (pos === neg) {
+    return neg;
+  } else if (pos < neg) {
+    return neg;
+  }
+  return pos;
+}
+console.log(maximunCount([-2, -1, -1, 1, 2, 3]));
+console.log(maximunCount([-3, -2, -1, 0, 0, 1, 2]));
+console.log(maximunCount([5, 20, 66, 1314]));
+
+//Better Appraoch
+function maximunCount(nums) {
+  let x = nums.filter((elm) => elm < 0 && elm !== 0);
+  let y = nums.filter((elm) => elm !== 0 && elm > 0);
+  return Math.max(...[x.length, y.length]);
+}
+console.log(maximunCount([-2, -1, -1, 1, 2, 3]));
+console.log(maximunCount([-3, -2, -1, 0, 0, 1, 2]));
+console.log(maximunCount([5, 20, 66, 1314]));
+
+// ========================================================================================
+// Q 70 Count negtive number in a sorted Matrix
+// Given a m x n matrix grid which is sorted in non-increasing order both row-wise and column-wise, return the number of negative numbers in grid.
+
+// Example 1:
+
+// Input: grid = [[4,3,2,-1],[3,2,1,-1],[1,1,-1,-2],[-1,-1,-2,-3]]
+// Output: 8
+// Explanation: There are 8 negatives number in the matrix.
+// Example 2:
+
+// Input: grid = [[3,2],[1,0]]
+// Output: 0
+
+function countNeg(grid) {
+  let count = 0;
+  let m = grid.length;
+  let n = grid[0].length;
+  for (let i = n - 1; i >= 0; i--) {
+    for (let j = m - 1; j >= 0; j--) {
+      if (grid[j][i] >= 0) break;
+      count++;
+    }
+  }
+  return count;
+}
+console.log(
+  countNeg([
+    [4, 3, 2, -1],
+    [3, 2, 1, -1],
+    [1, 1, -1, -2],
+    [-1, -1, -2, -3],
+  ])
+);
+console.log(
+  countNeg([
+    [3, 2],
+    [1, 0],
+  ])
+);
+
+// Better Approach
+
+function countNeg(grid) {
+  let count = grid.reduce((acc, curr) => {
+    return (
+      acc +
+      curr.reduce((innerAcc, innerCurr) => {
+        return innerCurr < 0 ? innerAcc + 1 : innerAcc;
+      }, 0)
+    );
+  }, 0);
+  return count;
+}
+console.log(
+  countNeg([
+    [4, 3, 2, -1],
+    [3, 2, 1, -1],
+    [1, 1, -1, -2],
+    [-1, -1, -2, -3],
+  ])
+);
+console.log(
+  countNeg([
+    [3, 2],
+    [1, 0],
+  ])
+);
+// =========================================================================================
+// Reverse Integer
+// Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.
+
+// Assume the environment does not allow you to store 64-bit integers (signed or unsigned).
+
+// Example 1:
+
+// Input: x = 123
+// Output: 321
+// Example 2:
+
+// Input: x = -123
+// Output: -321
+// Example 3:
+
+// Input: x = 120
+// Output: 21
+function reverseInteger(x) {
+  const INT_MIN = 2 ** 31 * -1;
+  const INT_MAX = 2 ** 31 - 1;
+  let reverse = 0;
+  let sign = Math.sign(x);
+  x = Math.abs(x);
+  while (x > 0) {
+    reverse = reverse * 10 + (x % 10);
+
+    x = Math.floor(x / 10);
+  }
+  if (reverse < INT_MIN || reverse > INT_MAX) {
+    return 0;
+  }
+
+  return reverse * sign;
+}
+console.log(reverseInteger(123));
+console.log(reverseInteger(-123));
+console.log(reverseInteger(120));
+// ====================================================================================
+// A Numer After  a double Reverse
+// Reversing an integer means to reverse all its digits.
+
+// For example, reversing 2021 gives 1202. Reversing 12300 gives 321 as the leading zeros are not retained.
+// Given an integer num, reverse num to get reversed1, then reverse reversed1 to get reversed2. Return true if reversed2 equals num. Otherwise return false.
+
+// Example 1:
+
+// Input: num = 526
+// Output: true
+// Explanation: Reverse num to get 625, then reverse 625 to get 526, which equals num.
+// Example 2:
+
+// Input: num = 1800
+// Output: false
+// Explanation: Reverse num to get 81, then reverse 81 to get 18, which does not equal num.
+// Example 3:
+
+// function reverseNumber(x) {
+//   let reverse = 0;
+//   while (x > 0) {
+//     reverse = reverse * 10 + (x % 10);
+//     x = Math.floor(x / 10);
+//   }
+//   return reverse;
+// }
+// function isSamAfterTheDoubleReverse(num) {
+//   let reversed1 = reverseNumber(num);
+//   let reversed2 = reverseNumber(reversed1);
+//   return reversed2 === num;
+// }
+// console.log(isSamAfterTheDoubleReverse(526));
+// console.log(isSamAfterTheDoubleReverse(1800));
+// console.log(isSamAfterTheDoubleReverse(0));
+
+// ====================================================================================
+// Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+// Symbol       Value
+// I             1
+// V             5
+// X             10
+// L             50
+// C             100
+// D             500
+// M             1000
+// For example, 2 is written as II in Roman numeral, just two ones added together. 12 is written as XII, which is simply X + II. The number 27 is written as XXVII, which is XX + V + II.
+
+// Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+// I can be placed before V (5) and X (10) to make 4 and 9.
+// X can be placed before L (50) and C (100) to make 40 and 90.
+// C can be placed before D (500) and M (1000) to make 400 and 900.
+// Given a roman numeral, convert it to an integer.
+
+// Example 1:
+
+// Input: s = "III"
+// Output: 3
+// Explanation: III = 3.
+// Example 2:
+
+// Input: s = "LVIII"
+// Output: 58
+// Explanation: L = 50, V= 5, III = 3.
+// Example 3:
+
+// Input: s = "MCMXCIV"
+// Output: 1994
+// Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+
+// Constraints:
+function romamToInt(s) {
+  let roman = {
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000,
+  };
+  let total = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (roman[s[i]] < roman[s[i + 1]]) {
+      total = total - roman[s[i]];
+    } else {
+      total = total + roman[s[i]];
+    }
+  }
+  return total;
+}
+console.log(romamToInt("III"));
+console.log(romamToInt("LVIII"));
+console.log(romamToInt("MCMXCIV"));
