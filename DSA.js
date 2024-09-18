@@ -3032,7 +3032,7 @@ console.log(
   ])
 );
 // =========================================================================================
-// Reverse Integer
+// 71 Reverse Integer
 // Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.
 
 // Assume the environment does not allow you to store 64-bit integers (signed or unsigned).
@@ -3070,7 +3070,7 @@ console.log(reverseInteger(123));
 console.log(reverseInteger(-123));
 console.log(reverseInteger(120));
 // ====================================================================================
-// A Numer After  a double Reverse
+// 72 A Numer After  a double Reverse
 // Reversing an integer means to reverse all its digits.
 
 // For example, reversing 2021 gives 1202. Reversing 12300 gives 321 as the leading zeros are not retained.
@@ -3106,7 +3106,7 @@ console.log(reverseInteger(120));
 // console.log(isSamAfterTheDoubleReverse(0));
 
 // ====================================================================================
-// Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+// 73Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
 
 // Symbol       Value
 // I             1
@@ -3165,3 +3165,303 @@ function romamToInt(s) {
 console.log(romamToInt("III"));
 console.log(romamToInt("LVIII"));
 console.log(romamToInt("MCMXCIV"));
+// =======================================================================================
+// Q 74 First missing postive
+// Given an unsorted integer array nums. Return the smallest positive integer that is not present in nums.
+
+// You must implement an algorithm that runs in O(n) time and uses O(1) auxiliary space.
+
+// Example 1:
+
+// Input: nums = [1,2,0]
+// Output: 3
+// Explanation: The numbers in the range [1,2] are all in the array.
+// Example 2:
+
+// Input: nums = [3,4,-1,1]
+// Output: 2
+// Explanation: 1 is in the array but 2 is missing.
+// Example 3:
+
+// Input: nums = [7,8,9,11,12]
+// Output: 1
+// Explanation: The smallest positive integer 1 is missing.
+//Brute Approach
+function firstMissingPosElm(nums) {
+  let num = [...new Set(nums)].filter((elm) => elm > 0).sort((a, b) => a - b);
+
+  let j = 1;
+  for (let i = 0; i < num.length; i++) {
+    if (j === num[i]) {
+      j++;
+    } else {
+      return j;
+    }
+  }
+  return j;
+}
+console.log(firstMissingPosElm([1, 2, 0]));
+console.log(firstMissingPosElm([3, 4, -1, 1]));
+console.log(firstMissingPosElm([7, 8, 9, 11, 12]));
+// Tc-o(n log n)
+
+//Optimal Approach
+function firstMissingPosElm(nums) {
+  let obj = {};
+  for (let i = 0; i < nums.length; i++) {
+    obj[nums[i]] = 1;
+  }
+  for (let i = 1; i <= nums.length; i++) {
+    if (!obj[i]) {
+      return i;
+    }
+  }
+  return nums.length + 1;
+}
+console.log(firstMissingPosElm([1, 2, 0]));
+console.log(firstMissingPosElm([3, 4, -1, 1]));
+console.log(firstMissingPosElm([7, 8, 9, 11, 12]));
+// TC o(n)
+// ================================================================================
+// Q 75 Find the duplicate Number
+// Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.
+
+// There is only one repeated number in nums, return this repeated number.
+
+// You must solve the problem without modifying the array nums and uses only constant extra space.
+
+// Example 1:
+
+// Input: nums = [1,3,4,2,2]
+// Output: 2
+// Example 2:
+
+// Input: nums = [3,1,3,4,2]
+// Output: 3
+// Example 3:
+
+// Input: nums = [3,3,3,3,3]
+// Output: 3
+
+//Brute Approach
+function findDuplicateElm(nums) {
+  let obj = {};
+  for (let elm of nums) {
+    if (!obj[elm]) {
+      obj[elm] = 1;
+    } else {
+      return elm;
+    }
+  }
+}
+console.log(findDuplicateElm([1, 3, 4, 2, 2]));
+console.log(findDuplicateElm([3, 1, 3, 4, 2]));
+console.log(findDuplicateElm([3, 3, 3, 3, 3]));
+
+function findDuplicateElm(nums) {
+  return Number(
+    [...new Set(nums.filter((elm, i) => i !== nums.indexOf(elm)))].join("")
+  );
+  // i    firstIndex
+  // 0      0
+  // 1      1
+  // 2      2
+  // 3      3
+  // 4      3
+}
+console.log(findDuplicateElm([1, 3, 4, 2, 2]));
+console.log(findDuplicateElm([3, 1, 3, 4, 2]));
+console.log(findDuplicateElm([3, 3, 3, 3, 3]));
+// =======================================================================================
+// Q 73 set Mismatch
+// You have a set of integers s, which originally contains all the numbers from 1 to n. Unfortunately, due to some error, one of the numbers in s got duplicated to another number in the set, which results in repetition of one number and loss of another number.
+
+// You are given an integer array nums representing the data status of this set after the error.
+
+// Find the number that occurs twice and the number that is missing and return them in the form of an array.
+
+// Example 1:
+
+// Input: nums = [1,2,2,4]
+// Output: [2,3]
+// Example 2:
+
+// Input: nums = [1,1]
+// Output: [1,2]
+
+//Better Appraoch
+function ErrorNums(nums) {
+  let result = [];
+  n = nums.length;
+  nums.sort((a, b) => a - b);
+  for (let i = 0; i < nums.length - 1; i++) {
+    if (nums[i] === nums[i + 1]) {
+      x = nums[i];
+    }
+  }
+  for (let i = 0; i <= n; i++) {
+    if (!nums.includes(i)) {
+      y = i;
+    }
+  }
+  result[0] = x;
+  result[1] = y;
+  return result;
+}
+console.log(ErrorNums([1, 2, 2, 4]));
+console.log(ErrorNums([1, 1]));
+
+function ErrorNums(nums) {
+  let output = [];
+  //get duplicate elm
+  for (let num of nums) {
+    num = Math.abs(num);
+    if (nums[num - 1] < 0) {
+      output.push(num);
+    } else {
+      nums[num - 1] *= -1;
+    }
+  }
+  //missing elm
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] > 0) {
+      output.push(i + 1);
+      return output;
+    }
+  }
+}
+console.log(ErrorNums([1, 2, 2, 4]));
+console.log(ErrorNums([1, 1]));
+// =====================================================================================
+// Q 74 Find the XOR of numbers which appear Twice
+// You are given an array nums, where each number in the array appears either once or twice.
+
+// Return the bitwise XOR of all the numbers that appear twice in the array, or 0 if no number appears twice.
+
+// Example 1:
+
+// Input: nums = [1,2,1,3]
+
+// Output: 1
+
+// Explanation:
+
+// The only number that appears twice in nums is 1.
+
+// Example 2:
+
+// Input: nums = [1,2,3]
+
+// Output: 0
+
+// Explanation:
+
+// No number appears twice in nums.
+
+// Example 3:
+
+// Input: nums = [1,2,2,1]
+
+// Output: 3
+
+// Explanation:
+
+// Numbers 1 and 2 appeared twice. 1 XOR 2 == 3.
+
+function duplicateNumbersXOR(nums) {
+  let XOR = 0;
+  let frequncyMap = new Map();
+  // console.log(frequncyMap);
+
+  for (let num of nums) {
+    frequncyMap[num] = (frequncyMap[num] || 0) + 1;
+  }
+  for (let num in frequncyMap) {
+    if (frequncyMap[num] === 2) {
+      XOR ^= Number(num);
+    }
+  }
+
+  return XOR;
+}
+console.log(duplicateNumbersXOR([1, 2, 1, 3]));
+console.log(duplicateNumbersXOR([1, 2, 3]));
+console.log(duplicateNumbersXOR([1, 2, 2, 1]));
+
+function duplicateNumbersXOR(nums) {
+  let map = new Map()
+    let result = [];
+    for (let num of nums) {
+        map.set(num, (map.get(num) || 0) + 1)
+    }
+    for (let [i, v] of map) {
+        if (v > 1) {
+            result.push(i)
+        }
+    }
+    return result.reduce((a, b) => a ^ b, 0) || 0
+}
+console.log(duplicateNumbersXOR([1, 2, 1, 3]));
+console.log(duplicateNumbersXOR([1, 2, 3]));
+console.log(duplicateNumbersXOR([1, 2, 2, 1]));
+
+// =====================================================================================
+// Valid number
+// Given a string s, return whether s is a valid number.
+
+// For example, all the following are valid numbers: "2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10", "-90E3", "3e+7", "+6e-1", "53.5e93", "-123.456e789", while the following are not valid numbers: "abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53".
+
+// Formally, a valid number is defined using one of the following definitions:
+
+// An integer number followed by an optional exponent.
+// A decimal number followed by an optional exponent.
+// An integer number is defined with an optional sign '-' or '+' followed by digits.
+
+// A decimal number is defined with an optional sign '-' or '+' followed by one of the following definitions:
+
+// Digits followed by a dot '.'.
+// Digits followed by a dot '.' followed by digits.
+// A dot '.' followed by digits.
+// An exponent is defined with an exponent notation 'e' or 'E' followed by an integer number.
+
+// The digits are defined as one or more digits.
+
+// Example 1:
+
+// Input: s = "0"
+
+// Output: true
+
+// Example 2:
+
+// Input: s = "e"
+
+// Output: false
+
+// Example 3:
+
+// Input: s = "."
+
+// Output: false;
+//Brute Appraoch
+function isValid(s) {
+  return (
+    (Number(s) === 0 || !!Number(s)) &&
+    s.trim() !== " " &&
+    s !== "Infinity" &&
+    s !== "-Infinity" &&
+    s !== "+Infinity"
+  );
+}
+console.log(isValid("0"));
+console.log(isValid("e"));
+console.log(isValid("."));
+
+//Better Appraoch
+function isValid(s) {
+  const regex = /^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/;
+  return regex.test(s);
+}
+console.log(isValid("0"));
+console.log(isValid("e"));
+console.log(isValid("."));
