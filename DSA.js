@@ -3584,7 +3584,6 @@ function argumentsLength(...args) {
 console.log(argumentsLength(5)); // Output: 1
 console.log(argumentsLength({}, null, "3")); // Output: 3
 
-
 function argumentsLength(...args) {
   let count = 0;
   for (let i = 0; i < args.length; i++) {
@@ -3594,3 +3593,50 @@ function argumentsLength(...args) {
 }
 console.log(argumentsLength(5)); // Output: 1
 console.log(argumentsLength({}, null, "3")); // Output: 3
+
+function argumentsLength(...args) {
+  return Object.keys(args).length;
+}
+console.log(argumentsLength(5)); // Output: 1
+console.log(argumentsLength({}, null, "3")); // Output: 3
+
+// ====================================================================================
+// Q 79 Converted the Temperature
+// You are given a non-negative floating point number rounded to two decimal places celsius, that denotes the temperature in Celsius.
+
+// You should convert Celsius into Kelvin and Fahrenheit and return it as an array ans = [kelvin, fahrenheit].
+
+// Return the array ans. Answers within 10-5 of the actual answer will be accepted.
+
+// Note that:
+
+// Kelvin = Celsius + 273.15
+// Fahrenheit = Celsius * 1.80 + 32.00
+
+// Example 1:
+
+// Input: celsius = 36.50
+// Output: [309.65000,97.70000]
+// Explanation: Temperature at 36.50 Celsius converted in Kelvin is 309.65 and converted in Fahrenheit is 97.70.
+// Example 2:
+
+// Input: celsius = 122.11
+// Output: [395.26000,251.79800]
+// Explanation: Temperature at 122.11 Celsius converted in Kelvin is 395.26 and converted in Fahrenheit is 251.798.
+
+function convertTemp(Celsius) {
+  Kelvin = Celsius + 273.15;
+  Fahrenheit = Celsius * 1.8 + 32.0;
+  return [Kelvin, Fahrenheit];
+}
+console.log(convertTemp(36.5));
+console.log(convertTemp(122.11));
+
+function convertTemp(celsius) {
+  let result = [];
+  result.unshift((Kelvin = celsius + 273.15));
+  result.push((Fahrenheit = celsius * 1.8 + 32.0));
+  return result;
+}
+console.log(convertTemp(36.5));
+console.log(convertTemp(122.11));
