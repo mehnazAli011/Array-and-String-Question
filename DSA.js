@@ -3389,24 +3389,24 @@ console.log(duplicateNumbersXOR([1, 2, 3]));
 console.log(duplicateNumbersXOR([1, 2, 2, 1]));
 
 function duplicateNumbersXOR(nums) {
-  let map = new Map()
-    let result = [];
-    for (let num of nums) {
-        map.set(num, (map.get(num) || 0) + 1)
+  let map = new Map();
+  let result = [];
+  for (let num of nums) {
+    map.set(num, (map.get(num) || 0) + 1);
+  }
+  for (let [i, v] of map) {
+    if (v > 1) {
+      result.push(i);
     }
-    for (let [i, v] of map) {
-        if (v > 1) {
-            result.push(i)
-        }
-    }
-    return result.reduce((a, b) => a ^ b, 0) || 0
+  }
+  return result.reduce((a, b) => a ^ b, 0) || 0;
 }
 console.log(duplicateNumbersXOR([1, 2, 1, 3]));
 console.log(duplicateNumbersXOR([1, 2, 3]));
 console.log(duplicateNumbersXOR([1, 2, 2, 1]));
 
 // =====================================================================================
-// Valid number
+//75 Valid number
 // Given a string s, return whether s is a valid number.
 
 // For example, all the following are valid numbers: "2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10", "-90E3", "3e+7", "+6e-1", "53.5e93", "-123.456e789", while the following are not valid numbers: "abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53".
@@ -3465,3 +3465,132 @@ function isValid(s) {
 console.log(isValid("0"));
 console.log(isValid("e"));
 console.log(isValid("."));
+
+// =======================================================================================
+// Q 76 Score of a string
+// You are given a string s. The score of a string is defined as the sum of the absolute difference between the ASCII values of adjacent characters.
+
+// Return the score of s.
+
+// Example 1:
+
+// Input: s = "hello"
+
+// Output: 13
+
+// Explanation:
+
+// The ASCII values of the characters in s are: 'h' = 104, 'e' = 101, 'l' = 108, 'o' = 111. So, the score of s would be |104 - 101| + |101 - 108| + |108 - 108| + |108 - 111| = 3 + 7 + 0 + 3 = 13.
+
+// Example 2:
+
+// Input: s = "zaz"
+
+// Output: 50
+
+// Explanation:
+
+// The ASCII values of the characters in s are: 'z' = 122, 'a' = 97. So, the score of s would be |122 - 97| + |97 - 122| = 25 + 25 = 50.
+
+//Brute Approach
+function calculateTheScore(s) {
+  let score = 0;
+  for (let i = 0; i < s.length - 1; i++) {
+    score += Math.abs(s[i].charCodeAt() - s[i + 1].charCodeAt());
+  }
+  return score;
+}
+console.log(calculateTheScore("hello"));
+console.log(calculateTheScore("zaz"));
+
+//Better Approach
+
+function calculateTheScore(s) {
+  let chars = Array.from(s);
+  return chars.reduce((acc, curr, index) => {
+    // index ===0 skip (acc=0)
+    if (index === 0) return acc;
+    return (
+      acc + Math.abs(chars[index - 1].charCodeAt() - chars[index].charCodeAt())
+    );
+  }, 0);
+}
+console.log(calculateTheScore("hello"));
+console.log(calculateTheScore("zaz"));
+
+// =====================================================================================
+// // Q 77find the maximum Achievable Number
+// Given two integers, num and t. A number is achievable if it can become equal to num after applying the following operation:
+
+// Increase or decrease the number by 1, and simultaneously increase or decrease num by 1.
+// Return the maximum achievable number after applying the operation at most t times.
+
+// Example 1:
+// Input: num = 4, t = 1
+// Output: 6
+// Explanation:
+// Apply the following operation once to make the maximum achievable number equal to num:
+// Decrease the maximum achievable number by 1, and increase num by 1.
+// Example 2:
+// Input: num = 3, t = 2
+// Output: 7
+
+// Explanation:
+// Apply the following operation twice to make the maximum achievable number equal to num:
+
+// Decrease the maximum achievable number by 1, and increase num by 1.
+//x-t=num+t;
+//x=num+t+t;
+//x=num+2*(t)
+
+//Brute Approach
+function TheMaximumAchribleX(num, t) {
+  for (let i = 0; i < t; i++) {
+    num += 2;
+  }
+  return num;
+}
+console.log(TheMaximumAchribleX(4, 1));
+console.log(TheMaximumAchribleX(3, 2));
+
+//Better Approach
+function TheMaximumAchribleX(num, t) {
+  return num + 2 * t;
+}
+console.log(TheMaximumAchribleX(4, 1));
+console.log(TheMaximumAchribleX(3, 2));
+// ====================================================================================
+// Q 78 Return the length of Arugment passed
+// Write a function argumentsLength that returns the count of arguments passed to it.
+// Example 1:
+
+// Input: args = [5]
+// Output: 1
+// Explanation:
+// argumentsLength(5); // 1
+
+// One value was passed to the function so it should return 1.
+// Example 2:
+
+// Input: args = [{}, null, "3"]
+// Output: 3
+// Explanation:
+// argumentsLength({}, null, "3"); // 3
+
+// Three values were passed to the function so it should return 3.
+function argumentsLength(...args) {
+  return args.length;
+}
+console.log(argumentsLength(5)); // Output: 1
+console.log(argumentsLength({}, null, "3")); // Output: 3
+
+
+function argumentsLength(...args) {
+  let count = 0;
+  for (let i = 0; i < args.length; i++) {
+    count++;
+  }
+  return count;
+}
+console.log(argumentsLength(5)); // Output: 1
+console.log(argumentsLength({}, null, "3")); // Output: 3
