@@ -3771,7 +3771,7 @@ console.log(findWordsContaining(["leet", "code"], "e"));
 console.log(findWordsContaining(["abc", "bcd", "aaaa", "cbc"], "a"));
 console.log(findWordsContaining(["abc", "bcd", "aaaa", "cbc"], "z"));
 // =======================================================================================
-//  Merge sorted  Array
+// Q 82 Merge sorted  Array
 // You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
 
 // Merge nums1 and nums2 into a single array sorted in non-decreasing order.
@@ -3822,23 +3822,23 @@ console.log(merge([1], 1, [], 0));
 console.log(merge([0], 0, [1], 1));
 
 //Better Approach
-var merge = function(nums1, m, nums2, n) {
+var merge = function (nums1, m, nums2, n) {
   var j = 0;
-for(let i = nums1.length;i>=m;i--){
-  if(nums1[i]===0){
-      nums1.splice(i,1);
+  for (let i = nums1.length; i >= m; i--) {
+    if (nums1[i] === 0) {
+      nums1.splice(i, 1);
       nums1.push(nums2[j]);
       j++;
+    }
   }
-}
-nums1.sort((a,b)=>a-b)
+ return  nums1.sort((a, b) => a - b);
 };
 console.log(merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3));
 console.log(merge([1], 1, [], 0));
-console.log(merge([0], 0, [1], 1))
+console.log(merge([0], 0, [1], 1));
 // var merge = function(nums1, m, nums2, n) {
 //   nums1.length = m;
-  
+
 //   for(let i=0;i<n;i++){
 //       nums1.push(nums2[i])
 //   }
@@ -3846,3 +3846,46 @@ console.log(merge([0], 0, [1], 1))
 //   return nums1
 // };
 // ======================================================================================
+// Q 83 Defanging an LP Address
+// Given a valid (IPv4) IP address, return a defanged version of that IP address.
+
+// A defanged IP address replaces every period "." with "[.]".
+
+// Example 1:
+
+// Input: address = "1.1.1.1"
+// Output: "1[.]1[.]1[.]1"
+// Example 2:
+
+// Input: address = "255.100.50.0"
+// Output: "255[.]100[.]50[.]0"
+
+//Brute Approach
+function defangIPaddr(address) {
+  let add = "";
+  for (let i = 0; i < address.length; i++) {
+    if (address[i] === ".") {
+      add += "[.]";
+    } else {
+      add += address[i];
+    }
+  }
+  return add;
+}
+console.log(defangIPaddr("1.1.1.1"));
+console.log(defangIPaddr("255.100.50.0"));
+
+//Better Approach
+function defangIPaddr(address) {
+  return address.replaceAll(".", "[.]");
+}
+console.log(defangIPaddr("1.1.1.1"));
+console.log(defangIPaddr("255.100.50.0"));
+
+function defangIPaddr(address) {
+  return address.split(".").join("[.]");
+}
+console.log(defangIPaddr("1.1.1.1"));
+console.log(defangIPaddr("255.100.50.0"));
+
+// =====================================================================================
