@@ -3831,7 +3831,7 @@ var merge = function (nums1, m, nums2, n) {
       j++;
     }
   }
- return  nums1.sort((a, b) => a - b);
+  return nums1.sort((a, b) => a - b);
 };
 console.log(merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3));
 console.log(merge([1], 1, [], 0));
@@ -3889,3 +3889,47 @@ console.log(defangIPaddr("1.1.1.1"));
 console.log(defangIPaddr("255.100.50.0"));
 
 // =====================================================================================
+// Q 84 jewls and stone
+// You're given strings jewels representing the types of stones that are jewels, and stones representing the stones you have. Each character in stones is a type of stone you have. You want to know how many of the stones you have are also jewels.
+
+// Letters are case sensitive, so "a" is considered a different type of stone from "A".
+
+// Example 1:
+
+// Input: jewels = "aA", stones = "aAAbbbb"
+// Output: 3
+// Example 2:
+
+// Input: jewels = "z", stones = "ZZ"
+// Output: 0
+
+function numJewelsInStones(jewels, stones) {
+  let count = 0;
+  for (let jewel of jewels) {
+    for (let stone of stones) {
+      if (jewel == stone) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+console.log(numJewelsInStones("aA", "aAAbbbb"));
+console.log(numJewelsInStones("z", "ZZ"));
+console.log(numJewelsInStones("adb", "bbb"));
+
+//Optimal Approach
+function numJewelsInStones(jewels, stones) {
+  let setOfjewels = new Set(jewels);
+  let totoalCount = 0;
+
+  for (let rock of stones) {
+    if (setOfjewels.has(rock)) {
+      totoalCount++;
+    }
+  }
+  return totoalCount;
+}
+console.log(numJewelsInStones("aA", "aAAbbbb"));
+console.log(numJewelsInStones("z", "ZZ"));
+// ====================================================================================
