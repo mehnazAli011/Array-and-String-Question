@@ -3798,7 +3798,7 @@ console.log(findWordsContaining(["abc", "bcd", "aaaa", "cbc"], "z"));
 // The result of the merge is [1].
 // Note that because m = 0, there are no elements in nums1. The 0 is only there to ensure the merge result can fit in nums1.
 
-//Brute Approach
+//Optimal Approach
 function merge(nums1, m, nums2, n) {
   let first = m - 1;
   let second = n - 1;
@@ -4184,4 +4184,341 @@ function findSmallestEven(n) {
 }
 console.log(findSmallestEven(5));
 console.log(findSmallestEven(6));
-// =======================================================================================git
+// =======================================================================================
+function countFairPairs(nums, lower, uper) {
+  let count = 0;
+  for (let i = 0; i < nums.length - 1; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[i] + nums[j] <= uper && lower <= nums[i] + nums[j]) count++;
+    }
+  }
+  return count;
+}
+console.log(countFairPairs([0, 1, 7, 4, 4, 5], 3, 6));
+console.log(countFairPairs([1, 7, 9, 2, 5], 11, 11));
+// =========================================================================================
+// Count Array pairs Divisible by k
+// Given a 0-indexed integer array nums of length n and an integer k, return the number of pairs (i, j) such that:
+
+// 0 <= i < j <= n - 1 and
+// nums[i] * nums[j] is divisible by k.
+
+// Example 1:
+
+// Input: nums = [1,2,3,4,5], k = 2
+// Output: 7
+// Explanation:
+// The 7 pairs of indices whose corresponding products are divisible by 2 are
+// (0, 1), (0, 3), (1, 2), (1, 3), (1, 4), (2, 3), and (3, 4).
+// Their products are 2, 4, 6, 8, 10, 12, and 20 respectively.
+// Other pairs such as (0, 2) and (2, 4) have products 3 and 15 respectively, which are not divisible by 2.
+// Example 2:
+
+// Input: nums = [1,2,3,4], k = 5
+// Output: 0
+// Explanation: There does not exist any pair of indices whose corresponding product is divisible by 5.
+//Brute Approach
+function countPairsDivisideByK(nums, k) {
+  let count = 0;
+  for (let i = 0; i < nums.length - 1; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if ((nums[i] * nums[j]) % k === 0) count++;
+    }
+  }
+  return count;
+}
+console.log(countPairsDivisideByK([1, 2, 3, 4, 5], 2));
+console.log(countPairsDivisideByK([1, 2, 3, 4], 5));
+// =====================================================================================
+// pending
+function cannAverage(nums, k) {
+  n = nums.length;
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    let temp = nums[i];
+    for (let j = i + 1; j < nums.length; j++) {
+      if ((temp + nums[j]) % k === 0) count++;
+    }
+  }
+  return count === n / 2;
+}
+console.log(cannAverage([1, 2, 3, 4, 5, 10, 6, 7, 8, 9], 5)); //true
+console.log(cannAverage([1, 2, 3, 4, 5, 6], 7)); //true
+console.log(cannAverage([1, 2, 3, 4, 5, 6], 10)); //false
+// =======================================================================================
+// Q XOR Operations in an Array
+// You are given an integer n and an integer start.
+
+// Define an array nums where nums[i] = start + 2 * i (0-indexed) and n == nums.length.
+
+// Return the bitwise XOR of all elements of nums.
+
+// Example 1:
+
+// Input: n = 5, start = 0
+// Output: 8
+// Explanation: Array nums is equal to [0, 2, 4, 6, 8] where (0 ^ 2 ^ 4 ^ 6 ^ 8) = 8.
+// Where "^" corresponds to bitwise XOR operator.
+// Example 2:
+
+// Input: n = 4, start = 3
+// Output: 8
+// Explanation: Array nums is equal to [3, 5, 7, 9] where (3 ^ 5 ^ 7 ^ 9) = 8.
+function XOROperations(n, start) {
+  let XOR = 0;
+  for (let i = 0; i < n; i++) {
+    XOR ^= start + 2 * i;
+  }
+  return XOR;
+}
+console.log(XOROperations(5, 0));
+console.log(XOROperations(4, 3));
+// =======================================================================================
+
+// Q Number of the 1 Bits
+// Write a function that takes the binary representation of a positive integer and returns the number of
+// set bits
+//  it has (also known as the Hamming weight).
+
+// Example 1:
+
+// Input: n = 11
+
+// Output: 3
+
+// Explanation:
+
+// The input binary string 1011 has a total of three set bits.
+
+// Example 2:
+
+// Input: n = 128
+
+// Output: 1
+
+// Explanation:
+
+// The input binary string 10000000 has a total of one set bit.
+
+// Example 3:
+
+// Input: n = 2147483645
+
+// Output: 30
+
+// Explanation:
+
+// The input binary string 1111111111111111111111111111101 has a total of thirty set bits.
+//Brute approach
+function hammingWeight(n) {
+  let binary = n.toString(2);
+  let count = 0;
+  for (let num of binary) {
+    if (num != 0) {
+      count++;
+    }
+  }
+  return count;
+}
+console.log(hammingWeight(11));
+console.log(hammingWeight(128));
+console.log(hammingWeight(2147483645));
+//Brute Approach
+function hammingWeight(n) {
+  return n.toString(2).split("0").join("").length;
+}
+console.log(hammingWeight(11));
+console.log(hammingWeight(128));
+console.log(hammingWeight(2147483645));
+
+//optimal Approach
+function hammingWeight(nums) {
+  let count = 0;
+  while (nums > 0) {
+    let x = nums % 2;
+    nums = nums - x;
+    nums /= 2;
+    if (x === 1) count += 1;
+  }
+  return count;
+}
+console.log(hammingWeight(11));
+console.log(hammingWeight(128));
+console.log(hammingWeight(2147483645));
+//=======================================================================================
+// Q counting Bits
+// Given an integer n, return an array ans of length n + 1 such that for each i (0 <= i <= n), ans[i] is the number of 1's in the binary representation of i.
+
+// Example 1:
+
+// Input: n = 2
+// Output: [0,1,1]
+// Explanation:
+// 0 --> 0
+// 1 --> 1
+// 2 --> 10
+// Example 2:
+
+// Input: n = 5
+// Output: [0,1,1,2,1,2]
+// Explanation:
+// 0 --> 0
+// 1 --> 1
+// 2 --> 10
+// 3 --> 11
+// 4 --> 100
+// 5 --> 101
+
+// function countingBits(n) {
+//   let result = [];
+//   for (let i = 0; i <= n; i++) {
+//     result.push(i.toString(2).split("0").join("").length);
+//   }
+//   return result;
+// }
+// console.log(countingBits(2));
+// console.log(countingBits(5));
+//0---->  //0
+// 1---->1//1
+//2----->10//1function countingBits(n) {
+function countingBits(n) {
+  let dp = new Array(n + 1).fill(0);
+  offset = 1;
+
+  for (let i = 1; i < n + 1; i++) {
+    if (offset * 2 == i) offset = i;
+    dp[i] = 1 + dp[i - offset];
+  }
+
+  return dp;
+}
+
+console.log(countingBits(2)); // [0, 1, 1]
+console.log(countingBits(5)); // [0, 1, 1, 2, 1, 2]
+// ====================================================================================
+// Q decode XORed Array
+// There is a hidden integer array arr that consists of n non-negative integers.
+
+// It was encoded into another integer array encoded of length n - 1, such that encoded[i] = arr[i] XOR arr[i + 1]. For example, if arr = [1,0,2,1], then encoded = [1,2,3].
+
+// You are given the encoded array. You are also given an integer first, that is the first element of arr, i.e. arr[0].
+
+// Return the original array arr. It can be proved that the answer exists and is unique.
+
+// Example 1:
+
+// Input: encoded = [1,2,3], first = 1
+// Output: [1,0,2,1]
+// Explanation: If arr = [1,0,2,1], then first = 1 and encoded = [1 XOR 0, 0 XOR 2, 2 XOR 1] = [1,2,3]
+// Example 2:
+
+// Input: encoded = [6,2,7,3], first = 4
+// Output: [4,2,0,7,4]
+//Brute Approach
+function deCode(encoded, first) {
+  let res = [first];
+  for (let i = 0; i < encoded.length; i++) {
+    res.push(res[i] ^ encoded[i]);
+  }
+  return res;
+}
+console.log(deCode([1, 2, 3], 1)); //[1,0,2,1]
+console.log(deCode([6, 2, 7, 3], 4));
+
+//Better Approach
+function deCode(encoded, first) {
+  let res = [first];
+  encoded.forEach((val, i) => res.push(res[i] ^ val));
+  return res;
+}
+console.log(deCode([1, 2, 3], 1)); //[1,0,2,1]
+console.log(deCode([6, 2, 7, 3], 4));
+// =============================================================================
+// Q find the original array of prefix XOR
+// You are given an integer array pref of size n. Find and return the array arr of size n that satisfies:
+
+// pref[i] = arr[0] ^ arr[1] ^ ... ^ arr[i].
+// Note that ^ denotes the bitwise-xor operation.
+
+// It can be proven that the answer is unique.
+
+// Example 1:
+
+// Input: pref = [5,2,0,3,1]
+// Output: [5,7,2,3,2]
+// Explanation: From the array [5,7,2,3,2] we have the following:
+// - pref[0] = 5.
+// - pref[1] = 5 ^ 7 = 2.
+// - pref[2] = 5 ^ 7 ^ 2 = 0.
+// - pref[3] = 5 ^ 7 ^ 2 ^ 3 = 3.
+// - pref[4] = 5 ^ 7 ^ 2 ^ 3 ^ 2 = 1.
+// Example 2:
+
+// Input: pref = [13]
+// Output: [13]
+// Explanation: We have pref[0] = arr[0] = 13.
+//brute Approach
+function findArray(pref) {
+  let n = pref.length;
+  let arr = new Array(n);
+  arr[0] = pref[0];
+  for (let i = 1; i < n; i++) {
+    arr[i] = pref[i] ^ pref[i - 1];
+  }
+  return arr;
+}
+console.log(findArray([5, 2, 0, 3, 1]));
+console.log(findArray([13]));
+
+var findArray = function (pref) {
+  return pref.map((val, idx) => {
+    if (idx === 0) {
+      return val;
+    } else {
+      return val ^ pref[idx - 1];
+    }
+  });
+};
+console.log(findArray([5, 2, 0, 3, 1]));
+console.log(findArray([13]));
+// ======================================================================================
+// Q candy
+// There are n children standing in a line. Each child is assigned a rating value given in the integer array ratings.
+
+// You are giving candies to these children subjected to the following requirements:
+
+// Each child must have at least one candy.
+// Children with a higher rating get more candies than their neighbors.
+// Return the minimum number of candies you need to have to distribute the candies to the children.
+
+// Example 1:
+
+// Input: ratings = [1,0,2]
+// Output: 5
+// Explanation: You can allocate to the first, second and third child with 2, 1, 2 candies respectively.
+// Example 2:
+
+// Input: ratings = [1,2,2]
+// Output: 4
+// Explanation: You can allocate to the first, second and third child with 1, 2, 1 candies respectively.
+// The third child gets 1 candy because it satisfies the above two conditions.
+
+//Brute Approach
+function candy(ratings) {
+  let n = ratings.length;
+  let candies = new Array(n).fill(1);
+  for (let i = 1; i < n; i++) {
+    if (ratings[i] > ratings[i - 1]) {
+      candies[i] = candies[i - 1] + 1;
+    }
+  }
+  for (let i = n - 2; i >= 0; i--) {
+    if (ratings[i] > ratings[i + 1]) {
+      candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+    }
+  }
+  return candies.reduce((sum, candy) => sum + candy, 0);
+}
+console.log(candy([1, 0, 2]));
+console.log(candy([1, 2, 2]));
+// =====================================================================================
