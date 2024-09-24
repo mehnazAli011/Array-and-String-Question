@@ -4522,3 +4522,276 @@ function candy(ratings) {
 console.log(candy([1, 0, 2]));
 console.log(candy([1, 2, 2]));
 // =====================================================================================
+// Prefix and suffix Question
+// Q. 1.Longet Common Prefix
+// Write a function to find the longest common prefix string amongst an array of strings.
+
+// If there is no common prefix, return an empty string "".
+
+// Example 1:
+
+// Input: strs = ["flower","flow","flight"]
+// Output: "fl"
+// Example 2:
+
+// Input: strs = ["dog","racecar","car"]
+// Output: ""
+// Explanation: There is no common prefix among the input strings.
+//optimal Approach
+function findLongetPrefix(strs) {
+  if (strs.length === 1) return strs[0];
+  if (strs.length === 0) return "";
+
+  let prefix = strs[0];
+  for (let i = 1; i < strs.length; i++) {
+    while (strs[i].indexOf(prefix) !== 0) {
+      prefix = prefix.slice(0, prefix.length - 1);
+      if (prefix === "") return "";
+    }
+  }
+  return prefix;
+}
+console.log(findLongetPrefix(["flower", "flow", "flight"]));
+console.log(findLongetPrefix(["dog", "racecar", "car"]));
+//Time complexity:O(n*m)
+
+function findLongetPrefix(strs) {
+  if (strs.length === 1) return strs[0];
+  let prefix = " ";
+  let first = strs[0];
+  strs.sort();
+  let last = strs[strs.length - 1];
+  for (let i = 0; i < first.length; i++) {
+    if (last[i] !== first[i]) return prefix;
+    prefix = prefix + first[i];
+  }
+  return prefix;
+}
+console.log(findLongetPrefix(["flower", "flow", "flight"]));
+console.log(findLongetPrefix(["dog", "racecar", "car"]));
+// Time complexity:O(n* m log n)
+// ======================================================================================
+// Q 2 Next gerater Element |
+// The next greater element of some element x in an array is the first greater element that is to the right of x in the same array.
+
+// You are given two distinct 0-indexed integer arrays nums1 and nums2, where nums1 is a subset of nums2.
+
+// For each 0 <= i < nums1.length, find the index j such that nums1[i] == nums2[j] and determine the next greater element of nums2[j] in nums2. If there is no next greater element, then the answer for this query is -1.
+
+// Return an array ans of length nums1.length such that ans[i] is the next greater element as described above.
+
+// Example 1:
+
+// Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
+// Output: [-1,3,-1]
+// Explanation: The next greater element for each value of nums1 is as follows:
+// - 4 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+// - 1 is underlined in nums2 = [1,3,4,2]. The next greater element is 3.
+// - 2 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+// Example 2:
+
+// Input: nums1 = [2,4], nums2 = [1,2,3,4]
+// Output: [3,-1]
+// Explanation: The next greater element for each value of nums1 is as follows:
+// - 2 is underlined in nums2 = [1,2,3,4]. The next greater element is 3.
+// - 4 is underlined in nums2 = [1,2,3,4]. There is no next greater element, so the answer is -1.
+
+function nextGreaterElement(nums1, nums2) {
+  let res = new Array(nums1.length).fill(-1);
+  for (let i = 0; i < nums1.length; i++) {
+    let found = false;
+    for (let j = 0; j < nums2.length; j++) {
+      if (nums1[i] === nums2[j]) {
+        found = true;
+      }
+      if (found && nums2[j] > nums1[i]) {
+        res[i] = nums2[j];
+        break;
+      }
+    }
+  }
+  return res;
+}
+console.log(nextGreaterElement([4, 1, 2], [1, 3, 4, 2]));
+console.log(nextGreaterElement([2, 4], [1, 2, 3, 4]));
+// Tc-O(n*m)
+
+function nextGreaterElement(nums1, nums2) {
+  let ans = [];
+  for (let i = 0; i < nums1.length; i++) {
+    for (let j = nums2.indexOf(nums1[i]) + 1; j < nums2.length; j++) {
+      if (nums1[i] < nums2[j]) {
+        ans.push(nums2[j]);
+        break;
+      }
+    }
+
+    if (ans[i] == null) {
+      ans.push(-1);
+    }
+  }
+  return ans;
+}
+console.log(nextGreaterElement([4, 1, 2], [1, 3, 4, 2]));
+console.log(nextGreaterElement([2, 4], [1, 2, 3, 4]));
+// Tc-O(n*m)
+
+// ================================================================================
+// Q A Number After a Double reversal.
+// Reversing an integer means to reverse all its digits.
+
+// For example, reversing 2021 gives 1202. Reversing 12300 gives 321 as the leading zeros are not retained.
+// Given an integer num, reverse num to get reversed1, then reverse reversed1 to get reversed2. Return true if reversed2 equals num. Otherwise return false.
+
+// Example 1:
+
+// Input: num = 526
+// Output: true
+// Explanation: Reverse num to get 625, then reverse 625 to get 526, which equals num.
+// Example 2:
+
+// Input: num = 1800
+// Output: false
+// Explanation: Reverse num to get 81, then reverse 81 to get 18, which does not equal num.
+// Example 3:
+
+// Input: num = 0
+// Output: true
+// Explanation: Reverse num to get 0, then reverse 0 to get 0, which equals num.
+
+//Brute Approach
+function check(num) {
+  let reversed1 = Number(num.toString().split("").reverse().join(""));
+  let reversed2 = Number(reversed1.toString().split("").reverse().join(""));
+  return reversed2 == num;
+}
+console.log(check(526));
+console.log(check(1800));
+console.log(check(0));
+
+//Better Approach
+function check(num) {
+  if (num % 10 || num == 0) {
+    return true;
+  }
+  return false;
+}
+console.log(check(526));
+console.log(check(1800));
+console.log(check(0));
+// ========================================================================================
+// Q Valid Boomrange
+// Given an array points where points[i] = [xi, yi] represents a point on the X-Y plane, return true if these points are a boomerang.
+
+// A boomerang is a set of three points that are all distinct and not in a straight line.
+
+// Example 1:
+
+// Input: points = [[1,1],[2,3],[3,2]]
+// Output: true
+// Example 2:
+
+// Input: points = [[1,1],[2,2],[3,3]]
+// Output: false
+function isBoomerange(points) {
+  return (
+    (points[1][1] - points[0][1]) * (points[2][0] - points[0][0]) !==
+    (points[2][1] - points[0][1]) * (points[1][0] - points[0][0])
+  );
+}
+console.log(
+  isBoomerange([
+    [1, 1],
+    [2, 3],
+    [3, 2],
+  ])
+);
+console.log(
+  isBoomerange([
+    [1, 1],
+    [2, 2],
+    [3, 3],
+  ])
+);
+function isBoomerange(points) {
+  const [[x1, y1], [x2, y2], [x3, y3]] = points;
+  return !!(y1 * (x2 - x3) + y2 * (x3 - x1) + y3 * (x1 - x2));
+}
+console.log(
+  isBoomerange([
+    [1, 1],
+    [2, 3],
+    [3, 2],
+  ])
+);
+console.log(
+  isBoomerange([
+    [1, 1],
+    [2, 2],
+    [3, 3],
+  ])
+);
+// ====================================================================================
+// Q peak index in a mountain Array
+// You are given an integer mountain array arr of length n where the values increase to a peak element and then decrease.
+
+// Return the index of the peak element.
+
+// Your task is to solve it in O(log(n)) time complexity.
+
+// Example 1:
+
+// Input: arr = [0,1,0]
+
+// Output: 1
+
+// Example 2:
+
+// Input: arr = [0,2,1,0]
+
+// Output: 1
+
+// Example 3:
+
+// Input: arr = [0,10,5,2]
+
+// Output: 1
+
+//Brute Approach
+function findPeakIndex(arr) {
+  if (arr.length < 3) return -1;
+  for (let i = 1; i < arr.length - 1; i++) {
+    if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {
+      return i;
+    }
+  }
+  return -1;
+}
+console.log(findPeakIndex([0, 1, 0]));
+console.log(findPeakIndex([0, 2, 1, 0]));
+console.log(findPeakIndex([0, 10, 5, 2]));
+
+//optimal Approach
+function findPeakIndex(arr) {
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left < right) {
+    let mid = Math.floor((left + right) / 2);
+    
+    if (arr[mid] < arr[mid + 1]) {
+      // Peak is on the right side
+      left = mid + 1;
+    } else {
+      // Peak is on the left side (including mid)
+      right = mid;
+    }
+  }
+
+  // When left equals right, we found the peak index
+  return left;
+}
+console.log(findPeakIndex([0, 1, 0]));
+console.log(findPeakIndex([0, 2, 1, 0]));
+console.log(findPeakIndex([0, 10, 5, 2]));
+// =======================================================================================
