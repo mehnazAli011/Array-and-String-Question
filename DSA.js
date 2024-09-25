@@ -4778,7 +4778,7 @@ function findPeakIndex(arr) {
 
   while (left < right) {
     let mid = Math.floor((left + right) / 2);
-    
+
     if (arr[mid] < arr[mid + 1]) {
       // Peak is on the right side
       left = mid + 1;
@@ -4795,3 +4795,266 @@ console.log(findPeakIndex([0, 1, 0]));
 console.log(findPeakIndex([0, 2, 1, 0]));
 console.log(findPeakIndex([0, 10, 5, 2]));
 // =======================================================================================
+// Q Valid Moutanic Array
+// Given an array of integers arr, return true if and only if it is a valid mountain array.
+
+// Recall that arr is a mountain array if and only if:
+
+// arr.length >= 3
+// There exists some i with 0 < i < arr.length - 1 such that:
+// arr[0] < arr[1] < ... < arr[i - 1] < arr[i]
+// arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
+
+// Example 1:
+
+// Input: arr = [2,1]
+// Output: false
+// Example 2:
+
+// Input: arr = [3,5,5]
+// Output: false
+// Example 3:
+
+// Input: arr = [0,3,2,1]
+// Output: true
+function isMountainceArray(arr) {
+  let startOfVally = 0;
+  if (arr.length <= 2) return false;
+  if (arr[1] < arr[0]) return false;
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i - 1] === arr[i]) return false;
+    if (arr[i - 1] > arr[i]) {
+      startOfVally = i - 1;
+      break;
+    }
+  }
+  for (let i = startOfVally; i < arr.length - 1; i++) {
+    if (arr[i + 1] >= arr[i]) return false;
+  }
+  return true;
+}
+console.log(isMountainceArray([2, 1]));
+console.log(isMountainceArray([3, 5, 5]));
+console.log(isMountainceArray([0, 3, 2, 1]));
+// Time complexity:- O(n)
+
+function isMountainceArray(arr) {
+  let uniqueArr = [...new Set(arr)];
+  let index;
+  let max = uniqueArr[0];
+  for (let i = 0; i < uniqueArr.length; i++) {
+    if (uniqueArr[i] > max) {
+      max = uniqueArr[i];
+    }
+  }
+  leftElm = uniqueArr.slice(0, uniqueArr.indexOf(max)).length;
+  rightElm = uniqueArr.slice(uniqueArr.indexOf(max) + 1).length;
+  if (leftElm > 0 && rightElm > 0) {
+    return true;
+  }
+  return false;
+}
+
+console.log(isMountainceArray([2, 1]));
+console.log(isMountainceArray([3, 5, 5]));
+console.log(isMountainceArray([0, 3, 2, 1]));
+// Time complexity:- O(n)
+
+// ===============================================================================
+// // Q Find minimum Operations to make all Element divisibel by three
+// You are given an integer array nums. In one operation, you can add or subtract 1 from any element of nums.
+
+// Return the minimum number of operations to make all elements of nums divisible by 3.
+
+// Example 1:
+
+// Input: nums = [1,2,3,4]
+
+// Output: 3
+
+// Explanation:
+
+// All array elements can be made divisible by 3 using 3 operations:
+
+// Subtract 1 from 1.
+// Add 1 to 2.
+// Subtract 1 from 4.
+// Example 2:
+
+// Input: nums = [3,6,9]
+
+// Output: 0
+
+//Brute Approach
+function minimumOperations(nums) {
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] % 3 !== 0) {
+      count++;
+    }
+  }
+  return count;
+}
+console.log(minimumOperations([1, 2, 3, 4]));
+console.log(minimumOperations([3, 6, 9]));
+
+//Better Approach
+function minimumOperations(nums) {
+  return nums.filter((elm) => elm % 3 !== 0).length;
+}
+console.log(minimumOperations([1, 2, 3, 4]));
+console.log(minimumOperations([3, 6, 9]));
+// ======================================================================================
+//  Q. Find the peaks
+// You are given a 0-indexed array mountain. Your task is to find all the peaks in the mountain array.
+
+// Return an array that consists of indices of peaks in the given array in any order.
+
+// Notes:
+
+// A peak is defined as an element that is strictly greater than its neighboring elements.
+// The first and last elements of the array are not a peak.
+
+// Example 1:
+
+// Input: mountain = [2,4,4]
+// Output: []
+// Explanation: mountain[0] and mountain[2] can not be a peak because they are first and last elements of the array.
+// mountain[1] also can not be a peak because it is not strictly greater than mountain[2].
+// So the answer is [].
+// Example 2:
+
+// Input: mountain = [1,4,3,8,5]
+// Output: [1,3]
+// Explanation: mountain[0] and mountain[4] can not be a peak because they are first and last elements of the array.
+// mountain[2] also can not be a peak because it is not strictly greater than mountain[3] and mountain[1].
+// But mountain [1] and mountain[3] are strictly greater than their neighboring elements.
+// So the answer is [1,3].
+//Brute Approach
+function findThePeaks(mountain) {
+  let peaks = [];
+  for (let i = 1; i < mountain.length - 1; i++) {
+    if (mountain[i - 1] < mountain[i] && mountain[i + 1] < mountain[i]) {
+      peaks.push(i);
+    }
+  }
+  return peaks;
+}
+console.log(findThePeaks([2, 4, 4])); //[]
+console.log(findThePeaks([1, 4, 3, 8, 5])); //[1,3]
+// ======================================================================================
+// Q Number of the Arithmetic Triplets
+
+// You are given a 0-indexed, strictly increasing integer array nums and a positive integer diff. A triplet (i, j, k) is an arithmetic triplet if the following conditions are met:
+
+// i < j < k,
+// nums[j] - nums[i] == diff, and
+// nums[k] - nums[j] == diff.
+// Return the number of unique arithmetic triplets.
+
+// Example 1:
+
+// Input: nums = [0,1,4,6,7,10], diff = 3
+// Output: 2
+// Explanation:
+// (1, 2, 4) is an arithmetic triplet because both 7 - 4 == 3 and 4 - 1 == 3.
+// (2, 4, 5) is an arithmetic triplet because both 10 - 7 == 3 and 7 - 4 == 3.
+// Example 2:
+
+// Input: nums = [4,5,6,7,8,9], diff = 2
+// Output: 2
+// Explanation:
+// (0, 2, 4) is an arithmetic triplet because both 8 - 6 == 2 and 6 - 4 == 2.
+// (1, 3, 5) is an arithmetic triplet because both 9 - 7 == 2 and 7 - 5 == 2.
+
+//Brute Approach
+function arithmeticTriplets(nums, diff) {
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      for (let k = j + 1; k < nums.length; k++) {
+        if (nums[j] - nums[i] === diff && nums[k] - nums[j] === diff) {
+          count++;
+        }
+      }
+    }
+  }
+  return count;
+}
+console.log(arithmeticTriplets([0, 1, 4, 6, 7, 10], 3));
+console.log(arithmeticTriplets([4, 5, 6, 7, 8, 9], 2));
+
+//Optimal Approach
+function arithmeticTriplets(nums, diff) {
+  let count = 0;
+  let set = new Set(nums);
+
+  for (let num of nums) {
+    if (set.has(num + diff) && set.has(num + 2 * diff)) {
+      count++;
+    }
+  }
+  return count;
+}
+console.log(arithmeticTriplets([0, 1, 4, 6, 7, 10], 3));
+console.log(arithmeticTriplets([4, 5, 6, 7, 8, 9], 2));
+// ======================================================================================
+// Q Sort the color
+// Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+// We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+// You must solve this problem without using the library's sort function.
+
+// Example 1:
+
+// Input: nums = [2,0,2,1,1,0]
+// Output: [0,0,1,1,2,2]
+// Example 2:
+
+// Input: nums = [2,0,1]
+// Output: [0,1,2]
+
+function sortTheColor(nums) {
+  let n = nums.length;
+  let count0 = 0;
+  let count1 = 0;
+  let count2 = 0;
+  for (let i = 0; i < n; i++) {
+    if (nums[i] === 0) count0++;
+    else if (nums[i] === 1) count1++;
+    else if (nums[i] === 2) count2++;
+    
+  }
+  for (let i = 0; i < count0; i++)  nums[i] = 0;
+  for (let i = count0; i < count0 + count1; i++)  nums[i] = 1;
+  for (let i = count1 + count2; i < n; i++)  nums[i] = 2;
+  
+  return nums;
+}
+console.log(sortTheColor([2, 0, 2, 1, 1, 0]));
+console.log(sortTheColor([2, 0, 1]));
+
+//Optimal  Approach
+function sortTheColor(nums) {
+  let low = 0, mid = 0, high = nums.length - 1;
+
+  while (mid <= high) {
+    if (nums[mid] === 0) {
+      [nums[low], nums[mid]] = [nums[mid], nums[low]];
+      low++;
+      mid++;
+    } else if (nums[mid] === 1) {
+      mid++;
+    } else {
+      [nums[mid], nums[high]] = [nums[high], nums[mid]];
+      high--;
+    }
+  }
+
+  return nums;
+}
+
+console.log(sortTheColor([2, 0, 2, 1, 1, 0])); // Output: [0, 0, 1, 1, 2, 2]
+console.log(sortTheColor([2, 0, 1]));           // Output: [0, 1, 2]
+// ===================================================================================
