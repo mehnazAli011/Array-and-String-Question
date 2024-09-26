@@ -5024,12 +5024,11 @@ function sortTheColor(nums) {
     if (nums[i] === 0) count0++;
     else if (nums[i] === 1) count1++;
     else if (nums[i] === 2) count2++;
-    
   }
-  for (let i = 0; i < count0; i++)  nums[i] = 0;
-  for (let i = count0; i < count0 + count1; i++)  nums[i] = 1;
-  for (let i = count1 + count2; i < n; i++)  nums[i] = 2;
-  
+  for (let i = 0; i < count0; i++) nums[i] = 0;
+  for (let i = count0; i < count0 + count1; i++) nums[i] = 1;
+  for (let i = count1 + count2; i < n; i++) nums[i] = 2;
+
   return nums;
 }
 console.log(sortTheColor([2, 0, 2, 1, 1, 0]));
@@ -5037,7 +5036,9 @@ console.log(sortTheColor([2, 0, 1]));
 
 //Optimal  Approach
 function sortTheColor(nums) {
-  let low = 0, mid = 0, high = nums.length - 1;
+  let low = 0,
+    mid = 0,
+    high = nums.length - 1;
 
   while (mid <= high) {
     if (nums[mid] === 0) {
@@ -5056,5 +5057,240 @@ function sortTheColor(nums) {
 }
 
 console.log(sortTheColor([2, 0, 2, 1, 1, 0])); // Output: [0, 0, 1, 1, 2, 2]
-console.log(sortTheColor([2, 0, 1]));           // Output: [0, 1, 2]
+console.log(sortTheColor([2, 0, 1])); // Output: [0, 1, 2]
 // ===================================================================================
+// //Q
+// A valid parentheses string is either empty "", "(" + A + ")", or A + B, where A and B are valid parentheses strings, and + represents string concatenation.
+
+// For example, "", "()", "(())()", and "(()(()))" are all valid parentheses strings.
+// A valid parentheses string s is primitive if it is nonempty, and there does not exist a way to split it into s = A + B, with A and B nonempty valid parentheses strings.
+
+// Given a valid parentheses string s, consider its primitive decomposition: s = P1 + P2 + ... + Pk, where Pi are primitive valid parentheses strings.
+
+// Return s after removing the outermost parentheses of every primitive string in the primitive decomposition of s.
+
+// Example 1:
+
+// Input: s = "(()())(())"
+// Output: "()()()"
+// Explanation:
+// The input string is "(()())(())", with primitive decomposition "(()())" + "(())".
+// After removing outer parentheses of each part, this is "()()" + "()" = "()()()".
+// Example 2:
+
+// Input: s = "(()())(())(()(()))"
+// Output: "()()()()(())"
+// Explanation:
+// The input string is "(()())(())(()(()))", with primitive decomposition "(()())" + "(())" + "(()(()))".
+// After removing outer parentheses of each part, this is "()()" + "()" + "()(())" = "()()()()(())".
+// Example 3:
+
+// Input: s = "()()"
+// Output: ""
+// Explanation:
+// The input string is "()()", with primitive decomposition "()" + "()".
+// After removing outer parentheses of each part, this is "" + "" = "".
+
+function removeOutMostParantheses(s) {
+  let result = "";
+  let ticker = 0;
+  for (let el of s) {
+    el == "(" ? ticker++ : 0;
+    ticker > 1 ? (result += el) : 0;
+    el == ")" ? ticker-- : 0;
+  }
+  return result;
+}
+
+console.log(removeOutMostParantheses("(()())(())"));
+console.log(removeOutMostParantheses("(()())(())(()(()))"));
+console.log(removeOutMostParantheses("()()"));
+// ====================================================================================
+// Q Largest odd number in string
+// You are given a string num, representing a large integer. Return the largest-valued odd integer (as a string) that is a non-empty substring of num, or an empty string "" if no odd integer exists.
+
+// A substring is a contiguous sequence of characters within a string.
+
+// Example 1:
+
+// Input: num = "52"
+// Output: "5"
+// Explanation: The only non-empty substrings are "5", "2", and "52". "5" is the only odd number.
+// Example 2:
+
+// Input: num = "4206"
+// Output: ""
+// Explanation: There are no odd numbers in "4206".
+// Example 3:
+
+// Input: num = "35427"
+// Output: "35427"
+// Explanation: "35427" is already an odd number.
+
+function largestOddNum(num) {
+  for (let i = num.length - 1; i >= 0; i--) {
+    if (num[i] % 2 !== 0) {
+      return num.slice(0, i + 1);
+    }
+  }
+  return "";
+}
+console.log(largestOddNum("52"));
+console.log(largestOddNum("4206"));
+console.log(largestOddNum("35427"));
+// ========================================================================================
+//Q Largest three-same-digits-number in string
+// You are given a string num representing a large integer. An integer is good if it meets the following conditions:
+
+// It is a substring of num with length 3.
+// It consists of only one unique digit.
+// Return the maximum good integer as a string or an empty string "" if no such integer exists.
+
+// Note:
+
+// A substring is a contiguous sequence of characters within a string.
+// There may be leading zeroes in num or a good integer.
+
+// Example 1:
+
+// Input: num = "6777133339"
+// Output: "777"
+// Explanation: There are two distinct good integers: "777" and "333".
+// "777" is the largest, so we return "777".
+// Example 2:
+
+// Input: num = "2300019"
+// Output: "000"
+// Explanation: "000" is the only good integer.
+// Example 3:
+
+// Input: num = "42352338"
+// Output: ""
+// Explanation: No substring of length 3 consists of only one unique digit. Therefore, there are no good integers.
+
+//Brute Approach
+function largestGoodIntegers(num) {
+  let result = new Set();
+  for (let i = 1; i < num.length - 1; i++) {
+    if (num[i - 1] === num[i] && num[i] === num[i + 1]) {
+      result.add(num[i].repeat(3));
+    }
+  }
+  uniqueArr = [...result];
+  return uniqueArr.length === 0 ? "" : uniqueArr.sort().at(-1);
+}
+console.log(largestGoodIntegers("6777133339"));
+console.log(largestGoodIntegers("2300019"));
+console.log(largestGoodIntegers("42352338"));
+//time complexity :-O(n log n)
+
+//Optimal
+function largestGoodIntegers(num) {
+  let result = -1;
+  for (let i = 0; i + 2 < num.length; i++) {
+    if (num[i] === num[i + 1] && num[i] === num[i + 2]) {
+      result = Math.max(result, parseInt(num[i]));
+    }
+  }
+  return result === -1 ? "" : String(result).repeat(3);
+}
+
+console.log(largestGoodIntegers("6777133339"));
+console.log(largestGoodIntegers("2300019"));
+console.log(largestGoodIntegers("42352338"));
+//Time complexity:-O(n)
+
+// ======================================================================================
+// Q Premutation Difference between Two String
+// You are given two strings s and t such that every character occurs at most once in s and t is a permutation of s.
+
+// The permutation difference between s and t is defined as the sum of the absolute difference between the index of the occurrence of each character in s and the index of the occurrence of the same character in t.
+
+// Return the permutation difference between s and t.
+
+// Example 1:
+
+// Input: s = "abc", t = "bac"
+
+// Output: 2
+
+// Explanation:
+
+// For s = "abc" and t = "bac", the permutation difference of s and t is equal to the sum of:
+
+// The absolute difference between the index of the occurrence of "a" in s and the index of the occurrence of "a" in t.
+// The absolute difference between the index of the occurrence of "b" in s and the index of the occurrence of "b" in t.
+// The absolute difference between the index of the occurrence of "c" in s and the index of the occurrence of "c" in t.
+// That is, the permutation difference between s and t is equal to |0 - 1| + |1 - 0| + |2 - 2| = 2.
+
+// Example 2:
+
+// Input: s = "abcde", t = "edbac"
+
+// Output: 12
+
+// Explanation: The permutation difference between s and t is equal to |0 - 3| + |1 - 2| + |2 - 4| + |3 - 1| + |4 - 0| = 12.
+
+//Brute Approach
+function premutationDiff(s, t) {
+  let diff = 0;
+  for (let i = 0; i < s.length; i++) {
+    for (let j = 0; j < t.length; j++) {
+      if (s[i] === t[j]) diff += Math.abs(i - j);
+    }
+  }
+}
+console.log(premutationDiff("abc", "bac"));
+console.log(premutationDiff("abcde", "edbac"));
+
+//Optimal Approach
+function premutationDiff(s, t) {
+  let indexMap = {};
+  for (let i = 0; i < t.length; i++) {
+    indexMap[t[i]] = i;
+  }
+  let diff = 0;
+  for (let i = 0; i < s.length; i++) {
+    diff += Math.abs(i - indexMap[s[i]]);
+  }
+  return diff;
+}
+console.log(premutationDiff("abc", "bac"));
+console.log(premutationDiff("abcde", "edbac"));
+// ========================================================================================
+// Q Striclty paliandrom number
+// An integer n is strictly palindromic if, for every base b between 2 and n - 2 (inclusive), the string representation of the integer n in base b is palindromic.
+
+// Given an integer n, return true if n is strictly palindromic and false otherwise.
+
+// A string is palindromic if it reads the same forward and backward.
+
+// Example 1:
+
+// Input: n = 9
+// Output: false
+// Explanation: In base 2: 9 = 1001 (base 2), which is palindromic.
+// In base 3: 9 = 100 (base 3), which is not palindromic.
+// Therefore, 9 is not strictly palindromic so we return false.
+// Note that in bases 4, 5, 6, and 7, n = 9 is also not palindromic.
+// Example 2:
+
+// Input: n = 4
+// Output: false
+// Explanation: We only consider base 2: 4 = 100 (base 2), which is not palindromic.
+// Therefore, we return false.
+
+function isStriclyPalindrom(n) {
+  function isPalindrom(str) {
+    return str === str.split("").reverse().join("");
+  }
+
+  for (let i = 2; i <= n - 2; i++) {
+    let isBase = n.toString(i);
+    if (!isPalindrom(isBase)) return false;
+  }
+  return true;
+}
+console.log(isStriclyPalindrom(9));
+console.log(isStriclyPalindrom(4));
+// ====================================================================================
