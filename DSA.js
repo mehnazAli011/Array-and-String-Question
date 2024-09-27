@@ -5105,6 +5105,24 @@ function removeOutMostParantheses(s) {
 console.log(removeOutMostParantheses("(()())(())"));
 console.log(removeOutMostParantheses("(()())(())(()(()))"));
 console.log(removeOutMostParantheses("()()"));
+function removeOutMostParantheses(s) {
+  let ans = "";
+  let count = 0;
+  for (let c of s) {
+    if (c == "(") {
+      if (count) ans += c;
+      count++;
+    } else {
+      count--;
+      if (count) ans += c;
+    }
+  }
+  return ans;
+}
+
+console.log(removeOutMostParantheses("(()())(())"));
+console.log(removeOutMostParantheses("(()())(())(()(()))"));
+console.log(removeOutMostParantheses("()()"));
 // ====================================================================================
 // Q Largest odd number in string
 // You are given a string num, representing a large integer. Return the largest-valued odd integer (as a string) that is a non-empty substring of num, or an empty string "" if no odd integer exists.
@@ -5294,3 +5312,275 @@ function isStriclyPalindrom(n) {
 console.log(isStriclyPalindrom(9));
 console.log(isStriclyPalindrom(4));
 // ====================================================================================
+
+// // Q Number of the good pair
+// Given an array of integers nums, return the number of good pairs.
+
+// A pair (i, j) is called good if nums[i] == nums[j] and i < j.
+
+// Example 1:
+
+// Input: nums = [1,2,3,1,1,3]
+// Output: 4
+// Explanation: There are 4 good pairs (0,3), (0,4), (3,4), (2,5) 0-indexed.
+// Example 2:
+
+// Input: nums = [1,1,1,1]
+// Output: 6
+// Explanation: Each pair in the array are good.
+// Example 3:
+
+// Input: nums = [1,2,3]
+// Output: 0
+//Brute  Approach
+function countGoodPair(nums) {
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[i] === nums[j]) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+console.log(countGoodPair([1, 2, 3, 1, 1, 3]));
+console.log(countGoodPair([1, 1, 1, 1]));
+console.log(countGoodPair([1, 2, 3]));
+//Time  complexity:-O(n**2)
+
+//Optimal Approach
+function countGoodPair(nums) {
+  let count = 0;
+  let map = new Map();
+  for (let elm of nums) {
+    if (map.has(elm)) {
+      count += map.get(elm);
+      map.set(elm, map.get(elm) + 1);
+    } else {
+      map.set(elm, 1);
+    }
+  }
+  return count;
+}
+console.log(countGoodPair([1, 2, 3, 1, 1, 3]));
+console.log(countGoodPair([1, 1, 1, 1]));
+console.log(countGoodPair([1, 2, 3]));
+//Time  complexity:-O(n)
+
+// ========================================================================================
+// Q Count nice pair in the array
+
+// You are given an array nums that consists of non-negative integers. Let us define rev(x) as the reverse of the non-negative integer x. For example, rev(123) = 321, and rev(120) = 21. A pair of indices (i, j) is nice if it satisfies all of the following conditions:
+
+// 0 <= i < j < nums.length
+// nums[i] + rev(nums[j]) == nums[j] + rev(nums[i])
+// Return the number of nice pairs of indices. Since that number can be too large, return it modulo 109 + 7.
+
+// Example 1:
+
+// Input: nums = [42,11,1,97]
+// Output: 2
+// Explanation: The two pairs are:
+//  - (0,3) : 42 + rev(97) = 42 + 79 = 121, 97 + rev(42) = 97 + 24 = 121.
+//  - (1,2) : 11 + rev(1) = 11 + 1 = 12, 1 + rev(11) = 1 + 11 = 12.
+// Example 2:
+
+// Input: nums = [13,10,35,24,76]
+// Output: 4
+
+//Brute Approach
+function countNicePair(nums) {
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (
+        nums[i] + Number(String(nums[j]).split("").reverse().join("")) ===
+        nums[j] + Number(String(nums[i]).split("").reverse().join(""))
+      ) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+console.log(countNicePair([42, 11, 1, 97]));
+console.log(countNicePair([13, 10, 35, 24, 76]));
+
+//Optimal Approach
+function rev(x) {
+  return parseInt(x.toString().split("").reverse().join("")) || 0;
+}
+function countNicePair(nums) {
+  let map = new Map();
+  let mod = 1_000_000_007;
+  let count = 0;
+  for (let num of nums) {
+    value = num - rev(num);
+    if (map.has(value)) {
+      count = (count + map.get(value)) % mod;
+      map.set(value, map.get(value) + 1);
+    } else {
+      map.set(value, 1);
+    }
+  }
+  return count;
+}
+console.log(countNicePair([42, 11, 1, 97]));
+console.log(countNicePair([13, 10, 35, 24, 76]));
+// ======================================================================================
+// Q Count the number of Bad Pair
+// You are given a 0-indexed integer array nums. A pair of indices (i, j) is a bad pair if i < j and j - i != nums[j] - nums[i].
+
+// Return the total number of bad pairs in nums.
+
+// Example 1:
+
+// Input: nums = [4,1,3,3]
+// Output: 5
+// Explanation: The pair (0, 1) is a bad pair since 1 - 0 != 1 - 4.
+// The pair (0, 2) is a bad pair since 2 - 0 != 3 - 4, 2 != -1.
+// The pair (0, 3) is a bad pair since 3 - 0 != 3 - 4, 3 != -1.
+// The pair (1, 2) is a bad pair since 2 - 1 != 3 - 1, 1 != 2.
+// The pair (2, 3) is a bad pair since 3 - 2 != 3 - 3, 1 != 0.
+// There are a total of 5 bad pairs, so we return 5.
+// Example 2:
+
+// Input: nums = [1,2,3,4,5]
+// Output: 0
+// Explanation: There are no bad pairs.
+//Brute Approach
+function countBadPairs(nums) {
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (j - i != nums[j] - nums[i]) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+console.log(countBadPairs([4, 1, 3, 3]));
+console.log(countBadPairs([1, 2, 3, 4, 5]));
+
+//Optimal Approach
+function countBadPairs(nums) {
+  let n = nums.length;
+  let map = new Map();
+  nums.forEach((e, i) => {
+    if (!map.has(e - i)) map.set(e - i, 0);
+    map.set(e - i, map.get(e - i) + 1);
+  });
+  return (
+    (n * (n - 1)) / 2 -
+    [...map.values()].reduce((acc, b) => acc + (b * (b - 1)) / 2, 0)
+  );
+}
+console.log(countBadPairs([4, 1, 3, 3]));
+console.log(countBadPairs([1, 2, 3, 4, 5]));
+// =====================================================================================
+//Pending
+// Q K-diff pair in the array
+// Given an array of integers nums and an integer k, return the number of unique k-diff pairs in the array.
+
+// A k-diff pair is an integer pair (nums[i], nums[j]), where the following are true:
+
+// 0 <= i, j < nums.length
+// i != j
+// |nums[i] - nums[j]| == k
+// Notice that |val| denotes the absolute value of val.
+
+// Example 1:
+
+// Input: nums = [3,1,4,1,5], k = 2
+// Output: 2
+// Explanation: There are two 2-diff pairs in the array, (1, 3) and (3, 5).
+// Although we have two 1s in the input, we should only return the number of unique pairs.
+// Example 2:
+
+// Input: nums = [1,2,3,4,5], k = 1
+// Output: 4
+// Explanation: There are four 1-diff pairs in the array, (1, 2), (2, 3), (3, 4) and (4, 5).
+// Example 3:
+
+// Input: nums = [1,3,1,5,4], k = 0
+// Output: 1
+// Explanation: There is one 0-diff pair in the array, (1, 1).
+// function findPairs(nums, k) {
+//   let uniqueElm = [];
+//   let res = [];
+//   for (let i = 0; i < nums.length; i++) {
+//     for (let j = i + 1; j < nums.length; j++) {
+//       if (Math.abs(nums[i] - nums[j]) == k) {
+//         res.push([nums[i], nums[j]]);
+//       }
+//     }
+//   }
+//  return 
+// }
+// console.log(findPairs([3, 1, 4, 1, 5], 2));
+// console.log(findPairs([1, 2, 3, 4, 5], 1));
+// console.log(findPairs([1, 3, 1, 5, 4], 0));
+
+// function findPairs(nums, k) {}
+// console.log(findPairs([3, 1, 4, 1, 5], 2));
+// console.log(findPairs([1, 2, 3, 4, 5], 1));
+// console.log(findPairs([1, 3, 1, 5, 4], 0));
+// // ====================================================================================
+// // Q Count the equal and divisible pair in arrray
+// Given a 0-indexed integer array nums of length n and an integer k, return the number of pairs (i, j) where 0 <= i < j < n, such that nums[i] == nums[j] and (i * j) is divisible by k.
+
+// Example 1:
+
+// Input: nums = [3,1,2,2,2,1,3], k = 2
+// Output: 4
+// Explanation:
+// There are 4 pairs that meet all the requirements:
+// - nums[0] == nums[6], and 0 * 6 == 0, which is divisible by 2.
+// - nums[2] == nums[3], and 2 * 3 == 6, which is divisible by 2.
+// - nums[2] == nums[4], and 2 * 4 == 8, which is divisible by 2.
+// - nums[3] == nums[4], and 3 * 4 == 12, which is divisible by 2.
+// Example 2:
+
+// Input: nums = [1,2,3,4], k = 1
+// Output: 0
+// Explanation: Since no value in nums is repeated, there are no pairs (i,j) that meet all the requirements.
+
+function findEqualAndDivisiablePair(nums, k) {
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[i] === nums[j] && (i * j) % k === 0) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+console.log(findEqualAndDivisiablePair([3, 1, 2, 2, 2, 1, 3], 2));
+console.log(findEqualAndDivisiablePair([1, 2, 3, 4], 1));
+
+function findEqualAndDivisiablePair(nums, k) {
+  let map = new Map();
+  let sum = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (!map.has(nums[i])) {
+      map.set(nums[i], [i]);
+    } else {
+      let index = map.get(nums[i]);
+      for (let num of index) {
+        if ((i * num) % k === 0) {
+          sum++;
+        }
+      }
+      index.push(i);
+    }
+  }
+
+  return sum;
+}
+console.log(findEqualAndDivisiablePair([3, 1, 2, 2, 2, 1, 3], 2));
+console.log(findEqualAndDivisiablePair([1, 2, 3, 4], 1));
+// ==================================================================================
