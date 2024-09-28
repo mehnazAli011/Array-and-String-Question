@@ -5517,7 +5517,7 @@ console.log(countBadPairs([1, 2, 3, 4, 5]));
 //       }
 //     }
 //   }
-//  return 
+//  return
 // }
 // console.log(findPairs([3, 1, 4, 1, 5], 2));
 // console.log(findPairs([1, 2, 3, 4, 5], 1));
@@ -5584,3 +5584,252 @@ function findEqualAndDivisiablePair(nums, k) {
 console.log(findEqualAndDivisiablePair([3, 1, 2, 2, 2, 1, 3], 2));
 console.log(findEqualAndDivisiablePair([1, 2, 3, 4], 1));
 // ==================================================================================
+// sorting problem
+// Q Assign cookies
+// Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie.
+
+// Each child i has a greed factor g[i], which is the minimum size of a cookie that the child will be content with; and each cookie j has a size s[j]. If s[j] >= g[i], we can assign the cookie j to the child i, and the child i will be content. Your goal is to maximize the number of your content children and output the maximum number.
+
+// Example 1:
+
+// Input: g = [1,2,3], s = [1,1]
+// Output: 1
+// Explanation: You have 3 children and 2 cookies. The greed factors of 3 children are 1, 2, 3.
+// And even though you have 2 cookies, since their size is both 1, you could only make the child whose greed factor is 1 content.
+// You need to output 1.
+// Example 2:
+
+// Input: g = [1,2], s = [1,2,3]
+// Output: 2
+// Explanation: You have 2 children and 3 cookies. The greed factors of 2 children are 1, 2.
+// You have 3 cookies and their sizes are big enough to gratify all of the children,
+// You need to output 2.
+
+function findContentChildren(g, s) {
+  let contectChlid = 0;
+  g.sort((a, b) => a - b);
+  s.sort((a, b) => a - b);
+  for (let i = g.length - 1; i >= 0; i--) {
+    if (g[i] <= s[s.length - 1]) {
+      contectChlid++;
+      s.pop();
+    }
+  }
+  return contectChlid;
+}
+console.log(findContentChildren([1, 2, 3], [1, 1]));
+console.log(findContentChildren([1, 2], [1, 2, 3]));
+
+function findContentChildren(g, s) {
+  g.sort((a, b) => a - b);
+  s.sort((a, b) => a - b);
+  let c = 0;
+  let i = 0;
+
+  while (i < s.length) {
+    if (g[c] <= s[i]) {
+      c++;
+    }
+    i++;
+  }
+  return c;
+}
+console.log(findContentChildren([1, 2, 3], [1, 1]));
+console.log(findContentChildren([1, 2], [1, 2, 3]));
+// ==================================================================================
+
+// Q Maximum Gap
+// Given an integer array nums, return the maximum difference between two successive elements in its sorted form. If the array contains less than two elements, return 0.
+
+// You must write an algorithm that runs in linear time and uses linear extra space.
+
+// Example 1:
+
+// Input: nums = [3,6,9,1]
+// Output: 3
+// Explanation: The sorted form of the array is [1,3,6,9], either (3,6) or (6,9) has the maximum difference 3.
+// Example 2:
+
+// Input: nums = [10]
+// Output: 0
+// Explanation: The array contains less than 2 elements, therefore return 0.
+//Brute Approach
+function findMaximumGap(nums) {
+  if (nums.length < 2) return 0;
+  nums.sort((a, b) => a - b);
+
+  var maxGap = 0;
+
+  for (var i = 0; i < nums.length - 1; i++)
+    maxGap = Math.max(nums[i + 1] - nums[i], maxGap);
+
+  return maxGap;
+}
+console.log(findMaximumGap([3, 6, 9, 1]));
+console.log(findMaximumGap([10]));
+// Time complexity:O(n log n)
+
+//Optimal Approach
+function findMaximumGap(nums) {
+  let max = 0;
+  if (nums.length < 2) return 0;
+  nums.sort((a, b) => a - b);
+  nums.forEach((elm, i) => {
+    if (nums[i + 1] - elm > max) {
+      max = nums[i + 1] - elm;
+    }
+  });
+  return max;
+}
+console.log(findMaximumGap([3, 6, 9, 1]));
+console.log(findMaximumGap([10]));
+
+// =======================================================================================
+// Q Maximum product of the three number
+// Given an integer array nums, find three numbers whose product is maximum and return the maximum product.
+
+// Example 1:
+
+// Input: nums = [1,2,3]
+// Output: 6
+// Example 2:
+
+// Input: nums = [1,2,3,4]
+// Output: 24
+// Example 3:
+
+// Input: nums = [-1,-2,-3]
+// Output: -6
+
+//Brute Approach
+function maxProductOfThreeNum(nums) {
+  //sort The Array
+  let temp = nums[0];
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[i] > nums[j]) {
+        temp = nums[j];
+        nums[j] = nums[i];
+        nums[i] = temp;
+      }
+    }
+  }
+
+  const max1 =
+    nums[nums.length - 1] * nums[nums.length - 2] * nums[nums.length - 3];
+
+  const max2 = nums[0] * nums[1] * nums[nums.length - 1];
+
+  return Math.max(max1, max2);
+}
+console.log(maxProductOfThreeNum([1, 2, 3]));
+console.log(maxProductOfThreeNum([1, 2, 3, 4]));
+console.log(maxProductOfThreeNum([-1, -2, -3]));
+console.log(maxProductOfThreeNum([-100, -98, -1, 2, 3, 4]));
+
+//Better Approach
+function maxProductOfThreeNum(nums) {
+  //sort The Array
+  nums.sort((a, b) => a - b);
+
+  const max1 =
+    nums[nums.length - 1] * nums[nums.length - 2] * nums[nums.length - 3];
+
+  const max2 = nums[0] * nums[1] * nums[nums.length - 1];
+
+  return Math.max(max1, max2);
+}
+console.log(maxProductOfThreeNum([1, 2, 3]));
+console.log(maxProductOfThreeNum([1, 2, 3, 4]));
+console.log(maxProductOfThreeNum([-1, -2, -3]));
+console.log(maxProductOfThreeNum([-100, -98, -1, 2, 3, 4]));
+// ==================================================================================
+// Q Sort the arrray by Increasing Frequnecy
+
+// Given an array of integers nums, sort the array in increasing order based on the frequency of the values. If multiple values have the same frequency, sort them in decreasing order.
+
+// Return the sorted array.
+
+// Example 1:
+
+// Input: nums = [1,1,2,2,2,3]
+// Output: [3,1,1,2,2,2]
+// Explanation: '3' has a frequency of 1, '1' has a frequency of 2, and '2' has a frequency of 3.
+// Example 2:
+
+// Input: nums = [2,3,1,3,2]
+// Output: [1,3,3,2,2]
+// Explanation: '2' and '3' both have a frequency of 2, so they are sorted in decreasing order.
+// Example 3:
+
+// Input: nums = [-1,1,-6,4,5,-6,1,4,1]
+// Output: [5,-1,4,4,-6,-6,1,1,1]
+
+//Brute Approach
+function frequencySort(nums) {
+  let frequencyMap = new Map();
+  for (let n of nums) {
+    frequencyMap.set(n, (frequencyMap.get(n) || 0) + 1);
+  }
+  return nums.sort((a, b) => {
+    if (frequencyMap.get(a) === frequencyMap.get(b)) {
+      return b - a;
+    }
+    return frequencyMap.get(a) - frequencyMap.get(b);
+  });
+}
+console.log(frequencySort([1, 1, 2, 2, 2, 3]));
+console.log(frequencySort([2, 3, 1, 3, 2]));
+console.log(frequencySort([-1, 1, -6, 4, 5, -6, 1, 4, 1]));
+// Time complexity:-O(n log n)
+
+//Better Approach
+function frequencySort(nums) {
+  const obj = nums.reduce((acc, curr) => {
+    if (acc[curr]) {
+      acc[curr]++;
+    } else {
+      acc[curr] = 1;
+    }
+    return acc;
+  }, {});
+  return nums.sort((a, b) => {
+    if (obj[a] === obj[b]) {
+      return b - a;
+    }
+    return obj[a] - obj[b];
+  });
+}
+console.log(frequencySort([1, 1, 2, 2, 2, 3]));
+console.log(frequencySort([2, 3, 1, 3, 2]));
+console.log(frequencySort([-1, 1, -6, 4, 5, -6, 1, 4, 1]));
+// Time complexity:-O(n log n)
+
+// =======================================================================================
+
+// Q  Top k frequnet Elements
+// Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+// Example 1:
+
+// Input: nums = [1,1,1,2,2,3], k = 2
+// Output: [1,2]
+// Example 2:
+
+// Input: nums = [1], k = 1
+// Output: [1]
+
+function topKFrequncy(nums, k) {
+  let frequencyMap = new Map();
+  for (let elm of nums) {
+    frequencyMap.set(elm, (frequencyMap.get(elm) || 0) + 1);
+  }
+  sortedArr = [...frequencyMap.entries()].sort((a, b) => b[1] - a[1]);
+
+  return sortedArr.slice(0, k).map(([num]) => num);
+}
+console.log(topKFrequncy([1, 1, 1, 2, 2, 3], 2));
+console.log(topKFrequncy([1], 1));
+//Time complexity:-O(n +m log m +k)
+
+// =====================================================================================
