@@ -5783,7 +5783,6 @@ console.log(frequencySort([2, 3, 1, 3, 2]));
 console.log(frequencySort([-1, 1, -6, 4, 5, -6, 1, 4, 1]));
 // Time complexity:-O(n log n)
 
-//Better Approach
 function frequencySort(nums) {
   const obj = nums.reduce((acc, curr) => {
     if (acc[curr]) {
@@ -5833,3 +5832,204 @@ console.log(topKFrequncy([1], 1));
 //Time complexity:-O(n +m log m +k)
 
 // =====================================================================================
+// Q Most frequncy even Element
+// Given an integer array nums, return the most frequent even element.
+
+// If there is a tie, return the smallest one. If there is no such element, return -1.
+
+// Example 1:
+
+// Input: nums = [0,1,2,2,4,4,1]
+// Output: 2
+// Explanation:
+// The even elements are 0, 2, and 4. Of these, 2 and 4 appear the most.
+// We return the smallest one, which is 2.
+// Example 2:
+
+// Input: nums = [4,4,4,9,2,4]
+// Output: 4
+// Explanation: 4 is the even element appears the most.
+// Example 3:
+
+// Input: nums = [29,47,21,41,13,37,25,7]
+// Output: -1
+// Explanation: There is no even element.
+//Brute Approach
+function mostFrquncyEven(nums) {
+  let frequencyMap = new Map();
+  for (let elm of nums) {
+    if (elm % 2 === 0) {
+      frequencyMap.set(elm, (frequencyMap.get(elm) || 0) + 1);
+    }
+  }
+  let maxFrequncy = 0;
+  let res = -1;
+  for (let [num, freq] of frequencyMap.entries()) {
+    if (freq > maxFrequncy || (freq === maxFrequncy && num < res)) {
+      maxFrequncy = freq;
+      res = num;
+    }
+  }
+  return res;
+}
+console.log(mostFrquncyEven([0, 1, 2, 2, 4, 4, 1]));
+console.log(mostFrquncyEven([4, 4, 4, 9, 2, 4]));
+console.log(mostFrquncyEven([29, 47, 21, 41, 13, 37, 25, 7]));
+// Time complexity:-O(n)
+
+//Optimal Approach
+function mostFrquncyEven(nums) {
+  let frequencyMap = new Map();
+  let maxFrequncy = 0;
+  let res = -1;
+  for (let elm of nums) {
+    if (elm % 2 === 0) {
+      frequencyMap[elm] = (frequencyMap[elm] || 0) + 1;
+
+      if (frequencyMap[elm] > maxFrequncy) {
+        maxFrequncy = frequencyMap[elm];
+        res = elm;
+      } else if (frequencyMap[elm] === maxFrequncy && elm < res) {
+        res = elm;
+      }
+    }
+  }
+
+  return res;
+}
+console.log(mostFrquncyEven([0, 1, 2, 2, 4, 4, 1]));
+console.log(mostFrquncyEven([4, 4, 4, 9, 2, 4]));
+console.log(mostFrquncyEven([29, 47, 21, 41, 13, 37, 25, 7]));
+// Time complexity
+// ======================================================================================
+// Q Sort Characters by Frequncy
+// Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+
+// Return the sorted string. If there are multiple answers, return any of them.
+
+// Example 1:
+
+// Input: s = "tree"
+// Output: "eert"
+// Explanation: 'e' appears twice while 'r' and 't' both appear once.
+// So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+// Example 2:
+
+// Input: s = "cccaaa"
+// Output: "aaaccc"
+// Explanation: Both 'c' and 'a' appear three times, so both "cccaaa" and "aaaccc" are valid answers.
+// Note that "cacaca" is incorrect, as the same characters must be together.
+// Example 3:
+
+// Input: s = "Aabb"
+// Output: "bbAa"
+// Explanation: "bbaA" is also a valid answer, but "Aabb" is incorrect.
+// Note that 'A' and 'a' are treated as two different characters.
+
+function sortChar(s) {
+  let charFreq = new Map();
+  for (let char of s) {
+    charFreq.set(char, (charFreq.get(char) || 0) + 1);
+  }
+  let sortedArr = Array.from(charFreq.entries()).sort((a, b) => {
+    if (b[1] === a[1]) {
+      return s.indexOf(a[0]) - s.indexOf(b[0]);
+    }
+    return b[1] - a[1];
+  });
+  let res = " ";
+  for (let [char, freq] of sortedArr) {
+    res += char.repeat(freq);
+  }
+  return res;
+}
+console.log(sortChar("tree"));
+console.log(sortChar("cccaaa"));
+console.log(sortChar("Aabb"));
+
+function sortChar(s) {
+  let map = new Map();
+  for (let c of s) {
+    map.set(c, (map.get(c) || 0) + 1);
+  }
+  let arr = [...map.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map((c) => c[0].repeat(c[1]))
+    .join("");
+  return arr;
+}
+console.log(sortChar("tree"));
+console.log(sortChar("cccaaa"));
+console.log(sortChar("Aabb"));
+// Time complexity:-O(n)
+// =======================================================================================
+// Q Maximum number of pair in array
+// You are given a 0-indexed integer array nums. In one operation, you may do the following:
+
+// Choose two integers in nums that are equal.
+// Remove both integers from nums, forming a pair.
+// The operation is done on nums as many times as possible.
+
+// Return a 0-indexed integer array answer of size 2 where answer[0] is the number of pairs that are formed and answer[1] is the number of leftover integers in nums after doing the operation as many times as possible.
+
+// Example 1:
+
+// Input: nums = [1,3,2,1,3,2,2]
+// Output: [3,1]
+// Explanation:
+// Form a pair with nums[0] and nums[3] and remove them from nums. Now, nums = [3,2,3,2,2].
+// Form a pair with nums[0] and nums[2] and remove them from nums. Now, nums = [2,2,2].
+// Form a pair with nums[0] and nums[1] and remove them from nums. Now, nums = [2].
+// No more pairs can be formed. A total of 3 pairs have been formed, and there is 1 number leftover in nums.
+// Example 2:
+
+// Input: nums = [1,1]
+// Output: [1,0]
+// Explanation: Form a pair with nums[0] and nums[1] and remove them from nums. Now, nums = [].
+// No more pairs can be formed. A total of 1 pair has been formed, and there are 0 numbers leftover in nums.
+// Example 3:
+
+// Input: nums = [0]
+// Output: [0,1]
+// Explanation: No pairs can be formed, and there is 1 number leftover in nums.
+
+//Brute  Approach
+function numberOfPair(nums) {
+  let map = {};
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (map[nums[i]]) {
+      delete map[nums[i]];
+      count++;
+    } else {
+      map[nums[i]] = 1;
+    }
+  }
+  return [count, Object.values(map).length];
+}
+console.log(numberOfPair([1, 3, 2, 1, 3, 2, 2]));
+console.log(numberOfPair([1, 1]));
+console.log(numberOfPair([0]));
+
+// Time copmlexity:O(n)
+
+//Better Approach
+function numberOfPair(nums) {
+  let map = new Map();
+  for (let num of nums) {
+    map.set(num, (map.get(num) || 0) + 1);
+  }
+  let pair = 0;
+  let leftOver = 0;
+  for (let count of map.values()) {
+    pair += Math.floor(count / 2);
+    leftOver += count % 2;
+  }
+  return [pair, leftOver];
+}
+console.log(numberOfPair([1, 3, 2, 1, 3, 2, 2]));
+console.log(numberOfPair([1, 1]));
+console.log(numberOfPair([0]));
+// Time complexity:O(n)
+// =====================================================================================
+
