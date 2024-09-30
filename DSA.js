@@ -709,7 +709,7 @@ console.log(twoSum([3, 3], 6));
 // }
 // console.log(reverseString(["h", "e", "l", "l", "o"]));
 // console.log(reverseString(["H", "a", "n", "n", "a", "h"]));
-
+// ======================================================================================
 // // // Q 16
 // // Find All Disapper number in Array
 // // Given an array nums of n integers where nums[i] is in the range [1, n], return an array of all the integers in the range [1, n] that do not appear in nums.
@@ -841,7 +841,7 @@ console.log(twoSum([3, 3], 6));
 // console.log(findTheSecondLargest([1, 7, 7, 7, 7]));
 // ==============================================================================
 
-// Q 18 Remove Duplicate from the sorted Array
+// Q 19 Remove Duplicate from the sorted Array
 // Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums.
 
 // Consider the number of unique elements of nums to be k, to get accepted, you need to do the following things:
@@ -1291,50 +1291,7 @@ console.log(majorityElm([3, 2, 3]));
 console.log(majorityElm([1]));
 console.log(majorityElm([1, 2]));
 // ============================================================================
-// 3 sum
-// Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
 
-// Notice that the solution set must not contain duplicate triplets.
-
-// Example 1:
-
-// Input: nums = [-1,0,1,2,-1,-4]
-// Output: [[-1,-1,2],[-1,0,1]]
-// Explanation:
-// nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
-// nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
-// nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
-// The distinct triplets are [-1,0,1] and [-1,-1,2].
-// Notice that the order of the output and the order of the triplets does not matter.
-// Example 2:
-
-// Input: nums = [0,1,1]
-// Output: []
-// Explanation: The only possible triplet does not sum up to 0.
-// Example 3:
-
-// Input: nums = [0,0,0]
-// Output: [[0,0,0]]
-// Explanation: The only possible triplet sums up to 0.
-
-// function ThreeSum(nums) {
-//   nums.sort((a, b) => a - b);
-//   let result = [];
-//   for (let i = 0; i < nums.length; i++) {
-//     for (let j = i + 1; j < nums.length; j++) {
-//       for (let k = j + 1; k < nums.length; k++) {
-//         if (nums[i] + nums[j] + nums[k] === 0) {
-//           result.push([nums[i], nums[j], nums[k]]);
-//         }
-//       }
-//     }
-//   }
-//   return result;
-// }
-// console.log(ThreeSum([-1, 0, 1, 2, -1, -4]));
-// console.log(ThreeSum([0, 1, 1]));
-// console.log(ThreeSum([0, 0, 0]));
-// ===============================================================================
 // Q 31
 // Given an input string s, reverse the order of the words.
 
@@ -6032,4 +5989,303 @@ console.log(numberOfPair([1, 1]));
 console.log(numberOfPair([0]));
 // Time complexity:O(n)
 // =====================================================================================
+// 3 sum
+// Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
 
+// Notice that the solution set must not contain duplicate triplets.
+
+// Example 1:
+
+// Input: nums = [-1,0,1,2,-1,-4]
+// Output: [[-1,-1,2],[-1,0,1]]
+// Explanation:
+// nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+// nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+// nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+// The distinct triplets are [-1,0,1] and [-1,-1,2].
+// Notice that the order of the output and the order of the triplets does not matter.
+// Example 2:
+
+// Input: nums = [0,1,1]
+// Output: []
+// Explanation: The only possible triplet does not sum up to 0.
+// Example 3:
+
+// Input: nums = [0,0,0]
+// Output: [[0,0,0]]
+// Explanation: The only possible triplet sums up to 0.
+
+//Brute Approach
+function ThreeSum(nums) {
+  let res = new Set();
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      for (let k = j + 1; k < nums.length; k++) {
+        if (nums[i] + nums[j] + nums[k] === 0) {
+          triplet = [nums[i], nums[j], nums[k]]
+            .sort((a, b) => a - b)
+            .toString();
+          res.add(triplet);
+        }
+      }
+    }
+  }
+  return Array.from(res).map((triplet) => triplet.split(",").map(Number));
+}
+console.log(ThreeSum([-1, 0, 1, 2, -1, -4]));
+console.log(ThreeSum([0, 1, 1]));
+console.log(ThreeSum([0, 0, 0]));
+// Time complexity:-O(n**2)
+function ThreeSum(nums) {
+  let res = new Set();
+  nums.sort((a, b) => a - b);
+  const n = nums.length;
+  for (let i = 0; i < n; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    let j = i + 1;
+    let k = n - 1;
+    while (j < k) {
+      sum = nums[i] + nums[j] + nums[k];
+      if (sum < 0) {
+        j++;
+      } else if (sum > 0) {
+        k--;
+      } else {
+        triplet = [nums[i], nums[j], nums[k]].sort((a, b) => a - b).toString();
+        res.add(triplet);
+        j++;
+        k--;
+        while (j < k && nums[j] === nums[j - 1]) j++;
+        while (j < k && nums[k] === nums[k + 1]) k--;
+      }
+    }
+  }
+  return Array.from(res).map((triplet) => triplet.split(",").map(Number));
+}
+console.log(ThreeSum([-1, 0, 1, 2, -1, -4]));
+console.log(ThreeSum([0, 1, 1]));
+console.log(ThreeSum([0, 0, 0]));
+// Time complexity:-O(n**2)
+function ThreeSum(nums) {
+  let finalResult = [];
+//sort the array to make esay to ignore to dupliucate
+  nums.sort((a, b) => a - b);
+
+  for (let i = 0; i < nums.length; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) {
+      continue;
+    }
+
+    let j = i + 1;
+    let k = nums.length - 1;
+
+    while (j < k) {
+      let sum = nums[i] + nums[j] + nums[k];
+
+      if (sum < 0) {
+        j++;
+      } else if (sum > 0) {
+        k--;
+      } else {
+        finalResult.push([nums[i], nums[j], nums[k]]);
+        j++;
+        k--;
+   //skip duplicate for j and k 
+        while (j < k && nums[j] === nums[j - 1]) {
+          j++;
+        }
+
+        while (j < k && nums[k] === nums[k + 1]) {
+          k--;
+        }
+      }
+    }
+  }
+
+  return finalResult;
+}
+console.log(ThreeSum([-1, 0, 1, 2, -1, -4]));
+console.log(ThreeSum([0, 1, 1]));
+console.log(ThreeSum([0, 0, 0]));
+// Time complexity:-O(n**2)
+
+//Optimal Approach
+
+// ===============================================================================
+// Q 4 Sum
+// Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+
+// 0 <= a, b, c, d < n
+// a, b, c, and d are distinct.
+// nums[a] + nums[b] + nums[c] + nums[d] == target
+// You may return the answer in any order.
+
+// Example 1:
+
+// Input: nums = [1,0,-1,0,-2,2], target = 0
+// Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+// Example 2:
+
+// Input: nums = [2,2,2,2,2], target = 8
+// Output: [[2,2,2,2]]
+function fourSum(nums, target) {
+  let n = nums.length;
+  let finalResult = [];
+  
+  // Sort the array to make it easier to avoid duplicates
+  nums.sort((a, b) => a - b);
+
+  for (let i = 0; i < n; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) continue; // Skip duplicates for i
+    for (let j = i + 1; j < n; j++) {
+      if (j !== i + 1 && nums[j] === nums[j - 1]) continue; // Skip duplicates for j
+      let k = j + 1;
+      let l = n - 1;
+
+      while (k < l) {
+        const sum = nums[i] + nums[j] + nums[k] + nums[l];
+
+        if (sum === target) {
+          finalResult.push([nums[i], nums[j], nums[k], nums[l]]);
+          k++;
+          l--;
+          // Skip duplicates for k and l
+          while (k < l && nums[k] === nums[k - 1]) k++;
+          while (k < l && nums[l] === nums[l + 1]) l--;
+        } else if (sum < target) {
+          k++;
+        } else {
+          l--;
+        }
+      }
+    }
+  }
+  return finalResult;
+}
+console.log(fourSum([1, 0, -1, 0, -2, 2], 0)); 
+console.log(fourSum([2, 2, 2, 2, 2], 8))
+// time complexity:-O(n**3)
+// =======================================================================================
+// Q Kth Smallest Elments in sorted Matrix
+// Given an n x n matrix where each of the rows and columns is sorted in ascending order, return the kth smallest element in the matrix.
+
+// Note that it is the kth smallest element in the sorted order, not the kth distinct element.
+
+// You must find a solution with a memory complexity better than O(n2).
+
+// Example 1:
+
+// Input: matrix = [[1,5,9],[10,11,13],[12,13,15]], k = 8
+// Output: 13
+// Explanation: The elements in the matrix are [1,5,9,10,11,12,13,13,15], and the 8th smallest number is 13
+// Example 2:
+
+// Input: matrix = [[-5]], k = 1
+// Output: -5
+
+//Brute
+function kthSmallestElm(matrix, k) {
+  let res = [];
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      res.push(matrix[i][j]);
+    }
+  }
+  return res.sort((a, b) => a - b).at(k - 1);
+}
+console.log(
+  kthSmallestElm(
+    [
+      [1, 5, 9],
+      [10, 11, 13],
+      [12, 13, 15],
+    ],
+    (k = 8)
+  )
+);
+console.log(kthSmallestElm([[-5]], (k = 1)));
+
+function kthSmallestElm(matrix, k) {
+  let flattedArr = matrix.flat(Infinity).sort((a, b) => a - b);
+  return flattedArr.at(k - 1);
+}
+console.log(
+  kthSmallestElm(
+    [
+      [1, 5, 9],
+      [10, 11, 13],
+      [12, 13, 15],
+    ],
+    (k = 8)
+  )
+);
+console.log(kthSmallestElm([[-5]], (k = 1)));
+// =======================================================================================
+// Q Kth largest Elm
+// Given an integer array nums and an integer k, return the kth largest element in the array.
+
+// Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+// Can you solve it without sorting?
+
+// Example 1:
+
+// Input: nums = [3,2,1,5,6,4], k = 2
+// Output: 5
+// Example 2:
+
+// Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+// Output: 4
+//Brute Approach
+function kthLargestElm(nums, k) {
+  return nums.sort((a, b) => a - b).at(nums.length - k - 1);
+}
+console.log(kthLargestElm([3, 2, 1, 5, 6, 4], 2));
+console.log(kthLargestElm([3, 2, 3, 1, 2, 4, 5, 5, 6], 4));
+
+//Better Approach
+function kthLargestElm(nums, k) {
+  const largest = Math.max(...nums);
+
+  const counts = new Map();
+
+  for (const num of nums) {
+    const diff = largest - num;
+    counts.set(diff, (counts.get(diff) || 0) + 1);
+  }
+
+  console.log(counts);
+  let count = 0;
+  let diff = 0;
+
+  while (count < k) {
+    count += counts.get(diff) || 0;
+    diff++;
+    console.log(count, diff);
+  }
+
+  return largest - diff + 1;
+}
+console.log(kthLargestElm([3, 2, 1, 5, 6, 4], 2));
+console.log(kthLargestElm([3, 2, 3, 1, 2, 4, 5, 5, 6], 4));
+// Time complexity:-O(n+d)
+
+//Optimla Approach
+function kthLargestElm(nums, k) {
+  const minVal = Math.min(...nums);
+  const maxVal = Math.max(...nums);
+  let range = maxVal - minVal + 1;
+  let arr = new Array(range).fill(0);
+  for (let num of nums) {
+    arr[num - minVal]++;
+  }
+  let count = 0;
+  for (let i = arr.length - 1; i >= 0; i--) {
+    count += arr[i];
+    if (count >= k) return i + minVal;
+  }
+}
+console.log(kthLargestElm([3, 2, 1, 5, 6, 4], 2));
+console.log(kthLargestElm([3, 2, 3, 1, 2, 4, 5, 5, 6], 4));
+// Time complexity:-O(n)
+// ======================================================================================
