@@ -6068,7 +6068,7 @@ console.log(ThreeSum([0, 0, 0]));
 // Time complexity:-O(n**2)
 function ThreeSum(nums) {
   let finalResult = [];
-//sort the array to make esay to ignore to dupliucate
+  //sort the array to make esay to ignore to dupliucate
   nums.sort((a, b) => a - b);
 
   for (let i = 0; i < nums.length; i++) {
@@ -6090,7 +6090,7 @@ function ThreeSum(nums) {
         finalResult.push([nums[i], nums[j], nums[k]]);
         j++;
         k--;
-   //skip duplicate for j and k 
+        //skip duplicate for j and k
         while (j < k && nums[j] === nums[j - 1]) {
           j++;
         }
@@ -6131,7 +6131,7 @@ console.log(ThreeSum([0, 0, 0]));
 function fourSum(nums, target) {
   let n = nums.length;
   let finalResult = [];
-  
+
   // Sort the array to make it easier to avoid duplicates
   nums.sort((a, b) => a - b);
 
@@ -6162,8 +6162,8 @@ function fourSum(nums, target) {
   }
   return finalResult;
 }
-console.log(fourSum([1, 0, -1, 0, -2, 2], 0)); 
-console.log(fourSum([2, 2, 2, 2, 2], 8))
+console.log(fourSum([1, 0, -1, 0, -2, 2], 0));
+console.log(fourSum([2, 2, 2, 2, 2], 8));
 // time complexity:-O(n**3)
 // =======================================================================================
 // Q Kth Smallest Elments in sorted Matrix
@@ -6289,3 +6289,196 @@ console.log(kthLargestElm([3, 2, 1, 5, 6, 4], 2));
 console.log(kthLargestElm([3, 2, 3, 1, 2, 4, 5, 5, 6], 4));
 // Time complexity:-O(n)
 // ======================================================================================
+//Q Valid triangle
+// Given an integer array nums, return the number of triplets chosen from the array that can make triangles if we take them as side lengths of a triangle.
+
+// Example 1:
+
+// Input: nums = [2,2,3,4]
+// Output: 3
+// Explanation: Valid combinations are:
+// 2,3,4 (using the first 2)
+// 2,3,4 (using the second 2)
+// 2,2,3
+
+// Example 2:
+
+// Input: nums = [4,2,3,4]
+// Output: 4
+
+//Brute Approach
+function countValidTriangle(nums) {
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      for (let k = j + 1; k < nums.length; k++) {
+        if (
+          nums[i] + nums[j] > nums[k] &&
+          nums[k] + nums[j] > nums[i] &&
+          nums[i] + nums[k] > nums[j]
+        ) {
+          count++;
+        }
+      }
+    }
+  }
+  return count;
+}
+console.log(countValidTriangle([2, 2, 3, 4]));
+console.log(countValidTriangle([4, 2, 3, 4]));
+//time complexity:-O (n^3)
+
+function countValidTriangle(nums) {
+  let count = 0;
+  nums.sort((a, b) => a - b);
+  for (let k = 2; k < nums.length; k++) {
+    let i = 0;
+    let j = k - 1;
+    while (i < j) {
+      if (nums[i] + nums[j] > nums[k]) {
+        count += j - i;
+        j--;
+      } else {
+        i++;
+      }
+    }
+  }
+  return count;
+}
+console.log(countValidTriangle([2, 2, 3, 4]));
+console.log(countValidTriangle([4, 2, 3, 4]));
+//time complexity:-O (n log n)
+// ======================================================================================
+// Q Rotate sorted Array
+// There is an integer array nums sorted in ascending order (with distinct values).
+
+// Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+
+// Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+
+// You must write an algorithm with O(log n) runtime complexity.
+
+// Example 1:
+
+// Input: nums = [4,5,6,7,0,1,2], target = 0
+// Output: 4
+// Example 2:
+
+// Input: nums = [4,5,6,7,0,1,2], target = 3
+// Output: -1
+// Example 3:
+
+// Input: nums = [1], target = 0
+// Output: -1
+// //Brute Approach
+// function sreach(nums, target) {
+//   for (let i = 0; i < nums.length; i++) {
+//     if (target === nums[i]) {
+//       return i;
+//     }
+//   }
+//   return -1;
+// }
+// console.log(sreach([4, 5, 6, 7, 0, 1, 2], 0));
+// console.log(sreach([4, 5, 6, 7, 0, 1, 2], 3));
+console.log(sreach([1], 0));
+// //time complexity:O (n log n)
+
+function sreach(nums, target) {
+  let left = 0;
+  let right = nums.length - 1;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+
+    if (target === nums[mid]) return mid;
+
+    if (nums[left] <= nums[mid]) {
+      if (nums[left] <= target && target < nums[mid]) {
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
+    } else {
+      if (nums[mid] < target && target <= nums[right]) {
+        left = mid + 1; // Target is in the right half
+      } else {
+        right = mid - 1; // Target is in the left half
+      }
+    }
+  }
+
+  return -1; // Target not found
+}
+console.log(sreach([4, 5, 6, 7, 0, 1, 2], 0));
+console.log(sreach([4, 5, 6, 7, 0, 1, 2], 3));
+console.log(sreach([1], 0));
+console.log(sreach([1], 0));
+console.log(sreach([5, 1, 3], 3));
+// =====================================================================================
+//Q Integer to roman
+// Seven different symbols represent Roman numerals with the following values:
+
+// Symbol	Value
+// I	1
+// V	5
+// X	10
+// L	50
+// C	100
+// D	500
+// M	1000
+// Roman numerals are formed by appending the conversions of decimal place values from highest to lowest. Converting a decimal place value into a Roman numeral has the following rules:
+
+// If the value does not start with 4 or 9, select the symbol of the maximal value that can be subtracted from the input, append that symbol to the result, subtract its value, and convert the remainder to a Roman numeral.
+// If the value starts with 4 or 9 use the subtractive form representing one symbol subtracted from the following symbol, for example, 4 is 1 (I) less than 5 (V): IV and 9 is 1 (I) less than 10 (X): IX. Only the following subtractive forms are used: 4 (IV), 9 (IX), 40 (XL), 90 (XC), 400 (CD) and 900 (CM).
+// Only powers of 10 (I, X, C, M) can be appended consecutively at most 3 times to represent multiples of 10. You cannot append 5 (V), 50 (L), or 500 (D) multiple times. If you need to append a symbol 4 times use the subtractive form.
+// Given an integer, convert it to a Roman numeral.
+
+// Example 1:
+
+// Input: num = 3749
+
+// Output: "MMMDCCXLIX"
+
+// Explanation:
+
+// 3000 = MMM as 1000 (M) + 1000 (M) + 1000 (M)
+//  700 = DCC as 500 (D) + 100 (C) + 100 (C)
+//   40 = XL as 10 (X) less of 50 (L)
+//    9 = IX as 1 (I) less of 10 (X)
+// Note: 49 is not 1 (I) less of 50 (L) because the conversion is based on decimal places
+// Example 2:
+
+// Input: num = 58
+
+// Output: "LVIII"
+
+// Explanation:
+
+// 50 = L
+//  8 = VIII
+// Example 3:
+
+// Input: num = 1994
+
+// Output: "MCMXCIV"
+
+// Explanation:
+
+// 1000 = M
+//  900 = CM
+//   90 = XC
+//    4 = IV
+
+function integerToRoman(num){
+const M = {"M":1000,"CM":900,"D":500,"CD":400,"C":100,"XC":90,"L":50,"XL":40,"X":10,"IX":9,"V":5,"IV":4,"I":1};let result = "";
+Object.entries(M).forEach(([k,v])=>{
+  result+=k.repeat(Math.floor(num/v));
+  num%=v;
+})
+return result
+}
+console.log(integerToRoman(3749));
+console.log(integerToRoman(58));
+console.log(integerToRoman(1994));
+// =======================================================================================
