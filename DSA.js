@@ -6482,3 +6482,113 @@ console.log(integerToRoman(3749));
 console.log(integerToRoman(58));
 console.log(integerToRoman(1994));
 // =======================================================================================
+//Q 10 Best time to buy and sell stock ||
+//Brute Approach
+function maxProfit(prices) {
+  let profit = 0;
+  for (let i = 1; i < prices.length; i++) {
+    if (prices[i] > prices[i - 1]) {
+      profit += prices[i] - prices[i - 1];
+    }
+  }
+  return profit;
+}
+console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+console.log(maxProfit([1, 2, 3, 4, 5]));
+console.log(maxProfit([7, 6, 4, 3, 1]));
+
+//Better Approach
+function maxProfit(prices) {
+  let cast = [0];
+  let stock = [-prices[0]];
+  for (let i = 1; i < prices.length; i++) {
+    cast[i] = Math.max(cast[i - 1], stock[i - 1] + prices[i]);
+    stock[i] = Math.max(stock[i - 1], cast[i - 1] - prices[i]);
+  }
+  return cast[prices.length - 1];
+}
+console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+console.log(maxProfit([1, 2, 3, 4, 5]));
+console.log(maxProfit([7, 6, 4, 3, 1]));
+
+// =======================================================================================
+//Q  jump game
+// You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+
+// Return true if you can reach the last index, or false otherwise.
+
+// Example 1:
+
+// Input: nums = [2,3,1,1,4]
+// Output: true
+// Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+// Example 2:
+
+// Input: nums = [3,2,1,0,4]
+// Output: false
+// Explanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.
+
+function canJump(nums) {
+  let maxIndex = 0;
+  for (let i = 0; i < nums.length - 1; i++) {
+    if (i > maxIndex) {
+      return false;
+    }
+    maxIndex = Math.max(maxIndex, i + nums[i]);
+  }
+  return maxIndex >= nums.length - 1;
+}
+console.log(canJump([2, 3, 1, 1, 4]));
+console.log(canJump([3, 2, 1, 0, 4]));
+function canJump(nums) {
+  let goal = nums.length - 1;
+  for (let i = nums.length - 2; i >= 0; i--) {
+    if (i + nums[i] >= goal) {
+      goal = i;
+    }
+  }
+
+  return goal === 0;
+}
+console.log(canJump([2, 3, 1, 1, 4]));
+console.log(canJump([3, 2, 1, 0, 4]));
+// =========================================================================================
+//Q jump game ||
+// You are given a 0-indexed array of integers nums of length n. You are initially positioned at nums[0].
+
+// Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at nums[i], you can jump to any nums[i + j] where:
+
+// 0 <= j <= nums[i] and
+// i + j < n
+// Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that you can reach nums[n - 1].
+
+// Example 1:
+
+// Input: nums = [2,3,1,1,4]
+// Output: 2
+// Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.
+// Example 2:
+
+// Input: nums = [2,3,0,1,4]
+// Output: 2
+
+//Optimal Approach
+function jump(nums) {
+  let jumps = 0;
+  let l = 0;
+  let r = 0;
+  while (r < nums.length - 1) {
+    let max = 0;
+    for (let i = 0; i <= r; i++) {
+      max = Math.max(i + nums[i], max);
+    }
+    l = r + 1;
+    r = max;
+    jumps = jumps + 1;
+  }
+  return jumps;
+}
+console.log(jump([2, 3, 1, 1, 4]));
+console.log(jump([2, 3, 0, 1, 4]));
+// Time complexity:-O(n)
+// =========================================================================================
