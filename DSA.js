@@ -6470,13 +6470,28 @@ console.log(sreach([5, 1, 3], 3));
 //   90 = XC
 //    4 = IV
 
-function integerToRoman(num){
-const M = {"M":1000,"CM":900,"D":500,"CD":400,"C":100,"XC":90,"L":50,"XL":40,"X":10,"IX":9,"V":5,"IV":4,"I":1};let result = "";
-Object.entries(M).forEach(([k,v])=>{
-  result+=k.repeat(Math.floor(num/v));
-  num%=v;
-})
-return result
+function integerToRoman(num) {
+  const M = {
+    M: 1000,
+    CM: 900,
+    D: 500,
+    CD: 400,
+    C: 100,
+    XC: 90,
+    L: 50,
+    XL: 40,
+    X: 10,
+    IX: 9,
+    V: 5,
+    IV: 4,
+    I: 1,
+  };
+  let result = "";
+  Object.entries(M).forEach(([k, v]) => {
+    result += k.repeat(Math.floor(num / v));
+    num %= v;
+  });
+  return result;
 }
 console.log(integerToRoman(3749));
 console.log(integerToRoman(58));
@@ -6592,3 +6607,162 @@ console.log(jump([2, 3, 1, 1, 4]));
 console.log(jump([2, 3, 0, 1, 4]));
 // Time complexity:-O(n)
 // =========================================================================================
+// // Q Group Anagram
+// Given an array of strings strs, group the
+// anagrams
+//  together. You can return the answer in any order.
+
+// Example 1:
+
+// Input: strs = ["eat","tea","tan","ate","nat","bat"]
+
+// Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+// Explanation:
+
+// There is no string in strs that can be rearranged to form "bat".
+// The strings "nat" and "tan" are anagrams as they can be rearranged to form each other.
+// The strings "ate", "eat", and "tea" are anagrams as they can be rearranged to form each other.
+// Example 2:
+
+// Input: strs = [""]
+
+// Output: [[""]]
+
+// Example 3:
+
+// Input: strs = ["a"]
+
+// Output: [["a"]]
+
+function groupAnagram(strs) {
+  let map = {};
+  for (let s of strs) {
+    let keys = s.split("").sort().join("");
+    if (map[keys]) {
+      map[keys].push(s);
+    } else {
+      map[keys] = [s];
+    }
+  }
+  return Object.values(map);
+}
+console.log(groupAnagram(["eat", "tea", "tan", "ate", "nat", "bat"]));
+console.log(groupAnagram([""]));
+console.log(groupAnagram(["a"]));
+// time complexity:-O(n*klogk)
+
+function groupAnagram(strs) {
+  let map = {};
+  let array = Array.from(26).fill(0);
+
+  for (let s of strs) {
+    for (let i = 0; i < s.length; i++) {
+      let ascci = s.charCodeAt(i);
+      array[ascci - 97] += 1;
+    }
+    const keys = array.join("-");
+    if (map[keys]) {
+      map[keys].push(s);
+    } else {
+      map[keys] = [s];
+    }
+  }
+  return Object.values(map);
+}
+console.log(groupAnagram(["eat", "tea", "tan", "ate", "nat", "bat"]));
+console.log(groupAnagram([""]));
+console.log(groupAnagram(["a"]));
+//time complexity:-O(nk)
+//========================================================================================
+//Q H-index
+// Given an array of integers citations where citations[i] is the number of citations a researcher received for their ith paper, return the researcher's h-index.
+
+// According to the definition of h-index on Wikipedia: The h-index is defined as the maximum value of h such that the given researcher has published at least h papers that have each been cited at least h times.
+
+// Example 1:
+
+// Input: citations = [3,0,6,1,5]
+// Output: 3
+// Explanation: [3,0,6,1,5] means the researcher has 5 papers in total and each of them had received 3, 0, 6, 1, 5 citations respectively.
+// Since the researcher has 3 papers with at least 3 citations each and the remaining two with no more than 3 citations each, their h-index is 3.
+// Example 2:
+
+// Input: citations = [1,3,1]
+// Output: 1
+function hIndex(citations) {
+  citations.sort((a, b) => b - a);
+  for (let i = 0; i < citations.length; i++) {
+    let count = 0;
+    for (let j = 0; j < citations.length; j++) {
+      if (citations[i] <= citations[j]) {
+        count++;
+      }
+    }
+    if (count >= citations[i]) {
+      return citations[i];
+    }
+  }
+  return citations.length;
+}
+console.log(hIndex([3, 0, 6, 1, 5]));
+console.log(hIndex([1, 3, 1]));
+console.log(hIndex([100]));
+//Time complexity:O(n^2)
+
+function hIndex(citations) {
+  citations.sort((a, b) => b - a);
+  for (let i = 0; i < citations.length; i++) {
+    if (citations[i] <= i) {
+      return i;
+    }
+  }
+  return citations.length;
+}
+console.log(hIndex([3, 0, 6, 1, 5]));
+console.log(hIndex([1, 3, 1]));
+//time complexity:O(n log n)
+// ======================================================================================
+//Q Top k frequncy words
+// Given an array of strings words and an integer k, return the k most frequent strings.
+
+// Return the answer sorted by the frequency from highest to lowest. Sort the words with the same frequency by their lexicographical order.
+
+// Example 1:
+
+// Input: words = ["i","love","leetcode","i","love","coding"], k = 2
+// Output: ["i","love"]
+// Explanation: "i" and "love" are the two most frequent words.
+// Note that "i" comes before "love" due to a lower alphabetical order.
+// Example 2:
+
+// Input: words = ["the","day","is","sunny","the","the","the","sunny","is","is"], k = 4
+// Output: ["the","is","sunny","day"]
+// Explanation: "the", "is", "sunny" and "day" are the four most frequent words, with the number of occurrence being 4, 3, 2 and 1 respectively.
+function topKFrequncyWord(words, k) {
+  let map = new Map();
+  for (let word of words) {
+    if (map.has(word)) map.set(word, map.get(word) + 1);
+    else map.set(word, 1);
+  }
+  let arr = new Array();
+  for (let keys of map.keys()) {
+    arr.push(keys);
+  }
+  arr.sort();
+  arr.sort((a, b) => map.get(b) - map.get(a));
+  return arr.slice(0, k);
+}
+console.log(
+  topKFrequncyWord(["i", "love", "leetcode", "i", "love", "coding"], 2)
+);
+console.log(
+  topKFrequncyWord(["i", "love", "leetcode", "i", "love", "coding"], 3)
+);
+console.log(
+  topKFrequncyWord(
+    ["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"],
+    4
+  )
+);
+// =======================================================================================
