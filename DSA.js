@@ -6766,3 +6766,235 @@ console.log(
   )
 );
 // =======================================================================================
+//Q Largest Number At Least Twice of others
+// You are given an integer array nums where the largest integer is unique.
+
+// Determine whether the largest element in the array is at least twice as much as every other number in the array. If it is, return the index of the largest element, or return -1 otherwise.
+
+// Example 1:
+
+// Input: nums = [3,6,1,0]
+// Output: 1
+// Explanation: 6 is the largest integer.
+// For every other number in the array x, 6 is at least twice as big as x.
+// The index of value 6 is 1, so we return 1.
+// Example 2:
+
+// Input: nums = [1,2,3,4]
+// Output: -1
+// Explanation: 4 is less than twice the value of 3, so we return -1.
+
+function dominantIndex(nums) {
+  let l = Math.max(...nums);
+  let count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (l >= 2 * nums[i]) {
+      count++;
+    }
+  }
+  return count === nums.length - 1 ? nums.indexOf(l) : -1;
+}
+console.log(dominantIndex([3, 6, 1, 0]));
+console.log(dominantIndex([1, 2, 3, 4]));
+//time complextiy:-O(n)
+function dominantIndex(nums) {
+  let maxIndex = 0;
+  let l = nums[0];
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] > l) {
+      l = nums[i];
+      maxIndex = i;
+    }
+  }
+  for (let i = 0; i < nums.length; i++) {
+    if (i !== maxIndex && l < 2 * nums[i]) {
+      return -1;
+    }
+  }
+  return maxIndex;
+}
+console.log(dominantIndex([3, 6, 1, 0]));
+console.log(dominantIndex([1, 2, 3, 4]));
+//Time complexity:-o(n**2)
+// =====================================================================================
+//Q Keep Multiplying Found values by Two
+// You are given an array of integers nums. You are also given an integer original which is the first number that needs to be searched for in nums.
+
+// You then do the following steps:
+
+// If original is found in nums, multiply it by two (i.e., set original = 2 * original).
+// Otherwise, stop the process.
+// Repeat this process with the new number as long as you keep finding the number.
+// Return the final value of original.
+
+// Example 1:
+
+// Input: nums = [5,3,6,1,12], original = 3
+// Output: 24
+// Explanation:
+// - 3 is found in nums. 3 is multiplied by 2 to obtain 6.
+// - 6 is found in nums. 6 is multiplied by 2 to obtain 12.
+// - 12 is found in nums. 12 is multiplied by 2 to obtain 24.
+// - 24 is not found in nums. Thus, 24 is returned.
+// Example 2:
+
+// Input: nums = [2,7,9], original = 4
+// Output: 4
+// Explanation:
+// - 4 is not found in nums. Thus, 4 is returned.
+// function findFinalValue(nums, original) {
+//   for (let i = 0; i < nums.length; i++) {
+//     if (original === nums[i]) {
+//       original =2*nums[i]
+
+//     }
+
+//   }
+//   return original
+// }
+// console.log(findFinalValue([5, 3, 6, 1, 12], 3));
+// console.log(findFinalValue([2, 7, 9], 4));
+// console.log(findFinalValue([8,19,4,2,15,3], 2));
+// //Better Approach
+function findFinalValue(nums, original) {
+  while (nums.includes(original)) original = 2 * original;
+  return original;
+}
+console.log(findFinalValue([5, 3, 6, 1, 12], 3));
+console.log(findFinalValue([2, 7, 9], 4));
+console.log(findFinalValue([8, 19, 4, 2, 15, 3], 2));
+
+//Optimal Approach
+function findFinalValue(nums, original) {
+  let obj = {};
+  for (let i = 0; i < nums.length; i++) {
+    if (!obj[nums[i]]) {
+      obj[nums[i]] = nums[i];
+    }
+  }
+  while (original === obj[original]) {
+    original = 2 * original;
+  }
+  return original;
+}
+console.log(findFinalValue([5, 3, 6, 1, 12], 3));
+console.log(findFinalValue([2, 7, 9], 4));
+console.log(findFinalValue([8, 19, 4, 2, 15, 3], 2));
+//Time complexity:-O(n)
+// =======================================================================================
+// Q How many number smaller then the current number
+// Given the array nums, for each nums[i] find out how many numbers in the array are smaller than it. That is, for each nums[i] you have to count the number of valid j's such that j != i and nums[j] < nums[i].
+
+// Return the answer in an array.
+
+// Example 1:
+
+// Input: nums = [8,1,2,2,3]
+// Output: [4,0,1,1,3]
+// Explanation:
+// For nums[0]=8 there exist four smaller numbers than it (1, 2, 2 and 3).
+// For nums[1]=1 does not exist any smaller number than it.
+// For nums[2]=2 there exist one smaller number than it (1).
+// For nums[3]=2 there exist one smaller number than it (1).
+// For nums[4]=3 there exist three smaller numbers than it (1, 2 and 2).
+// Example 2:
+
+// Input: nums = [6,5,4,8]
+// Output: [2,1,0,3]
+// Example 3:
+
+// Input: nums = [7,7,7,7]
+// Output: [0,0,0,0]
+//Brute Approach
+function smallerNumbersThanCurrent(nums) {
+  let result = [];
+  for (let i = 0; i < nums.length; i++) {
+    let temp = nums[i];
+    let count = 0;
+    for (let j = 0; j < nums.length; j++) {
+      if (temp > nums[j]) {
+        count++;
+      }
+    }
+    result.push(count);
+  }
+  return result;
+}
+console.log(smallerNumbersThanCurrent([8, 1, 2, 2, 3]));
+console.log(smallerNumbersThanCurrent([6, 5, 4, 8]));
+console.log(smallerNumbersThanCurrent([7, 7, 7, 7]));
+//Time Complexity:-O(n**2)
+
+function smallerNumbersThanCurrent(nums) {
+  let result = [];
+  let sorted = nums.slice().sort((a, b) => a - b);
+  for (let i = 0; i < nums.length; i++) {
+    result.push(sorted.indexOf(nums[i]));
+  }
+  return result;
+}
+console.log(smallerNumbersThanCurrent([8, 1, 2, 2, 3]));
+console.log(smallerNumbersThanCurrent([6, 5, 4, 8]));
+console.log(smallerNumbersThanCurrent([7, 7, 7, 7]));
+//Time complexity:-O(n**2)
+
+//Better Approach
+function smallerNumbersThanCurrent(nums) {
+  let sorted = [...nums].sort((a, b) => a - b);
+  return nums.map((elm) => sorted.indexOf(elm));
+}
+console.log(smallerNumbersThanCurrent([8, 1, 2, 2, 3]));
+console.log(smallerNumbersThanCurrent([6, 5, 4, 8]));
+console.log(smallerNumbersThanCurrent([7, 7, 7, 7]));
+//Time complexity:-O(n**2)
+// =====================================================================================
+// Q Count of smaller Number After self
+
+// Given an integer array nums, return an integer array counts where counts[i] is the number of smaller elements to the right of nums[i].
+
+// Example 1:
+
+// Input: nums = [5,2,6,1]
+// Output: [2,1,1,0]
+// Explanation:
+// To the right of 5 there are 2 smaller elements (2 and 1).
+// To the right of 2 there is only 1 smaller element (1).
+// To the right of 6 there is 1 smaller element (1).
+// To the right of 1 there is 0 smaller element.
+// Example 2:
+
+// Input: nums = [-1]
+// Output: [0]
+// Example 3:
+
+// Input: nums = [-1,-1]
+// Output: [0,0]
+
+function countSmaller(nums) {
+  let result = [];
+  for (let i = 0; i < nums.length - 1; i++) {
+    let temp = nums[i];
+    let count = 0;
+    for (let j = i; j < nums.length; j++) {
+      if (temp > nums[j]) {
+        count++;
+      }
+    }
+    result.push(count);
+  }
+  result.push(0);
+  return result;
+}
+console.log(countSmaller([5, 2, 6, 1]));
+console.log(countSmaller([-1]));
+console.log(countSmaller([-1, -1]));
+//Time Complexity:-O(n**2)
+
+// function countSmaller(nums) {
+//  let sorted =[...nums].sort((a,b)=>b-a);
+
+// }
+// console.log(countSmaller([5, 2, 6, 1]));
+// console.log(countSmaller([-1]));
+// console.log(countSmaller([-1, -1]));
+// //Time Complexity:-O(n**2)
