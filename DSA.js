@@ -6909,10 +6909,9 @@ console.log(findFinalValue([8, 19, 4, 2, 15, 3], 2));
 function smallerNumbersThanCurrent(nums) {
   let result = [];
   for (let i = 0; i < nums.length; i++) {
-    let temp = nums[i];
     let count = 0;
     for (let j = 0; j < nums.length; j++) {
-      if (temp > nums[j]) {
+      if (nums[i] > nums[j]) {
         count++;
       }
     }
@@ -6925,20 +6924,20 @@ console.log(smallerNumbersThanCurrent([6, 5, 4, 8]));
 console.log(smallerNumbersThanCurrent([7, 7, 7, 7]));
 //Time Complexity:-O(n**2)
 
-function smallerNumbersThanCurrent(nums) {
-  let result = [];
-  let sorted = nums.slice().sort((a, b) => a - b);
-  for (let i = 0; i < nums.length; i++) {
-    result.push(sorted.indexOf(nums[i]));
-  }
-  return result;
-}
-console.log(smallerNumbersThanCurrent([8, 1, 2, 2, 3]));
-console.log(smallerNumbersThanCurrent([6, 5, 4, 8]));
-console.log(smallerNumbersThanCurrent([7, 7, 7, 7]));
-//Time complexity:-O(n**2)
+// function smallerNumbersThanCurrent(nums) {
+//   let result = [];
+//   let sorted = nums.slice().sort((a, b) => a - b);
+//   for (let i = 0; i < nums.length; i++) {
+//     result.push(sorted.indexOf(nums[i]));
+//   }
+//   return result;
+// }
+// console.log(smallerNumbersThanCurrent([8, 1, 2, 2, 3]));
+// console.log(smallerNumbersThanCurrent([6, 5, 4, 8]));
+// console.log(smallerNumbersThanCurrent([7, 7, 7, 7]));
+// //Time complexity:-O(n**2)
 
-//Better Approach
+// //Better Approach
 function smallerNumbersThanCurrent(nums) {
   let sorted = [...nums].sort((a, b) => a - b);
   return nums.map((elm) => sorted.indexOf(elm));
@@ -6948,53 +6947,210 @@ console.log(smallerNumbersThanCurrent([6, 5, 4, 8]));
 console.log(smallerNumbersThanCurrent([7, 7, 7, 7]));
 //Time complexity:-O(n**2)
 // =====================================================================================
-// Q Count of smaller Number After self
 
-// Given an integer array nums, return an integer array counts where counts[i] is the number of smaller elements to the right of nums[i].
+// Hash Map Question
+// //Q isomprehic string
+// Given two strings s and t, determine if they are isomorphic.
+
+// Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+
+// All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.
 
 // Example 1:
 
-// Input: nums = [5,2,6,1]
-// Output: [2,1,1,0]
+// Input: s = "egg", t = "add"
+
+// Output: true
+
 // Explanation:
-// To the right of 5 there are 2 smaller elements (2 and 1).
-// To the right of 2 there is only 1 smaller element (1).
-// To the right of 6 there is 1 smaller element (1).
-// To the right of 1 there is 0 smaller element.
+
+// The strings s and t can be made identical by:
+
+// Mapping 'e' to 'a'.
+// Mapping 'g' to 'd'.
 // Example 2:
 
-// Input: nums = [-1]
-// Output: [0]
+// Input: s = "foo", t = "bar"
+
+// Output: false
+
+// Explanation:
+
+// The strings s and t can not be made identical as 'o' needs to be mapped to both 'a' and 'r'.
+
 // Example 3:
 
-// Input: nums = [-1,-1]
-// Output: [0,0]
+// Input: s = "paper", t = "title"
 
-function countSmaller(nums) {
-  let result = [];
-  for (let i = 0; i < nums.length - 1; i++) {
-    let temp = nums[i];
-    let count = 0;
-    for (let j = i; j < nums.length; j++) {
-      if (temp > nums[j]) {
-        count++;
-      }
+// Output: true
+//Brute Approach
+function isIsmorephic(s, t) {
+  if (s.length !== t.length) return false;
+  let sMap = new Map();
+  let tMap = new Map();
+  for (let i = 0; i < s.length; i++) {
+    let charS = s[i];
+    let charT = t[i];
+
+    if (!sMap.has(charS)) {
+      sMap.set(charS, charT);
+    } else if (sMap.get(charS) !== charT) {
+      return false;
     }
-    result.push(count);
+
+    if (!tMap.has(charT)) {
+      tMap.set(charT, charS);
+    } else if (tMap.get(charT) !== charS) {
+      return false;
+    }
   }
-  result.push(0);
-  return result;
+  return true;
 }
-console.log(countSmaller([5, 2, 6, 1]));
-console.log(countSmaller([-1]));
-console.log(countSmaller([-1, -1]));
-//Time Complexity:-O(n**2)
+console.log(isIsmorephic("egg", "add"));
+console.log(isIsmorephic("foo", "bar"));
+console.log(isIsmorephic("paper", "title"));
+console.log(isIsmorephic("badc", "baba"));
+//Time complexity:-O(n)
+//
+function isIsomorphic(s, t) {
+  if (s.length !== t.length) {
+    return false;
+  }
 
-// function countSmaller(nums) {
-//  let sorted =[...nums].sort((a,b)=>b-a);
+  const arr1 = [];
+  const arr2 = [];
+  for (let i = 0; i < s.length; i++) {
+    if (arr1[s.charAt(i)] !== arr2[t.charAt(i)]) {
+      return false;
+    }
+    arr1[s.charAt(i)] = i + 1;
+    arr2[t.charAt(i)] = i + 1;
+  }
+  return true;
+}
 
-// }
-// console.log(countSmaller([5, 2, 6, 1]));
-// console.log(countSmaller([-1]));
-// console.log(countSmaller([-1, -1]));
-// //Time Complexity:-O(n**2)
+console.log(isIsomorphic("egg", "add")); // true
+console.log(isIsomorphic("foo", "bar")); // false
+console.log(isIsomorphic("paper", "title")); // true
+console.log(isIsmorephic("badc", "baba"));
+
+//Time complexity:-O(n)
+// =======================================================================================
+// Q Kth Distinct string in an Array
+// A distinct string is a string that is present only once in an array.
+
+// Given an array of strings arr, and an integer k, return the kth distinct string present in arr. If there are fewer than k distinct strings, return an empty string "".
+
+// Note that the strings are considered in the order in which they appear in the array.
+
+// Example 1:
+
+// Input: arr = ["d","b","c","b","c","a"], k = 2
+// Output: "a"
+// Explanation:
+// The only distinct strings in arr are "d" and "a".
+// "d" appears 1st, so it is the 1st distinct string.
+// "a" appears 2nd, so it is the 2nd distinct string.
+// Since k == 2, "a" is returned.
+// Example 2:
+
+// Input: arr = ["aaa","aa","a"], k = 1
+// Output: "aaa"
+// Explanation:
+// All strings in arr are distinct, so the 1st string "aaa" is returned.
+// Example 3:
+
+// Input: arr = ["a","b","a"], k = 3
+// Output: ""
+// Explanation:
+// The only distinct string is "b". Since there are fewer than 3 distinct strings, we return an empty string "".
+//Brute Approach
+function kthDistnictString(arr, k) {
+  let dis = [];
+  let map = new Map();
+  for (let char of arr) {
+    map.set(char, (map.get(char) || 0) + 1);
+  }
+  for (let [keys, value] of map.entries()) {
+    if (value === 1) {
+      dis.push(keys);
+    }
+  }
+  return dis.length >= k ? dis[k - 1] : "";
+}
+console.log(kthDistnictString(["d", "b", "c", "b", "c", "a"], 2));
+console.log(kthDistnictString(["aaa", "aa", "a"], 1));
+console.log(kthDistnictString(["a", "b", "a"], 3));
+//Time complexity:-O(n)
+
+//Better Approach
+function kthDistnictString(arr, k) {
+  let map = {};
+  for (let s of arr) map[s] ? map[s]++ : (map[s] = 1);
+  for (let s of arr) {
+    if (map[s] > 1) continue;
+    if (k-- == 1) return s;
+  }
+  return "";
+}
+
+console.log(kthDistnictString(["d", "b", "c", "b", "c", "a"], 2));
+console.log(kthDistnictString(["aaa", "aa", "a"], 1));
+console.log(kthDistnictString(["a", "b", "a"], 3));
+// ======================================================================================
+//Q Check if N is double exist
+
+// Given an array arr of integers, check if there exist two indices i and j such that :
+
+// i != j
+// 0 <= i, j < arr.length
+// arr[i] == 2 * arr[j]
+
+// Example 1:
+
+// Input: arr = [10,2,5,3]
+// Output: true
+// Explanation: For i = 0 and j = 2, arr[i] == 10 == 2 * 5 == 2 * arr[j]
+// Example 2:
+
+// Input: arr = [3,1,7,11]
+// Output: false
+// Explanation: There is no i and j that satisfy the conditions.
+
+//Brute Appraoch
+function isDoubleExist(arr){
+  let flag=0;
+  for(let i=0;i<arr.length;i++){
+      for(let j=0;j<arr.length;j++){
+          if(i!=j){
+              if(arr[i]==2*arr[j]){
+                  flag=1;
+                  return true
+              }
+          }
+      }
+  }
+  if(flag==0){
+      return false;
+  }
+}
+console.log(isDoubleExist( [10,2,5,3]));
+console.log(isDoubleExist ([3,1,7,11]))
+//time complexity:-O(n**2)
+
+
+function isDoubleExist(arr){
+let seen = new Set();
+for(let elm of arr){
+  if(seen.has(elm*2)||(elm%2===0)&&seen.has(elm/2)){
+    return true
+  }
+  seen.add(elm)
+}
+return false
+}
+console.log(isDoubleExist( [10,2,5,3]));
+console.log(isDoubleExist ([3,1,7,11]))
+//time complexity:-O(n)
+
+// =======================================================================================
