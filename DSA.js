@@ -7118,39 +7118,217 @@ console.log(kthDistnictString(["a", "b", "a"], 3));
 // Explanation: There is no i and j that satisfy the conditions.
 
 //Brute Appraoch
-function isDoubleExist(arr){
-  let flag=0;
-  for(let i=0;i<arr.length;i++){
-      for(let j=0;j<arr.length;j++){
-          if(i!=j){
-              if(arr[i]==2*arr[j]){
-                  flag=1;
-                  return true
-              }
-          }
+function isDoubleExist(arr) {
+  let flag = 0;
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      if (i != j) {
+        if (arr[i] == 2 * arr[j]) {
+          flag = 1;
+          return true;
+        }
       }
+    }
   }
-  if(flag==0){
-      return false;
+  if (flag == 0) {
+    return false;
   }
 }
-console.log(isDoubleExist( [10,2,5,3]));
-console.log(isDoubleExist ([3,1,7,11]))
+console.log(isDoubleExist([10, 2, 5, 3]));
+console.log(isDoubleExist([3, 1, 7, 11]));
 //time complexity:-O(n**2)
 
-
-function isDoubleExist(arr){
-let seen = new Set();
-for(let elm of arr){
-  if(seen.has(elm*2)||(elm%2===0)&&seen.has(elm/2)){
-    return true
+function isDoubleExist(arr) {
+  let seen = new Set();
+  for (let elm of arr) {
+    if (seen.has(elm * 2) || (elm % 2 === 0 && seen.has(elm / 2))) {
+      return true;
+    }
+    seen.add(elm);
   }
-  seen.add(elm)
+  return false;
 }
-return false
-}
-console.log(isDoubleExist( [10,2,5,3]));
-console.log(isDoubleExist ([3,1,7,11]))
+console.log(isDoubleExist([10, 2, 5, 3]));
+console.log(isDoubleExist([3, 1, 7, 11]));
 //time complexity:-O(n)
 
 // =======================================================================================
+//String
+//Q Roate String
+// Given two strings s and goal, return true if and only if s can become goal after some number of shifts on s.
+
+// A shift on s consists of moving the leftmost character of s to the rightmost position.
+
+// For example, if s = "abcde", then it will be "bcdea" after one shift.
+
+// Example 1:
+
+// Input: s = "abcde", goal = "cdeab"
+// Output: true
+// Example 2:
+
+// Input: s = "abcde", goal = "abced"
+// Output: false
+//Brute Approach
+function rotateString(s, goal) {
+  if (s.length !== goal.length) return false;
+
+  let doubleS = s + s;
+
+  return doubleS.includes(goal);
+}
+console.log(rotateString("abcde", "cdeab"));
+console.log(rotateString("abcde", "abced"));
+//Time complexity:O(n)
+
+//Optimal Approach
+function rotateString(s, goal) {
+  if (s.length !== goal.length) {
+    return false;
+  }
+
+  for (let i = 0, len = s.length; i < len; i++) {
+    s += s[0];
+    s = s.substring(1, s.length);
+
+    if (s === goal) {
+      return true;
+    }
+  }
+
+  return false;
+}
+console.log(rotateString("abcde", "cdeab"));
+console.log(rotateString("abcde", "abced"));
+//Time complexity:-O(n)
+// =====================================================================================
+//Q Maximum Nesting Depth of the paranethses
+// Given a valid parentheses string s, return the nesting depth of s. The nesting depth is the maximum number of nested parentheses.
+
+// Example 1:
+
+// Input: s = "(1+(2*3)+((8)/4))+1"
+
+// Output: 3
+
+// Explanation:
+
+// Digit 8 is inside of 3 nested parentheses in the string.
+
+// Example 2:
+
+// Input: s = "(1)+((2))+(((3)))"
+
+// Output: 3
+
+// Explanation:
+
+// Digit 3 is inside of 3 nested parentheses in the string.
+
+// Example 3:
+
+// Input: s = "()(())((()()))"
+
+// Output: 3
+
+function findMaxDepth(s) {
+  let currentDepth = 0;
+  let maxDepth = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(") {
+      currentDepth++;
+    } else if (s[i] === ")") {
+      currentDepth--;
+    }
+    maxDepth = Math.max(currentDepth, maxDepth);
+  }
+  return maxDepth;
+}
+console.log(findMaxDepth("(1+(2*3)+((8)/4))+1"));
+console.log(findMaxDepth("(1)+((2))+(((3)))"));
+console.log(findMaxDepth("()(())((()()))"));
+function findMaxDepth(s) {
+  let res = [];
+  let count = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "(") {
+      res.push(s[i]);
+    } else if (s[i] === ")") {
+      count = res.length >= count ? res.length : count; //math.max(count,res.length)
+      res.pop();
+    }
+  }
+  return count;
+}
+console.log(findMaxDepth("(1+(2*3)+((8)/4))+1"));
+console.log(findMaxDepth("(1)+((2))+(((3)))"));
+console.log(findMaxDepth("()(())((()()))"));
+// =====================================================================================
+//Q Maximum Product of subarray
+// Given an integer array nums, find a
+// subarray
+//  that has the largest product, and return the product.
+
+// The test cases are generated so that the answer will fit in a 32-bit integer.
+
+// Example 1:
+
+// Input: nums = [2,3,-2,4]
+// Output: 6
+// Explanation: [2,3] has the largest product 6.
+// Example 2:
+
+// Input: nums = [-2,0,-1]
+// Output: 0
+// Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+
+function maxProductOfSubArr(nums) {
+  let maxSum = -Infinity;
+  for (let i = 0; i < nums.length; i++) {
+    let product = 1;
+    for (let j = i; j < nums.length; j++) {
+      product = product * nums[j];
+      maxSum = Math.max(product, maxSum);
+    }
+  }
+  return maxSum;
+}
+console.log(maxProductOfSubArr([2, 3, -2, 4]));
+console.log(maxProductOfSubArr([-2, 0, -1]));
+
+function maxProductOfSubArr(nums) {
+  let n = nums.length;
+  let maxSum = 0;
+  let pre = 1;
+  let suff = 1;
+  for (let i = 0; i < n; i++) {
+    if (pre === 0) pre = 1;
+    if (suff === 0) suff = 1;
+    pre = pre * nums[i];
+    suff = suff * nums[n - i - 1];
+    maxSum = Math.max(maxSum, Math.max(pre, suff));
+  }
+  return maxSum;
+}
+console.log(maxProductOfSubArr([2, 3, -2, 4]));
+console.log(maxProductOfSubArr([-2, 0, -1]));
+
+function maxProductOfSubArr(nums) {
+  let preMax = nums[0];
+    let preMin = nums[0];
+    let result = nums[0];
+
+    for(let i = 1; i < nums.length; i++){
+        let currMax = Math.max(nums[i], nums[i]*preMax, nums[i]*preMin);
+        let currMin = Math.min(nums[i], nums[i]*preMax, nums[i]*preMin);
+
+        preMax = currMax;
+        preMin = currMin;
+
+        result = Math.max(result, currMax);
+    }
+    return result;
+}
+console.log(maxProductOfSubArr([2, 3, -2, 4]));
+console.log(maxProductOfSubArr([-2, 0, -1]));
+// =====================================================================================
