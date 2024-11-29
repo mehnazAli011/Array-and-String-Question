@@ -24,17 +24,17 @@
 // // - ans = [1,3,2,1,1,3,2,1]
 
 // // Brute  Approch
-// function getConcatenations(nums) {
-//   let result = [];
-//   result.length = nums.length * 2;
-//   for (let i = 0; i < nums.length; i++) {
-//     result[i] = nums[i];
-//     result[i + nums.length] = nums[i];
-//   }
-//   return result;
-// }
-// console.log(getConcatenations([1, 2, 1]));
-// console.log(getConcatenations([1, 3, 2, 1]));
+function getConcatenations(nums) {
+  let result = [];
+  result.length = nums.length * 2;
+  for (let i = 0; i < nums.length; i++) {
+    result[i] = nums[i];
+    result[i + nums.length] = nums[i];
+  }
+  return result;
+}
+console.log(getConcatenations([1, 2, 1]));
+console.log(getConcatenations([1, 3, 2, 1]));
 
 // //Better  Approch
 // function getConcatenations(nums) {
